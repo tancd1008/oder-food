@@ -243,7 +243,7 @@ const Home = () => {
         </Container>
       </section>
 
-      <section className="why__choose-us">
+      {/* <section className="why__choose-us">
         <Container>
           <Row>
             <Col lg="6" md="6">
@@ -299,7 +299,7 @@ const Home = () => {
             </Col>
           </Row>
         </Container>
-      </section>
+      </section> */}
 
       <section className="pt-0">
         <Container>
@@ -317,7 +317,7 @@ const Home = () => {
         </Container>
       </section>
 
-      <section>
+      {/* <section>
         <Container>
           <Row>
             <Col lg="6" md="6">
@@ -340,7 +340,7 @@ const Home = () => {
             </Col>
           </Row>
         </Container>
-      </section>
+      </section> */}
     </Helmet>
   );
 };
