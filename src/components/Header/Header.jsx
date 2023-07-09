@@ -2,31 +2,31 @@ import React, { useRef, useEffect } from "react";
 
 import { Container } from "reactstrap";
 import logo from "../../assets/images/res-logo.png";
-import { NavLink, Link } from "react-router-dom";
+import {  Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
 import { cartUiActions } from "../../store/shopping-cart/cartUiSlice";
 
 import "../../styles/header.css";
 
-const nav__links = [
-  {
-    display: "Home",
-    path: "/home",
-  },
-  {
-    display: "Foods",
-    path: "/foods",
-  },
-  {
-    display: "Cart",
-    path: "/cart",
-  },
-  {
-    display: "Contact",
-    path: "/contact",
-  },
-];
+// const nav__links = [
+//   {
+//     display: "Home",
+//     path: "/home",
+//   },
+//   {
+//     display: "Foods",
+//     path: "/foods",
+//   },
+//   {
+//     display: "Cart",
+//     path: "/cart",
+//   },
+//   {
+//     display: "Contact",
+//     path: "/contact",
+//   },
+// ];
 
 const Header = () => {
   const menuRef = useRef(null);
@@ -65,7 +65,7 @@ const Header = () => {
           </div>
 
           {/* ======= menu ======= */}
-          <div className="navigation" ref={menuRef} onClick={toggleMenu}>
+          {/* <div className="navigation" ref={menuRef} onClick={toggleMenu}>
             <div className="menu d-flex align-items-center gap-5">
               {nav__links.map((item, index) => (
                 <NavLink
@@ -79,7 +79,7 @@ const Header = () => {
                 </NavLink>
               ))}
             </div>
-          </div>
+          </div> */}
 
           {/* ======== nav right icons ========= */}
           <div className="nav__right d-flex align-items-center gap-4">

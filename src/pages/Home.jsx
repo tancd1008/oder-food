@@ -3,18 +3,18 @@ import React, { useState, useEffect } from "react";
 import Helmet from "../components/Helmet/Helmet.js";
 import { Container, Row, Col, ListGroup, ListGroupItem } from "reactstrap";
 
-import heroImg from "../assets/images/hero.png";
+// import heroImg from "../assets/images/hero.png";
 import "../styles/hero-section.css";
 
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 
-import Category from "../components/UI/category/Category.jsx";
+// import Category from "../components/UI/category/Category.jsx";
 
 import "../styles/home.css";
 
-import featureImg01 from "../assets/images/service-01.png";
-import featureImg02 from "../assets/images/service-02.png";
-import featureImg03 from "../assets/images/service-03.png";
+// import featureImg01 from "../assets/images/service-01.png";
+// import featureImg02 from "../assets/images/service-02.png";
+// import featureImg03 from "../assets/images/service-03.png";
 
 import products from "../assets/fake-data/products.js";
 
@@ -28,26 +28,25 @@ import whyImg from "../assets/images/location.png";
 
 import networkImg from "../assets/images/network.png";
 
-import TestimonialSlider from "../components/UI/slider/TestimonialSlider.jsx";
 
-const featureData = [
-  {
-    title: "Quick Delivery",
-    imgUrl: featureImg01,
-    desc: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Minus, doloremque.",
-  },
+// const featureData = [
+//   {
+//     title: "Quick Delivery",
+//     imgUrl: featureImg01,
+//     desc: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Minus, doloremque.",
+//   },
 
-  {
-    title: "Super Dine In",
-    imgUrl: featureImg02,
-    desc: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Minus, doloremque.",
-  },
-  {
-    title: "Easy Pick Up",
-    imgUrl: featureImg03,
-    desc: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Minus, doloremque.",
-  },
-];
+//   {
+//     title: "Super Dine In",
+//     imgUrl: featureImg02,
+//     desc: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Minus, doloremque.",
+//   },
+//   {
+//     title: "Easy Pick Up",
+//     imgUrl: featureImg03,
+//     desc: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Minus, doloremque.",
+//   },
+// ];
 
 const Home = () => {
   const [category, setCategory] = useState("ALL");
@@ -93,7 +92,7 @@ const Home = () => {
 
   return (
     <Helmet title="Home">
-      <section>
+      {/* <section>
         <Container>
           <Row>
             <Col lg="6" md="6">
@@ -184,7 +183,7 @@ const Home = () => {
             ))}
           </Row>
         </Container>
-      </section>
+      </section> */}
 
       <section>
         <Container>
@@ -333,7 +332,6 @@ const Home = () => {
                   quis provident placeat fugiat!
                 </p>
 
-                <TestimonialSlider />
               </div>
             </Col>
 
