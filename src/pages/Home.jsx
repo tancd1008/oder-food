@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 import Helmet from "../components/Helmet/Helmet.js";
-import { Container, Row, Col, ListGroup, ListGroupItem } from "reactstrap";
+import { Container, Row, Col } from "reactstrap";
 
 // import heroImg from "../assets/images/hero.png";
 import "../styles/hero-section.css";
@@ -24,10 +24,9 @@ import foodCategoryImg03 from "../assets/images/bread.png";
 
 import ProductCard from "../components/UI/product-card/ProductCard.jsx";
 
-import whyImg from "../assets/images/location.png";
+// import whyImg from "../assets/images/location.png";
 
-import networkImg from "../assets/images/network.png";
-
+// import networkImg from "../assets/images/network.png";
 
 // const featureData = [
 //   {
@@ -193,7 +192,7 @@ const Home = () => {
             </Col>
 
             <Col lg="12">
-              <div className="food__category d-flex align-items-center justify-content-center gap-4">
+              <div className="food__category d-flex align-items-center justify-content-center gap-4 text-danger">
                 <button
                   className={`all__btn  ${
                     category === "ALL" ? "foodBtnActive" : ""

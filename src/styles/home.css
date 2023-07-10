@@ -15,7 +15,7 @@
 }
 
 .food__category {
-  background: #df2020;
+  background: #f3ef08;
   text-align: center;
   margin-top: 30px;
   padding: 20px 0px;
@@ -27,7 +27,7 @@
   outline: none;
   padding: 7px 20px;
   background: transparent;
-  color: #fff;
+  color: #000000;
 }
 
 .food__category button img {
