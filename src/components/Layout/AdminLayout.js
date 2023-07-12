@@ -1,17 +1,15 @@
-import React from 'react'
-import HeaderAdmin from '../Header/HeaderAdmin'
-import { Outlet } from 'react-router-dom'
+import React from "react";
+import { Outlet } from "react-router-dom";
+import SidebarAdmin from "../Sidebar/SidebarAdmin";
 
 const AdminLayout = () => {
-  console.log(`Alo`)
+  console.log(`Alo`);
   return (
-    <div  className="w-full min-h-screen font-sans text-gray-900 bg-gray-50 flex">
-      <HeaderAdmin/>
-      <main>
-        <Outlet/>
-      </main>
+    <div className="flex flex-col items-center justify-center min-h-screen py-2 ">
+      <SidebarAdmin />
+      <Outlet />
     </div>
-  )
-}
+  );
+};
 
-export default AdminLayout
+export default AdminLayout;
