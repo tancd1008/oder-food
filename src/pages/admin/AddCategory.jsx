@@ -4,12 +4,11 @@ import "react-toastify/dist/ReactToastify.css";
 import { getDatabase, ref, push } from "firebase/database";
 const innititalState = {
   name: "",
-  price: "",
   desc: "",
 };
-const AddProduct = () => {
+const AddCategory = () => {
   const [state, setState] = useState(innititalState);
-  const { name, price, desc } = state;
+  const { name, desc } = state;
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -17,13 +16,13 @@ const AddProduct = () => {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!name || !price  || !desc) {
+    if (!name || !desc) {
       toast.error("Mời bạn nhập!");
     } else {
       const db = getDatabase();
-      push(ref(db, 'products/'), state)
+      push(ref(db, 'categories/'), state)
       .then(() => {
-        toast.success("Thêm sản phẩm thành công")
+        toast.success("Thêm danh mục thành công")
       })
       .catch((error) => {
         toast.error("Lỗi")
@@ -39,7 +38,7 @@ const AddProduct = () => {
             htmlFor="email"
             className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
           >
-            Tên sản phẩm
+            Tên danh mục
           </label>
           <input
             type="text"
@@ -51,22 +50,7 @@ const AddProduct = () => {
             onChange={handleInputChange}
           />
         </div>
-        <div className="mb-6">
-          <label
-            htmlFor="password"
-            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-          >
-            Giá tiền
-          </label>
-          <input
-            type="text"
-            id="price"
-            name="price"
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            value={price}
-            onChange={handleInputChange}
-          />
-        </div>
+        
         <div className="mb-6">
           <label
             htmlFor="password"
@@ -96,4 +80,4 @@ const AddProduct = () => {
   );
 };
 
-export default AddProduct;
+export default AddCategory;

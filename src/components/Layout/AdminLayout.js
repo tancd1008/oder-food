@@ -6,7 +6,8 @@ const AdminLayout = () => {
   const Menus = [
     { title: "Dashboard", path: "" },
     { title: "Danh sách sản phẩm", path: "list" },
-    { title: "Thêm mới sản phẩm", path: "add" },
+    { title: "Thêm mới sản phẩm", path: "products/add" },
+    { title: "Thêm mới danh mục", path: "category/add" },
     { title: "Thống kê", path: "add" },
    
   ];

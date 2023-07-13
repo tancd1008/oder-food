@@ -9,6 +9,7 @@ import Register from "../pages/Register";
 import Dashboard from "../pages/admin/Dashboard";
 import AddProduct from "../pages/admin/AddProduct";
 import ListProducts from "../pages/admin/ListProducts";
+import AddCategory from "../pages/admin/AddCategory";
 
 
 
@@ -32,8 +33,12 @@ const privateRoutes = [
     component: ListProducts,
   },
   {
-    path: "add",
+    path: "products/add",
     component: AddProduct,
+  },
+  {
+    path: "category/add",
+    component: AddCategory,
   },
 ];
 const authenticationRoutes = [
