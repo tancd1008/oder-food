@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { getImageUrl, uploadImage } from "../services/uploadImage";
+import { uploadImage } from "../services/uploadImage";
 
 const UploadImage = () => {
   const [image, setImage] = useState("");
@@ -31,10 +31,10 @@ const UploadImage = () => {
         toast.error(`File upload phải có đuôi là : ${imgTail.join(", ")} `);
       } else {
         try {
-          uploadImage(image);
-          setTimeout(() => {
-            getImageUrl(image,setUrlImage);
-          }, 1000);
+          uploadImage(image, setUrlImage);
+          // setTimeout(() => {
+          //   getImageUrl(image,setUrlImage);
+          // }, 2000);
         } catch (error) {
           toast.error(error);
         }
