@@ -5,51 +5,49 @@ import { publicRoutes } from "./routes/Routers";
 import { useState } from "react";
 import { useEffect } from "react";
 import { ref, child, get } from "firebase/database";
-import database from './firebase-config';
-
+import database from "./firebase-config";
 
 function App() {
-  // const [products, setProducts] = useState([]);
-  
-  // useEffect(() => {
-  //   const getProducts = async () => {
-  //     fireDb.child("products").on("value", (snapshot) => {
-  //       if(snapshot.val() !== null){
-  //         setProducts({...snapshot})
-  //       }else{
-  //         setProducts({})
-  //       }
-  //     })
-  //     return console.log(setProducts)
-  //   }
-  //   getProducts();
-  // },[])
-  const dbRef = ref(database);
-  get(child(dbRef, `products`)).then((snapshot) => {
-    if (snapshot.exists()) {
-      console.log(snapshot.val());
-    } else {
-      console.log("No data available");
-    }
-  }).catch((error) => {
-    console.error(error);
-  });
-  return <div className="App">
-    <Routes>
-    <Route path="/" element={<Layout />}>
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    const getProducts = async () => {
+      const dbRef = ref(database);
+      get(child(dbRef, `products`))
+        .then((snapshot) => {
+          if (snapshot.val() !== null) {
+           
+            setProducts([...snapshot.val()]);
+          } else {
+            console.log("No data available");
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    };
+    getProducts();
+  }, []);
+  console.log(products)
+
+  return (
+    <div className="App">
+      <Routes>
+        <Route path="/" element={<Layout />}>
           {publicRoutes.map((route, index) => {
             const Page = route.component;
             return <Route key={index} path={route.path} element={<Page />} />;
           })}
         </Route>
-        <Route path="admin" element={<AdminLayout/>}>
+        <Route path="admin" element={<AdminLayout />}>
           {/* {privateRoutes.map((route, index) => {
             const Page = route.component;
             return <Route key={index} path={route.path} element={<Page />} />;
           })} */}
         </Route>
-    </Routes>
-  </div>;
+      </Routes>
+    </div>
+  );
 }
 
 export default App;

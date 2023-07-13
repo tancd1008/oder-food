@@ -1,6 +1,5 @@
 import React, { useRef, useEffect } from "react";
 
-import { Container } from "reactstrap";
 import logo from "../../assets/images/res-logo.png";
 import {  Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
@@ -57,7 +56,6 @@ const Header = () => {
 
   return (
     <header className="header" ref={headerRef}>
-      <Container>
         <div className="nav__wrapper d-flex align-items-center justify-content-between">
           <div className="logo">
             <img src={logo} alt="logo" />
@@ -84,22 +82,21 @@ const Header = () => {
           {/* ======== nav right icons ========= */}
           <div className="nav__right d-flex align-items-center gap-4">
             <span className="cart__icon" onClick={toggleCart}>
-              <i class="ri-shopping-basket-line"></i>
+              <i className="ri-shopping-basket-line"></i>
               <span className="cart__badge">{totalQuantity}</span>
             </span>
 
             <span className="user">
               <Link to="/login">
-                <i class="ri-user-line"></i>
+                <i className="ri-user-line"></i>
               </Link>
             </span>
 
             <span className="mobile__menu" onClick={toggleMenu}>
-              <i class="ri-menu-line"></i>
+              <i className="ri-menu-line"></i>
             </span>
           </div>
         </div>
-      </Container>
     </header>
   );
 };
