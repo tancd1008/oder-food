@@ -7,6 +7,8 @@ import Checkout from "../pages/Checkout";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
 import Dashboard from "../pages/Dashboard";
+import AddProduct from "../pages/admin/AddProduct";
+import ListProducts from "../pages/admin/ListProducts";
 
 
 
@@ -22,8 +24,16 @@ const publicRoutes = [
 ];
 const privateRoutes = [
   {
-    path: "admin",
+    path: "",
     component: Dashboard,
+  },
+  {
+    path: "list",
+    component: ListProducts,
+  },
+  {
+    path: "add",
+    component: AddProduct,
   },
 ];
 const authenticationRoutes = [

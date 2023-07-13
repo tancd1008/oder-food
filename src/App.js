@@ -1,7 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 import Layout from "./components/Layout/Layout";
 import AdminLayout from "./components/Layout/AdminLayout";
-import { publicRoutes } from "./routes/Routers";
+import { privateRoutes, publicRoutes } from "./routes/Routers";
 import { useState } from "react";
 import { useEffect } from "react";
 import { ref, child, get } from "firebase/database";
@@ -40,10 +40,10 @@ function App() {
           })}
         </Route>
         <Route path="admin" element={<AdminLayout />}>
-          {/* {privateRoutes.map((route, index) => {
+          {privateRoutes.map((route, index) => {
             const Page = route.component;
             return <Route key={index} path={route.path} element={<Page />} />;
-          })} */}
+          })}
         </Route>
       </Routes>
     </div>
