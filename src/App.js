@@ -5,14 +5,14 @@ import { privateRoutes, publicRoutes } from "./routes/Routers";
 import { useState } from "react";
 import { useEffect } from "react";
 import { ref, child, get } from "firebase/database";
-import database from "./firebase-config";
+import fireDb from "./firebase-config";
 
 function App() {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
     const getProducts = async () => {
-      const dbRef = ref(database);
+      const dbRef = ref(fireDb);
       get(child(dbRef, `products`))
         .then((snapshot) => {
           if (snapshot.val() !== null) {
