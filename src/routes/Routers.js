@@ -1,15 +1,16 @@
 
-import Home from "../pages/Home";
+import UploadImage from "../components/UploadImage";
 import AllFoods from "../pages/AllFoods";
-import FoodDetails from "../pages/FoodDetails";
 import Cart from "../pages/Cart";
 import Checkout from "../pages/Checkout";
+import FoodDetails from "../pages/FoodDetails";
+import Home from "../pages/Home";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
-import Dashboard from "../pages/admin/Dashboard";
-import AddProduct from "../pages/admin/AddProduct";
-import ListProducts from "../pages/admin/ListProducts";
 import AddCategory from "../pages/admin/AddCategory";
+import AddProduct from "../pages/admin/AddProduct";
+import Dashboard from "../pages/admin/Dashboard";
+import ListProducts from "../pages/admin/ListProducts";
 
 
 
@@ -22,6 +23,7 @@ const publicRoutes = [
   { path: "foods/:id", component: FoodDetails, },
   { path: "cart", component: Cart },
   { path: "checkout", component: Checkout },
+  { path: "upload-image", component: UploadImage },
 ];
 const privateRoutes = [
   {
@@ -52,3 +54,4 @@ const authenticationRoutes = [
   },
 ];
 export { authenticationRoutes, privateRoutes, publicRoutes };
+
