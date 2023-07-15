@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { getDatabase, ref, push } from "firebase/database";
-import { uploadImage } from "../../services/uploadImage";
+import { getImageUrl, uploadImage } from "../../services/uploadImage";
 import { storage } from "../../firebase-config";
 const innititalState = {
   name: "",
@@ -12,6 +12,7 @@ const innititalState = {
 };
 const AddProduct = () => {
   const [state, setState] = useState(innititalState);
+  const [image, setImage] = useState("");
   const [urlImage, setUrlImage] = useState("");
   const { name, price, desc, imgSrc } = state;
 
@@ -35,6 +36,7 @@ const AddProduct = () => {
     }else{
       console.log(e.target.files)
       const img = e.target.files[0].name;
+      setImage(e.target.files[0]);
       setState({...state, imgSrc: img})
 
     }
@@ -51,17 +53,16 @@ const AddProduct = () => {
         toast.error(`File upload phải có đuôi là : ${imgTail.join(", ")} `);
       } else {
         try {
-          // uploadImage(state.imgSrc, setUrlImage);
-          console.log(urlImage)
+          uploadImage(image, setUrlImage);
+          getImageUrl(image,setUrlImage)
+
           toast.success("Thành công")
-          console.log(ref(storage, `images/${state.imgSrc}`))
           // setTimeout(() => {
           //   getImageUrl(image,setUrlImage);
           // }, 2000);
         } catch (error) {
           toast.error(error);
         }
-        console.log("222222")
       }
       console.log(state)
       const db = getDatabase();
