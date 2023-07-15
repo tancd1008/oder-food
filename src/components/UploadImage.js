@@ -31,6 +31,7 @@ const UploadImage = () => {
         toast.error(`File upload phải có đuôi là : ${imgTail.join(", ")} `);
       } else {
         try {
+          console.log(image)
           uploadImage(image, setUrlImage);
           // setTimeout(() => {
           //   getImageUrl(image,setUrlImage);
