@@ -3,7 +3,6 @@ import { storage } from "../firebase-config"
 
 export const uploadImage = (file,setUrl)=>{
   const storageRf = ref(storage, `images/${file.name}`)
-  console.log(storageRf)
   const upload = uploadBytesResumable(storageRf, file)
   upload.then((snapshot)=>{
     getDownloadURL(upload.snapshot.ref).then((url) => {
@@ -13,12 +12,14 @@ export const uploadImage = (file,setUrl)=>{
     console.log("error",error)
   })
 }
-export const getImageUrl = (file, setUrl)=>{
+export const getImageUrl = (file)=>{
+  const src = "";
   const storageRf = ref(storage, `images/${file.name}`)
   const getUrl = getDownloadURL(storageRf, file)
   getUrl.then((url)=>{
-    setUrl(url)
+     this.src = url;
   }).catch((error)=>{
     console.log("error",error)
   })
+  return src
 }

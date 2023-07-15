@@ -14,6 +14,7 @@ const AddProduct = () => {
   const [state, setState] = useState(innititalState);
   const [image, setImage] = useState("");
   const [urlImage, setUrlImage] = useState("");
+
   const { name, price, desc, imgSrc } = state;
 
   const imgTail = ["png", "jpg", "jpeg", "svg", "gif"];
@@ -42,29 +43,29 @@ const AddProduct = () => {
     }
     // console.log("2222")
   };
+  const uploadFileImage = () =>{
+
+    var check = checkImage(state.imgSrc);
+      if (!check) {
+        toast.error(`File upload phải có đuôi là : ${imgTail.join(", ")} `);
+      } else {
+        try {
+          uploadImage(image, setUrlImage);
+         
+        } catch (error) {
+          toast.error(error);
+        }
+      }
+  }
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(state);
     if (!name || !price  || !desc || !imgSrc) {
       toast.error("Mời bạn nhập!");
     } else {
-      var check = checkImage(state.imgSrc);
-      if (!check) {
-        toast.error(`File upload phải có đuôi là : ${imgTail.join(", ")} `);
-      } else {
-        try {
-          uploadImage(image, setUrlImage);
-          getImageUrl(image,setUrlImage)
-
-          toast.success("Thành công")
-          // setTimeout(() => {
-          //   getImageUrl(image,setUrlImage);
-          // }, 2000);
-        } catch (error) {
-          toast.error(error);
-        }
-      }
-      console.log(state)
+      
+      uploadFileImage();
+      
       const db = getDatabase();
       // push(ref(db, 'products/'), state)
       // .then(() => {
@@ -75,6 +76,8 @@ const AddProduct = () => {
       // });
     }
   };
+
+
 
   return (
     <div>
