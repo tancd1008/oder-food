@@ -31,7 +31,7 @@ function App() {
   console.log(products)
 
   return (
-    <div className="App">
+    <div className="App ">
       <Routes>
         <Route path="/" element={<Layout />}>
           {publicRoutes.map((route, index) => {
@@ -45,6 +45,7 @@ function App() {
             return <Route key={index} path={route.path} element={<Page />} />;
           })}
         </Route>
+        
       </Routes>
     </div>
   );

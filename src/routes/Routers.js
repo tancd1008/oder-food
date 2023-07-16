@@ -6,6 +6,7 @@ import Checkout from "../pages/Checkout";
 import FoodDetails from "../pages/FoodDetails";
 import Home from "../pages/Home";
 import Login from "../pages/Login";
+import NotFoundPage from "../pages/NotFoundPage";
 import Register from "../pages/Register";
 import AddCategory from "../pages/admin/AddCategory";
 import AddProduct from "../pages/admin/AddProduct";
@@ -19,6 +20,10 @@ const publicRoutes = [
     path: "",
     component: Home,
   },
+  {
+    path: "*",
+    component: NotFoundPage,
+  },
   { path: "foods", component: AllFoods, },
   { path: "foods/:id", component: FoodDetails, },
   { path: "cart", component: Cart },
@@ -29,6 +34,10 @@ const privateRoutes = [
   {
     path: "",
     component: Dashboard,
+  },
+  {
+    path: "*",
+    component: NotFoundPage,
   },
   {
     path: "list",

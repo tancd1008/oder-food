@@ -3,17 +3,19 @@ import React from "react";
 // import logo from "../../assets/images/res-logo.png";
 
 import "../../styles/footer.css";
+import { Link } from "react-router-dom";
+import { Col, ListGroup, ListGroupItem, Row ,Container} from "reactstrap";
 
 // import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
     <footer className="footer">
-      {/* <Container>
+      <Container>
         <Row>
           <Col lg="3" md="4" sm="6">
             <div className=" footer__logo text-start">
-              <img src={logo} alt="logo" />
+             
               <h5>Tasty Treat</h5>
               <p>
                 Lorem ipsum dolor sit amet consectetur adipisicing elit.
@@ -104,7 +106,7 @@ const Footer = () => {
             </div>
           </Col>
         </Row>
-      </Container> */}
+      </Container>
     </footer>
   );
 };

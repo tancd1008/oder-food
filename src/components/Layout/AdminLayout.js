@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link, Outlet } from "react-router-dom";
+import SidebarAdmin from "../Sidebar/SidebarAdmin";
 
 const AdminLayout = () => {
   const [open, setOpen] = useState(true);
@@ -12,9 +13,9 @@ const AdminLayout = () => {
    
   ];
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen py-2 ">
+    <div className="flex flex-col items-center justify-center min-h-screen ">
        <div className="flex w-full">
-      <div
+      {/* <div
         className={` ${
           open ? "w-72" : "w-20 "
         } bg-indigo-500 h-screen p-5  pt-8 relative duration-300`}
@@ -59,6 +60,10 @@ const AdminLayout = () => {
             </li>
           ))}
         </ul>
+      </div> */}
+      <div className=" bg-slate-700 h-screen px-5  pt-8 relative duration-300">
+
+      <SidebarAdmin/>
       </div>
       <div className="h-screen flex-1 p-7">
         <Outlet/>
