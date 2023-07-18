@@ -1,34 +1,29 @@
+import { getDatabase, onValue, ref } from "firebase/database";
+import { useEffect, useState } from "react";
 import { Route, Routes } from "react-router-dom";
-import Layout from "./components/Layout/Layout";
 import AdminLayout from "./components/Layout/AdminLayout";
+import Layout from "./components/Layout/Layout";
 import { privateRoutes, publicRoutes } from "./routes/Routers";
-import { useState } from "react";
-import { useEffect } from "react";
-import { ref, child, get } from "firebase/database";
-import fireDb from "./firebase-config";
 
 function App() {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
     const getProducts = async () => {
-      const dbRef = ref(fireDb);
-      get(child(dbRef, `products`))
-        .then((snapshot) => {
-          if (snapshot.val() !== null) {
-           
-            setProducts([...snapshot.val()]);
-          } else {
-            console.log("No data available");
-          }
+      const db = getDatabase();
+      const productRef = ref(db, "products/");
+      onValue(productRef, (snapshot) => {
+        var newData = []
+        snapshot.forEach((item)=>{
+          newData.push(item.val())
         })
-        .catch((error) => {
-          console.error(error);
-        });
+        setProducts(newData)
+      });
+
     };
     getProducts();
   }, []);
-  console.log(products)
+  console.log(products);
 
   return (
     <div className="App ">
@@ -45,7 +40,6 @@ function App() {
             return <Route key={index} path={route.path} element={<Page />} />;
           })}
         </Route>
-        
       </Routes>
     </div>
   );
