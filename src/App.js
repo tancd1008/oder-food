@@ -6,6 +6,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { ref, child, get } from "firebase/database";
 import fireDb from "./firebase-config";
+import 'bootstrap/dist/css/bootstrap.css';
 
 function App() {
   const [products, setProducts] = useState([]);
