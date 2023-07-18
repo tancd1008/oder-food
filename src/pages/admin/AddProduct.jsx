@@ -82,6 +82,7 @@ const AddProduct = () => {
   return (
     <div >
       <form onSubmit={handleSubmit}>
+        <h1 className="text-center">Thêm mới món ăn</h1>
         <div className="mb-3">
           <label
             htmlFor="email"
@@ -94,6 +95,7 @@ const AddProduct = () => {
             id="name"
             name="name"
             className="form-control"
+            placeholder="Sản phẩm...."
             value={name}
             onChange={handleInputChange}
           />
@@ -109,6 +111,8 @@ const AddProduct = () => {
             type="text"
             id="price"
             name="price"
+            placeholder="00000$"
+
             className="form-control"  value={price}
             onChange={handleInputChange}
           />
@@ -124,6 +128,8 @@ const AddProduct = () => {
             type="text"
             id="pdescrice"
             name="desc"
+            placeholder="Nội dung...."
+
             className="form-control" value={desc}
             onChange={handleInputChange}
           />

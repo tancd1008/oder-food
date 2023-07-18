@@ -33,10 +33,11 @@ const AddCategory = () => {
   return (
     <div>
       <form onSubmit={handleSubmit}>
-        <div className="mb-6">
+        <h1 className="text-center">Thêm mới danh mục</h1>
+        <div className="mb-3">
           <label
             htmlFor="email"
-            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            className="form-label"
           >
             Tên danh mục
           </label>
@@ -44,17 +45,17 @@ const AddCategory = () => {
             type="text"
             id="name"
             name="name"
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            className="form-control"
             placeholder="Sản phẩm"
             value={name}
             onChange={handleInputChange}
           />
         </div>
         
-        <div className="mb-6">
+        <div className="mb-3">
           <label
             htmlFor="password"
-            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            className="form-label"
           >
             Nội dung
           </label>
@@ -62,7 +63,8 @@ const AddCategory = () => {
             type="text"
             id="pdescrice"
             name="desc"
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            className="form-control"
+            placeholder="Nội dung..."
             value={desc}
             onChange={handleInputChange}
           />
@@ -70,7 +72,7 @@ const AddCategory = () => {
 
         <button
           type="submit"
-          className="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
+          className="btn btn-primary"
         >
           Thêm mới
         </button>
