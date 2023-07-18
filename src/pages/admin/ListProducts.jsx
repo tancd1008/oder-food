@@ -1,22 +1,24 @@
 import React from 'react'
-
+import { getDatabase, onValue, ref } from "firebase/database";
+import { useEffect, useState } from "react";
 const ListProducts = () => {
-  const products = [
-    {
-      id: 1,
-      name: "Product 1",
-      price: 300,
-      desc: " Siêu ngon"
+  const [products, setProducts] = useState([]);
 
-    },
-    {
-      id: 2,
-      name: "Product 2",
-      price: 300,
-      desc: " Siêu ngon"
+  useEffect(() => {
+    const getProducts = async () => {
+      const db = getDatabase();
+      const productRef = ref(db, "products/");
+      onValue(productRef, (snapshot) => {
+        var newData = []
+        snapshot.forEach((item)=>{
+          newData.push(item.val())
+        })
+        setProducts(newData)
+      });
 
-    }
-  ]
+    };
+    getProducts();
+  }, []);
   return (
     <div>
     <table className="table table-hover text-nowrap">
