@@ -28,7 +28,6 @@ export const getImageUrl = (file) => {
   return src;
 };
 export const deleteImage = (imageUrl)=>{
-  const src = "";
   const storageRf = ref(storage, `images/${imageUrl}`);
   deleteObject(storageRf).then(() => {
     // File deleted successfully

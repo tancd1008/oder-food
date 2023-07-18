@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { getDatabase, ref, push } from "firebase/database";
+import { getDatabase, ref, push, set } from "firebase/database";
 const innititalState = {
   name: "",
   desc: "",
@@ -19,14 +19,24 @@ const AddCategory = () => {
     if (!name || !desc) {
       toast.error("Mời bạn nhập!");
     } else {
-      const db = getDatabase();
-      push(ref(db, 'categories/'), state)
-      .then(() => {
+      const db = getDatabase(); 
+      const categoriesRef = ref(db, 'categories/');
+      const newCategoryRef = push(categoriesRef);
+      const newCategoryId = newCategoryRef.key;
+      const newCategoryData = {...state, id: newCategoryId};
+      set(newCategoryRef,newCategoryData).then(() => {
         toast.success("Thêm danh mục thành công")
       })
       .catch((error) => {
         toast.error("Lỗi")
       });
+      // push(ref(db, 'categories/'), state)
+      // .then(() => {
+      //   toast.success("Thêm danh mục thành công")
+      // })
+      // .catch((error) => {
+      //   toast.error("Lỗi")
+      // });
     }
   };
 

@@ -2,25 +2,44 @@ import React, { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { deleteImage, uploadImage } from "../../services/uploadImage";
+import { getDatabase, onValue, push, ref } from "@firebase/database";
+import { useEffect } from "react";
 const innititalState = {
   name: "",
   price: "",
   desc: "",
   imgSrc: "",
+  categoryId:"",
+  status: 0
 };
 const AddProduct = () => {
   const [state, setState] = useState(innititalState);
-  const [image, setImage] = useState("");
+  const [categories, setCategories] = useState([])
   const [urlImage, setUrlImage] = useState("");
 
-  const { name, price, desc, imgSrc } = state;
+  const { name, price, desc, imgSrc, categoryId } = state;
 
   const imgTail = ["png", "jpg", "jpeg", "svg", "gif"];
-
+  useEffect(() => {
+    const getCategory = async () => {
+      const db = getDatabase();
+      const productRef = ref(db, "categories/");
+      onValue(productRef, (snapshot) => {
+        var newData = [];
+        snapshot.forEach((item) => {
+          newData.push(item.val());
+        });
+        setCategories(newData);
+      });
+    };
+    getCategory();
+  }, []);
+  console.log(categories)
   const checkImage = (imageName) => {
+    console.log(typeof imageName);
     var check = false;
     for (let i = 0; i < imgTail.length; i++) {
-      if (imageName.toLowerCase().includes(imgTail[i])) {
+      if (imageName.includes(imgTail[i])) {
         check = true;
         break;
       }
@@ -28,7 +47,7 @@ const AddProduct = () => {
     return check;
   };
   const uploadFileImage = (imageFile) => {
-    var check = checkImage(state.imgSrc);
+    var check = checkImage(imageFile.name);
     if (!check) {
       toast.error(`File upload phải có đuôi là : ${imgTail.join(", ")} `);
     } else {
@@ -44,45 +63,44 @@ const AddProduct = () => {
     if (!e.target.files) {
       setState({ ...state, [name]: value });
     } else {
-      setState({...state, imgSrc: e.target.files[0].name})
+      setState({ ...state, imgSrc: e.target.files[0].name });
       if (urlImage) {
-        deleteImage(state.imgSrc)
+        deleteImage(state.imgSrc);
       }
-      uploadFileImage(e.target.files[0])
+      uploadFileImage(e.target.files[0]);
     }
+    console.log(state)
     // console.log("2222")
   };
-  
+
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(state);
-    state.imgSrc = urlImage
-    if (!name || !price || !desc || !imgSrc) {
+    state.imgSrc = urlImage;
+    if (!name || !price || !desc || !imgSrc ) {
       toast.error("Mời bạn nhập!");
     } else {
-      // uploadFileImage();
+      
+      console.log("123", state);
 
-      // const db = getDatabase();
-      // push(ref(db, 'products/'), state)
-      // .then(() => {
-      //   toast.success("Thêm sản phẩm thành công")
-      // })
-      // .catch((error) => {
-      //   toast.error("Lỗi")
-      // });
+      const db = getDatabase();
+      push(ref(db, "products/"), state)
+        .then(() => {
+          toast.success("Thêm sản phẩm thành công");
+        })
+        .catch((error) => {
+          toast.error("Lỗi");
+        });
     }
-    console.log("state",state)
+    console.log("state", state);
   };
 
   return (
-    <div >
+    <div>
       <form onSubmit={handleSubmit}>
         <h1 className="text-center">Thêm mới món ăn</h1>
         <div className="mb-3">
-          <label
-            htmlFor="email"
-            className="form-label"
-          >
+          <label htmlFor="email" className="form-label">
             Tên sản phẩm
           </label>
           <input
@@ -96,10 +114,17 @@ const AddProduct = () => {
           />
         </div>
         <div className="mb-3">
-          <label
-            htmlFor="password"
-            className="form-label"
-          >
+          <label htmlFor="password" className="form-label">
+            Danh mục
+          </label>
+          <select id="selectOption" className="form-control" name="categoryId" onChange={handleInputChange}>
+            {categories.map((category,index) => (
+              <option value={category.id} key={index}>{category.name}</option>
+            ))}
+          </select>
+        </div>
+        <div className="mb-3">
+          <label htmlFor="password" className="form-label">
             Giá tiền
           </label>
           <input
@@ -107,16 +132,13 @@ const AddProduct = () => {
             id="price"
             name="price"
             placeholder="00000$"
-
-            className="form-control"  value={price}
+            className="form-control"
+            value={price}
             onChange={handleInputChange}
           />
         </div>
         <div className="mb-3">
-          <label
-            htmlFor="password"
-            className="form-label"
-          >
+          <label htmlFor="password" className="form-label">
             Nội dung
           </label>
           <input
@@ -124,24 +146,23 @@ const AddProduct = () => {
             id="pdescrice"
             name="desc"
             placeholder="Nội dung...."
-
-            className="form-control" value={desc}
+            className="form-control"
+            value={desc}
             onChange={handleInputChange}
           />
         </div>
         <div className=" mb-3">
-          <label
-            htmlFor="dropzone-file"
-            className="form-label"
-          >
-          
-            <input id="dropzone-file" name="imgSrc" type="file" className="form-control" onChange={handleInputChange}  />
+          <label htmlFor="dropzone-file" className="form-label">
+            <input
+              id="dropzone-file"
+              name="imgSrc"
+              type="file"
+              className="form-control"
+              onChange={handleInputChange}
+            />
           </label>
         </div>
-        <button
-          type="submit"
-          className="btn btn-primary"
-        >
+        <button type="submit" className="btn btn-primary">
           Thêm mới
         </button>
         <div className="aspect-h-4 aspect-w-3 hidden overflow-hidden rounded-lg lg:block">

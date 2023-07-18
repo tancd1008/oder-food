@@ -1,6 +1,8 @@
 import React from "react";
 import { getDatabase, onValue, ref } from "firebase/database";
 import { useEffect, useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 const ListProducts = () => {
   const [products, setProducts] = useState([]);
 
@@ -18,6 +20,31 @@ const ListProducts = () => {
     };
     getProducts();
   }, []);
+  const handleConfirm = () => {
+    toast.confirm('Bạn có chắc chắn muốn tiếp tục?', {
+      position: toast.POSITION.BOTTOM_CENTER,
+      autoClose: false,
+      closeOnClick: false,
+      draggable: false,
+      hideProgressBar: true,
+      closeButton: false,
+      onOpen: () => {
+        // Xử lý khi hộp thoại confirm mở
+        console.log('Hộp thoại confirm đã mở');
+      },
+      onClose: (event, reason) => {
+        // Xử lý khi hộp thoại confirm đóng
+        console.log('Hộp thoại confirm đã đóng');
+        if (reason === 'confirm') {
+          // Xử lý khi người dùng chọn OK
+          console.log('Người dùng chọn OK');
+        } else if (reason === 'cancel') {
+          // Xử lý khi người dùng chọn Cancel
+          console.log('Người dùng chọn Cancel');
+        }
+      },
+    });
+  };
   return (
     <div>
       <h1 className="text-center">Danh sách sản phẩm</h1>
@@ -41,7 +68,7 @@ const ListProducts = () => {
               <th>{product.desc}</th>
               <th className="text-success">Hoạt động</th>
               <th className="">
-                <button className="btn btn-danger">Xóa</button>
+                <button className="btn btn-danger" onClick={handleConfirm}>Xóa</button>
                 <button className="btn btn-warning ms-1">Sửa</button>
                 <button className="btn btn-secondary ms-1">Dừng</button>
               </th>
@@ -49,6 +76,7 @@ const ListProducts = () => {
           ))}
         </tbody>
       </table>
+      <ToastContainer />
     </div>
   );
 };
