@@ -1,14 +1,12 @@
 import React, { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { getDatabase, ref, push } from "firebase/database";
-import { getImageUrl, uploadImage } from "../../services/uploadImage";
-import { storage } from "../../firebase-config";
+import { deleteImage, uploadImage } from "../../services/uploadImage";
 const innititalState = {
   name: "",
   price: "",
   desc: "",
-  imgSrc:""
+  imgSrc: "",
 };
 const AddProduct = () => {
   const [state, setState] = useState(innititalState);
@@ -19,54 +17,52 @@ const AddProduct = () => {
 
   const imgTail = ["png", "jpg", "jpeg", "svg", "gif"];
 
-
   const checkImage = (imageName) => {
     var check = false;
     for (let i = 0; i < imgTail.length; i++) {
-      if (imageName.includes(imgTail[i])) {
+      if (imageName.toLowerCase().includes(imgTail[i])) {
         check = true;
         break;
       }
     }
     return check;
   };
+  const uploadFileImage = (imageFile) => {
+    var check = checkImage(state.imgSrc);
+    if (!check) {
+      toast.error(`File upload phải có đuôi là : ${imgTail.join(", ")} `);
+    } else {
+      try {
+        uploadImage(imageFile, setUrlImage);
+      } catch (error) {
+        toast.error(error);
+      }
+    }
+  };
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    if(!e.target.files){
+    if (!e.target.files) {
       setState({ ...state, [name]: value });
-    }else{
-      console.log(e.target.files)
-      const img = e.target.files[0].name;
-      setImage(e.target.files[0]);
-      setState({...state, imgSrc: img})
-
+    } else {
+      setState({...state, imgSrc: e.target.files[0].name})
+      if (urlImage) {
+        deleteImage(state.imgSrc)
+      }
+      uploadFileImage(e.target.files[0])
     }
     // console.log("2222")
   };
-  const uploadFileImage = () =>{
-
-    var check = checkImage(state.imgSrc);
-      if (!check) {
-        toast.error(`File upload phải có đuôi là : ${imgTail.join(", ")} `);
-      } else {
-        try {
-          uploadImage(image, setUrlImage);
-         
-        } catch (error) {
-          toast.error(error);
-        }
-      }
-  }
+  
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(state);
-    if (!name || !price  || !desc || !imgSrc) {
+    state.imgSrc = urlImage
+    if (!name || !price || !desc || !imgSrc) {
       toast.error("Mời bạn nhập!");
     } else {
-      
-      uploadFileImage();
-      
-      const db = getDatabase();
+      // uploadFileImage();
+
+      // const db = getDatabase();
       // push(ref(db, 'products/'), state)
       // .then(() => {
       //   toast.success("Thêm sản phẩm thành công")
@@ -75,9 +71,8 @@ const AddProduct = () => {
       //   toast.error("Lỗi")
       // });
     }
+    console.log("state",state)
   };
-
-
 
   return (
     <div >
@@ -150,12 +145,12 @@ const AddProduct = () => {
           Thêm mới
         </button>
         <div className="aspect-h-4 aspect-w-3 hidden overflow-hidden rounded-lg lg:block">
-            <img
-              src={urlImage}
-              alt="Two each of gray, white, and black shirts laying flat."
-              className="rounded-[1rem] object-cover object-center"
-            />
-          </div>
+          <img
+            src={urlImage}
+            alt="Two each of gray, white, and black shirts laying flat."
+            className="rounded-[1rem] object-cover object-center"
+          />
+        </div>
         <ToastContainer position="top-center" />
       </form>
     </div>
