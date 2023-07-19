@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 
 import 'react-toastify/dist/ReactToastify.css';
 import { deleteProduct } from "../../services/products";
+import { ToastContainer, toast } from "react-toastify";
 const ListProducts = () => {
   const [products, setProducts] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
@@ -21,9 +22,15 @@ const ListProducts = () => {
     };
     getProducts();
   }, []);
-  const handleDelete =  (id) => {
-    console.log("id", id)
-    deleteProduct(id)
+  const handleDelete =  (productId) => {
+    const confirm = window.confirm('Bạn có chắc chắn muốn xóa?');
+    if (confirm) {
+      // Xử lý xóa dữ liệu ở đây
+      deleteProduct(productId)
+      console.log('Đã xóa');
+      toast.success('Đã xóa thành công');
+    }
+    
   };
 
   return (
