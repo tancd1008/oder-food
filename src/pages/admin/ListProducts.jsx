@@ -2,8 +2,10 @@ import React from "react";
 import { getDatabase, onValue, ref } from "firebase/database";
 import { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
+import fireDb from "../../firebase-config";
 const ListProducts = () => {
   const [products, setProducts] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
@@ -22,9 +24,26 @@ const ListProducts = () => {
     };
     getProducts();
   }, []);
-  const handleDelete = async () => {
-  
+  const handleDelete = async (productId) => {
+    const confirm = window.confirm("Bạn có chắc chắn muốn xóa?");
+    if (confirm) {
+      const db = getDatabase(); // Kết nối
+      console.log(db)
+      const productRef = ref(db,"products/" + productId);
+
+      // Thực hiện xóa sản phẩm
+      productRef
+        .remove()
+        .then(() => {
+          toast.success("Sản phẩm đã được xóa");
+        })
+        .catch((error) => {
+          toast.error("Lỗi khi xóa sản phẩm:", error);
+        });
+      
+    }
   };
+
   return (
     <div>
       <h1 className="text-center">Danh sách sản phẩm</h1>
@@ -48,7 +67,12 @@ const ListProducts = () => {
               <th>{product.desc}</th>
               <th className="text-success">Hoạt động</th>
               <th className="">
-                <button className="btn btn-danger" onClick={() => setIsOpen(true)}>Xóa</button>
+                <button
+                  className="btn btn-danger"
+                  onClick={() => handleDelete(product.id)}
+                >
+                  Xóa
+                </button>
                 <button className="btn btn-warning ms-1">Sửa</button>
                 <button className="btn btn-secondary ms-1">Dừng</button>
               </th>
@@ -56,7 +80,7 @@ const ListProducts = () => {
           ))}
         </tbody>
       </table>
-     
+      <ToastContainer position="top-center" />
     </div>
   );
 };
