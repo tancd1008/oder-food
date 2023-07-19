@@ -1,11 +1,12 @@
 import { getDatabase, onValue, ref } from "firebase/database";
 import React, { useEffect, useState } from "react";
 
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
+import ConfirmBox from "../../components/ConfirmBox";
 import { deleteProduct } from "../../services/products";
 const ListProducts = () => {
   const [products, setProducts] = useState([]);
-  const [isOpen, setIsOpen] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
 
   useEffect(() => {
     const getProducts = async () => {
@@ -21,9 +22,14 @@ const ListProducts = () => {
     };
     getProducts();
   }, []);
-  const handleDelete =  (id) => {
-    console.log("id", id)
-    deleteProduct(id)
+  const handleDelete = (id) => {
+    console.log("id", id);
+    deleteProduct(id);
+    setShowConfirm(false);
+  };
+
+  const handleCancel = () => {
+    setShowConfirm(false);
   };
   return (
     <div>
@@ -48,7 +54,18 @@ const ListProducts = () => {
               <th>{product.desc}</th>
               <th className="text-success">Hoạt động</th>
               <th className="">
-                <button className="btn btn-danger" onClick={() => handleDelete(product.id)}>Xóa</button>
+                <button
+                  className="btn btn-danger"
+                  onClick={() => setShowConfirm(true)}
+                >
+                  Xóa
+                </button>
+                <ConfirmBox
+                  show={showConfirm}
+                  message="Bạn có chắc chắn muốn xóa bản ghi này không?"
+                  onConfirm={() => handleDelete(product.id)}
+                  onCancel={()=>handleCancel()}
+                />
                 <button className="btn btn-warning ms-1">Sửa</button>
                 <button className="btn btn-secondary ms-1">Dừng</button>
               </th>
@@ -56,7 +73,6 @@ const ListProducts = () => {
           ))}
         </tbody>
       </table>
-     
     </div>
   );
 };
