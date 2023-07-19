@@ -26,7 +26,7 @@ const ListProducts = () => {
     const confirm = window.confirm('Bạn có chắc chắn muốn xóa?');
     if (confirm) {
       // Xử lý xóa dữ liệu ở đây
-      deleteProduct(productId)
+      deleteProduct(productId);
       console.log('Đã xóa');
       toast.success('Đã xóa thành công');
     }
