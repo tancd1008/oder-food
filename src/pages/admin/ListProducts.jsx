@@ -1,11 +1,8 @@
-import React from "react";
 import { getDatabase, onValue, ref } from "firebase/database";
-import { useEffect, useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import React, { useEffect, useState } from "react";
 
-import "react-toastify/dist/ReactToastify.css";
-import fireDb from "../../firebase-config";
+import 'react-toastify/dist/ReactToastify.css';
+import { deleteProduct } from "../../services/products";
 const ListProducts = () => {
   const [products, setProducts] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
@@ -24,24 +21,9 @@ const ListProducts = () => {
     };
     getProducts();
   }, []);
-  const handleDelete = async (productId) => {
-    const confirm = window.confirm("Bạn có chắc chắn muốn xóa?");
-    if (confirm) {
-      const db = getDatabase(); // Kết nối
-      console.log(db)
-      const productRef = ref(db,"products/" + productId);
-
-      // Thực hiện xóa sản phẩm
-      productRef
-        .remove()
-        .then(() => {
-          toast.success("Sản phẩm đã được xóa");
-        })
-        .catch((error) => {
-          toast.error("Lỗi khi xóa sản phẩm:", error);
-        });
-      
-    }
+  const handleDelete =  (id) => {
+    console.log("id", id)
+    deleteProduct(id)
   };
 
   return (
@@ -67,12 +49,7 @@ const ListProducts = () => {
               <th>{product.desc}</th>
               <th className="text-success">Hoạt động</th>
               <th className="">
-                <button
-                  className="btn btn-danger"
-                  onClick={() => handleDelete(product.id)}
-                >
-                  Xóa
-                </button>
+                <button className="btn btn-danger" onClick={() => handleDelete(product.id)}>Xóa</button>
                 <button className="btn btn-warning ms-1">Sửa</button>
                 <button className="btn btn-secondary ms-1">Dừng</button>
               </th>
