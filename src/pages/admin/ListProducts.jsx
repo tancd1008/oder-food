@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ConfirmBox from "../../components/ConfirmBox";
-import { deleteProduct } from "../../services/products";
+import { deleteProduct, updateProduct } from "../../services/products";
 const ListProducts = () => {
   const [products, setProducts] = useState([]);
   const [showConfirm, setShowConfirm] = useState(false);
@@ -32,6 +32,18 @@ const ListProducts = () => {
   const handleCancel = () => {
     setShowConfirm(false);
   };
+  const handleUpdateStatus = (product) => {
+    var newProduct = {...product}
+    if(product.status === 0) {
+       newProduct = {...product, status: 1}
+      console.log("1")
+    }else{
+      console.log("0")
+       newProduct = {...product, status: 0}
+    }
+    updateProduct(product.id,newProduct)
+    console.log(newProduct)
+  }
 
   return (
     <div>
@@ -54,7 +66,7 @@ const ListProducts = () => {
               <th>{product.name}</th>
               <th>{product.price}</th>
               <th>{product.desc}</th>
-              <th className="text-success">Hoạt động</th>
+              <th >{product.status === 0 ? <p className="text-success">Hoạt động</p> : <p className="text-danger">Ngừng bán</p>}</th>
               <th className="">
                 <button
                   className="btn btn-danger"
@@ -69,7 +81,7 @@ const ListProducts = () => {
                   onCancel={()=>handleCancel()}
                 />
                 <button className="btn btn-warning ms-1">Sửa</button>
-                <button className="btn btn-secondary ms-1">Dừng</button>
+                <button className={`${product.status === 0 ? "btn btn-secondary ms-1" : "btn btn-success ms-1"}`}  onClick={() => handleUpdateStatus(product)}>{product.status === 0 ? "Dừng" : "Bán"}</button>
               </th>
             </tr>
           ))}
