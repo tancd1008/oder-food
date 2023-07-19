@@ -4,6 +4,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { deleteImage, uploadImage } from "../../services/uploadImage";
 import { getDatabase, onValue, push, ref, set } from "@firebase/database";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 const innititalState = {
   id:"",
   name: "",
@@ -21,6 +22,7 @@ const AddProduct = () => {
   const { id, name, price, desc, imgSrc, categoryId } = state;
 
   const imgTail = ["png", "jpg", "jpeg", "svg", "gif"];
+  const navigate = useNavigate();
   useEffect(() => {
     const getCategory = async () => {
       const db = getDatabase();
@@ -71,7 +73,6 @@ const AddProduct = () => {
       uploadFileImage(e.target.files[0]);
     }
     console.log(state)
-    // console.log("2222")
   };
 
   const handleSubmit = (e) => {
@@ -88,18 +89,14 @@ const AddProduct = () => {
       const newProductData = {...state, id: newProductId};
       set(newProductRef, newProductData).then(() => {
         toast.success("Thêm sản phẩm thành công")
+        setTimeout(() => {
+          navigate("/admin/list")
+        }, 3000)
       }).catch((error) => {
         toast.error("Lỗi");
       })
-      // push(ref(db, "products/"), state)
-      //   .then(() => {
-      //     toast.success("Thêm sản phẩm thành công");
-      //   })
-      //   .catch((error) => {
-      //     toast.error("Lỗi");
-      //   });
+   
     }
-    console.log("state", state);
   };
 
   return (

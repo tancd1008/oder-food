@@ -1,6 +1,7 @@
 import { getDatabase, onValue, ref } from "firebase/database";
 import React, { useEffect, useState } from "react";
 
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ConfirmBox from "../../components/ConfirmBox";
 import { deleteProduct } from "../../services/products";
@@ -31,6 +32,7 @@ const ListProducts = () => {
   const handleCancel = () => {
     setShowConfirm(false);
   };
+
   return (
     <div>
       <h1 className="text-center">Danh sách sản phẩm</h1>
@@ -73,6 +75,7 @@ const ListProducts = () => {
           ))}
         </tbody>
       </table>
+      <ToastContainer position="top-center" />
     </div>
   );
 };

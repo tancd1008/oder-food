@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { getDatabase, ref, push, set } from "firebase/database";
+import { useNavigate } from "react-router-dom";
 const innititalState = {
   name: "",
   desc: "",
@@ -9,7 +10,7 @@ const innititalState = {
 const AddCategory = () => {
   const [state, setState] = useState(innititalState);
   const { name, desc } = state;
-
+  const navigate = useNavigate()
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setState({ ...state, [name]: value });
@@ -26,17 +27,14 @@ const AddCategory = () => {
       const newCategoryData = {...state, id: newCategoryId};
       set(newCategoryRef,newCategoryData).then(() => {
         toast.success("Thêm danh mục thành công")
+        // setTimeout(() => {
+        //   navigate("/admin/")
+        // },3000)
       })
       .catch((error) => {
         toast.error("Lỗi")
       });
-      // push(ref(db, 'categories/'), state)
-      // .then(() => {
-      //   toast.success("Thêm danh mục thành công")
-      // })
-      // .catch((error) => {
-      //   toast.error("Lỗi")
-      // });
+     
     }
   };
 
