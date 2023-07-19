@@ -2,9 +2,10 @@ import React, { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { deleteImage, uploadImage } from "../../services/uploadImage";
-import { getDatabase, onValue, push, ref } from "@firebase/database";
+import { getDatabase, onValue, push, ref, set } from "@firebase/database";
 import { useEffect } from "react";
 const innititalState = {
+  id:"",
   name: "",
   price: "",
   desc: "",
@@ -17,7 +18,7 @@ const AddProduct = () => {
   const [categories, setCategories] = useState([])
   const [urlImage, setUrlImage] = useState("");
 
-  const { name, price, desc, imgSrc, categoryId } = state;
+  const { id, name, price, desc, imgSrc, categoryId } = state;
 
   const imgTail = ["png", "jpg", "jpeg", "svg", "gif"];
   useEffect(() => {
@@ -80,17 +81,23 @@ const AddProduct = () => {
     if (!name || !price || !desc || !imgSrc ) {
       toast.error("Mời bạn nhập!");
     } else {
-      
-      console.log("123", state);
-
       const db = getDatabase();
-      push(ref(db, "products/"), state)
-        .then(() => {
-          toast.success("Thêm sản phẩm thành công");
-        })
-        .catch((error) => {
-          toast.error("Lỗi");
-        });
+      const productRef = ref(db, "products/");
+      const newProductRef = push(productRef);
+      const newProductId = newProductRef.key;
+      const newProductData = {...state, id: newProductId};
+      set(newProductRef, newProductData).then(() => {
+        toast.success("Thêm sản phẩm thành công")
+      }).catch((error) => {
+        toast.error("Lỗi");
+      })
+      // push(ref(db, "products/"), state)
+      //   .then(() => {
+      //     toast.success("Thêm sản phẩm thành công");
+      //   })
+      //   .catch((error) => {
+      //     toast.error("Lỗi");
+      //   });
     }
     console.log("state", state);
   };
