@@ -1,8 +1,8 @@
-import { getDatabase, ref, remove } from "firebase/database"
+import 'firebase/database';
+import { getDatabase, ref, remove, set, update } from "firebase/database"
 
 const database = getDatabase()
 const collectionName = "products"
-const productRef = ref(database, "products")
 
 export const deleteProduct = (productId)=>{
   const productIdRef = ref(database, `${collectionName}/${productId}`)
@@ -11,4 +11,14 @@ export const deleteProduct = (productId)=>{
   }).catch((error)=>{
     console.log("err",error)
   })
+}
+export const updateProduct =(productId, product)=>{
+  const productIdRef = ref(database, `${collectionName}/${productId}`)
+  set(productIdRef, product, { merge: true })
+    .then(() => {
+      console.log("Cập nhật thành công");
+    })
+    .catch((error) => {
+      console.error("Lỗi khi cập nhật: ", error);
+    });
 }
