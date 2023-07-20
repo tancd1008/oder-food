@@ -1,5 +1,5 @@
 import "firebase/database";
-import { getDatabase, push, ref, remove, set } from "firebase/database";
+import { getDatabase, onValue, push, ref, remove, set } from "firebase/database";
 import { getDownloadURL, ref as storageRef, uploadBytesResumable } from "firebase/storage";
 import { storage } from "../firebase-config";
 
@@ -50,5 +50,28 @@ export const addProduct = async (product) => {
     console.log("Thêm sản phẩm thành công!");
   } catch (error) {
     console.error("Lỗi khi thêm sản phẩm:", error);
+  }
+};
+// export const getProductDetail = async(productId,setProduct) => {
+//   const productIdRef = ref(database, `${collectionName}/${productId}`);
+//   onValue(productIdRef,(snapshot) => {
+//     setProduct(snapshot.val())
+//   })
+// }
+export const getProductDetail = async (productId) => {
+  try {
+    const productIdRef = ref(database, `${collectionName}/${productId}`);
+
+    // Lắng nghe sự kiện value để nhận dữ liệu sản phẩm khi nó thay đổi
+    const snapshot = await new Promise((resolve) => {
+      onValue(productIdRef, resolve);
+    });
+
+    // snapshot.val() chứa dữ liệu của sản phẩm
+    const productData = snapshot.val();
+    return productData;
+  } catch (error) {
+    console.error('Lỗi khi lấy dữ liệu sản phẩm:', error);
+    return null;
   }
 };
