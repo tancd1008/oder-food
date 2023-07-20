@@ -12,9 +12,7 @@ const SidebarAdmin = () => {
   ];
 
   return (
-    <div className="vh-100 d-flex">
-
-    <div className="sidebar" style={{minHeight:"100vh"}}>
+    <div className="sidebar" style={{minHeight:"100%", position:"fixed",maxWidth:"100%"}}>
       <ul
         className="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion"
         id="accordionSidebar"
@@ -43,7 +41,6 @@ const SidebarAdmin = () => {
         
         {/* Sidebar Message */}
       </ul>
-    </div>
     </div>
   );
 };

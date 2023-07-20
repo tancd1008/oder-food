@@ -26,7 +26,7 @@ function App() {
   console.log(products);
 
   return (
-    <div className="App ">
+    <div className="App " style={{minHeight:"100vh"}}>
       <Routes>
         <Route path="/" element={<Layout />}>
           {publicRoutes.map((route, index) => {

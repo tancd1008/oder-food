@@ -72,24 +72,20 @@ const AdminLayout = () => {
     //   </div>
     //   </div>
     // </div>
-    
-      <div id="wrapper" className="vh-100">
-        <div style={{minHeight:"100vh", position:"fixed"}}>
+
+    <div id="wrapper" className="vh-100 flex-rơw" style={{minHeight:"100vh", gap:"4px"}}>
+      <div className="w-100" style={{ minHeight: "100%", maxWidth:"220px", width:"220px"}}>
         <SidebarAdmin />
-        </div>
-        <div className="d-flex flex-column w-100">
-          <div id="content">
-          <HeaderAdmin/>
-          <div className="container-fluid">
-            <Outlet/>
-          </div>
-
-          </div>
-
-        </div>
-        
       </div>
-    
+      <div className="d-flex flex-column" style={{maxWidth:"calc(100% - 220px)"}}>
+        <div id="content">
+          <HeaderAdmin />
+          <div className="container-fluid">
+            <Outlet />
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 
