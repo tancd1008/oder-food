@@ -1,19 +1,19 @@
-import React, { useState } from "react";
-import { Link, Outlet } from "react-router-dom";
+import React from "react";
+import { Outlet } from "react-router-dom";
+import HeaderAdmin from "../Header/HeaderAdmin";
 import SidebarAdmin from "../Sidebar/SidebarAdmin";
 import "./../../styles/sb-admin.css";
 import "./../../styles/sb-admin.min.css";
-import HeaderAdmin from "../Header/HeaderAdmin";
 
 const AdminLayout = () => {
-  const [open, setOpen] = useState(true);
-  const Menus = [
-    { title: "Dashboard", path: "" },
-    { title: "Danh sách sản phẩm", path: "list" },
-    { title: "Thêm mới sản phẩm", path: "products/add" },
-    { title: "Thêm mới danh mục", path: "category/add" },
-    { title: "Thống kê", path: "add" },
-  ];
+  // const [open, setOpen] = useState(true);
+  // const Menus = [
+  //   { title: "Dashboard", path: "" },
+  //   { title: "Danh sách sản phẩm", path: "list" },
+  //   { title: "Thêm mới sản phẩm", path: "products/add" },
+  //   { title: "Thêm mới danh mục", path: "category/add" },
+  //   { title: "Thống kê", path: "add" },
+  // ];
   return (
     // <div className="flex flex-col items-center justify-center min-h-screen ">
     //    <div className="flex w-full">
@@ -73,8 +73,8 @@ const AdminLayout = () => {
     //   </div>
     // </div>
     
-      <div id="wrapper">
-        <div>
+      <div id="wrapper" className="vh-100">
+        <div style={{minHeight:"100vh", position:"fixed"}}>
         <SidebarAdmin />
         </div>
         <div className="d-flex flex-column w-100">

@@ -53,6 +53,7 @@ const ListProducts = () => {
           <tr>
             <th scope="col">STT</th>
             <th scope="col">Sản phảm</th>
+            <th scope="col">Ảnh</th>
             <th scope="col">Giá</th>
             <th scope="col">Nội dung</th>
             <th scope="col">Status</th>
@@ -64,6 +65,9 @@ const ListProducts = () => {
             <tr key={index}>
               <th>{index + 1}</th>
               <th>{product.name}</th>
+              <th>
+                <img className="rounded mx-auto d-block w-25 h-25" src={product.imgSrc} alt=""/>
+              </th>
               <th>{product.price}</th>
               <th>{product.desc}</th>
               <th >{product.status === 0 ? <p className="text-success">Hoạt động</p> : <p className="text-danger">Ngừng bán</p>}</th>

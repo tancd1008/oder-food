@@ -23,7 +23,7 @@ const HeaderAdmin = () => {
   <ul className="navbar-nav ml-auto">
     {/* Nav Item - Search Dropdown (Visible Only XS) */}
     <li className="nav-item dropdown no-arrow d-sm-none">
-      <a className="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <a className="nav-link dropdown-toggle" href="/" id="searchDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <i className="fas fa-search fa-fw" />
       </a>
       {/* Dropdown - Messages */}
@@ -42,7 +42,7 @@ const HeaderAdmin = () => {
     </li>
     {/* Nav Item - Alerts */}
     <li className="nav-item dropdown no-arrow mx-1">
-      <a className="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <a className="nav-link dropdown-toggle" href="/" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path d="M20 17H22V19H2V17H4V10C4 5.58172 7.58172 2 12 2C16.4183 2 20 5.58172 20 10V17ZM18 17V10C18 6.68629 15.3137 4 12 4C8.68629 4 6 6.68629 6 10V17H18ZM9 21H15V23H9V21Z"></path></svg>       
         <span className="badge badge-danger badge-counter">3+</span>
       </a>
@@ -51,7 +51,7 @@ const HeaderAdmin = () => {
         <h6 className="dropdown-header">
           Alerts Center
         </h6>
-        <a className="dropdown-item d-flex align-items-center" href="#">
+        <a className="dropdown-item d-flex align-items-center" href="/">
           <div className="mr-3">
             <div className="icon-circle bg-primary">
               <i className="fas fa-file-alt text-white" />
@@ -62,7 +62,7 @@ const HeaderAdmin = () => {
             <span className="font-weight-bold">A new monthly report is ready to download!</span>
           </div>
         </a>
-        <a className="dropdown-item d-flex align-items-center" href="#">
+        <a className="dropdown-item d-flex align-items-center" href="/">
           <div className="mr-3">
             <div className="icon-circle bg-success">
               <i className="fas fa-donate text-white" />
@@ -73,7 +73,7 @@ const HeaderAdmin = () => {
             $290.29 has been deposited into your account!
           </div>
         </a>
-        <a className="dropdown-item d-flex align-items-center" href="#">
+        <a className="dropdown-item d-flex align-items-center" href="/">
           <div className="mr-3">
             <div className="icon-circle bg-warning">
               <i className="fas fa-exclamation-triangle text-white" />
@@ -84,12 +84,12 @@ const HeaderAdmin = () => {
             Spending Alert: We've noticed unusually high spending for your account.
           </div>
         </a>
-        <a className="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
+        <a className="dropdown-item text-center small text-gray-500" href="/">Show All Alerts</a>
       </div>
     </li>
     {/* Nav Item - Messages */}
     <li className="nav-item dropdown no-arrow mx-1">
-      <a className="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <a className="nav-link dropdown-toggle" href="/" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path d="M3 3H21C21.5523 3 22 3.44772 22 4V20C22 20.5523 21.5523 21 21 21H3C2.44772 21 2 20.5523 2 20V4C2 3.44772 2.44772 3 3 3ZM20 7.23792L12.0718 14.338L4 7.21594V19H20V7.23792ZM4.51146 5L12.0619 11.662L19.501 5H4.51146Z"></path></svg>
         {/* Counter - Messages */}
         <span className="badge badge-danger badge-counter">7</span>
@@ -99,7 +99,7 @@ const HeaderAdmin = () => {
         <h6 className="dropdown-header">
           Message Center
         </h6>
-        <a className="dropdown-item d-flex align-items-center" href="#">
+        <a className="dropdown-item d-flex align-items-center" href="/">
           <div className="dropdown-list-image mr-3">
             <img className="rounded-circle" src="img/undraw_profile_1.svg" alt="..." />
             <div className="status-indicator bg-success" />
@@ -110,7 +110,7 @@ const HeaderAdmin = () => {
             <div className="small text-gray-500">Emily Fowler · 58m</div>
           </div>
         </a>
-        <a className="dropdown-item d-flex align-items-center" href="#">
+        <a className="dropdown-item d-flex align-items-center" href="/">
           <div className="dropdown-list-image mr-3">
             <img className="rounded-circle" src="img/undraw_profile_2.svg" alt="..." />
             <div className="status-indicator" />
@@ -121,7 +121,7 @@ const HeaderAdmin = () => {
             <div className="small text-gray-500">Jae Chun · 1d</div>
           </div>
         </a>
-        <a className="dropdown-item d-flex align-items-center" href="#">
+        <a className="dropdown-item d-flex align-items-center" href="/">
           <div className="dropdown-list-image mr-3">
             <img className="rounded-circle" src="img/undraw_profile_3.svg" alt="..." />
             <div className="status-indicator bg-warning" />
@@ -132,7 +132,7 @@ const HeaderAdmin = () => {
             <div className="small text-gray-500">Morgan Alvarez · 2d</div>
           </div>
         </a>
-        <a className="dropdown-item d-flex align-items-center" href="#">
+        <a className="dropdown-item d-flex align-items-center" href="/">
           <div className="dropdown-list-image mr-3">
             <img className="rounded-circle" src="https://source.unsplash.com/Mv9hjnEUHR4/60x60" alt="..." />
             <div className="status-indicator bg-success" />
@@ -143,32 +143,32 @@ const HeaderAdmin = () => {
             <div className="small text-gray-500">Chicken the Dog · 2w</div>
           </div>
         </a>
-        <a className="dropdown-item text-center small text-gray-500" href="#">Read More Messages</a>
+        <a className="dropdown-item text-center small text-gray-500" href="/">Read More Messages</a>
       </div>
     </li>
     <div className="topbar-divider d-none d-sm-block" />
     {/* Nav Item - User Information */}
     <li className="nav-item dropdown no-arrow">
-      <a className="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <a className="nav-link dropdown-toggle" href="/" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <span className="mr-2 d-none d-lg-inline text-gray-600 small">Douglas McGee</span>
-        <img className="img-profile rounded-circle" src="img/undraw_profile.svg" />
+        <img className="img-profile rounded-circle" src="img/undraw_profile.svg" alt='' />
       </a>
       {/* Dropdown - User Information */}
       <div className="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-        <a className="dropdown-item" href="#">
+        <a className="dropdown-item" href="/">
           <i className="fas fa-user fa-sm fa-fw mr-2 text-gray-400" />
           Profile
         </a>
-        <a className="dropdown-item" href="#">
+        <a className="dropdown-item" href="/">
           <i className="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400" />
           Settings
         </a>
-        <a className="dropdown-item" href="#">
+        <a className="dropdown-item" href="/">
           <i className="fas fa-list fa-sm fa-fw mr-2 text-gray-400" />
           Activity Log
         </a>
         <div className="dropdown-divider" />
-        <a className="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+        <a className="dropdown-item" href="/" data-toggle="modal" data-target="#logoutModal">
           <i className="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400" />
           Logout
         </a>

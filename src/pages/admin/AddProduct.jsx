@@ -1,25 +1,25 @@
-import React, { useState } from "react";
+import { getDatabase, onValue, ref } from "@firebase/database";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { deleteImage, uploadImage } from "../../services/uploadImage";
-import { getDatabase, onValue, push, ref, set } from "@firebase/database";
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { addProduct } from "../../services/products";
+import { uploadImage } from "../../services/uploadImage";
 const innititalState = {
-  id:"",
+  id: "",
   name: "",
   price: "",
   desc: "",
   imgSrc: "",
-  categoryId:"",
-  status: 0
+  categoryId: "",
+  status: 0,
 };
 const AddProduct = () => {
   const [state, setState] = useState(innititalState);
-  const [categories, setCategories] = useState([])
+  const [categories, setCategories] = useState([]);
   const [urlImage, setUrlImage] = useState("");
 
-  const { id, name, price, desc, imgSrc, categoryId } = state;
+  const { name, price, desc, imgSrc } = state;
 
   const imgTail = ["png", "jpg", "jpeg", "svg", "gif"];
   const navigate = useNavigate();
@@ -37,7 +37,6 @@ const AddProduct = () => {
     };
     getCategory();
   }, []);
-  console.log(categories)
   const checkImage = (imageName) => {
     console.log(typeof imageName);
     var check = false;
@@ -66,36 +65,24 @@ const AddProduct = () => {
     if (!e.target.files) {
       setState({ ...state, [name]: value });
     } else {
-      setState({ ...state, imgSrc: e.target.files[0].name });
-      if (urlImage) {
-        deleteImage(state.imgSrc);
-      }
-      uploadFileImage(e.target.files[0]);
+      setState({ ...state, imgSrc: e.target.files[0] });
     }
-    console.log(state)
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(state);
-    state.imgSrc = urlImage;
-    if (!name || !price || !desc || !imgSrc ) {
+    if (!name || !price || !desc || !imgSrc) {
       toast.error("Mời bạn nhập!");
     } else {
-      const db = getDatabase();
-      const productRef = ref(db, "products/");
-      const newProductRef = push(productRef);
-      const newProductId = newProductRef.key;
-      const newProductData = {...state, id: newProductId};
-      set(newProductRef, newProductData).then(() => {
-        toast.success("Thêm sản phẩm thành công")
+      try {
+        addProduct(state);
+        toast.success("Thêm sản phẩm thành công");
         setTimeout(() => {
-          navigate("/admin/list")
-        }, 3000)
-      }).catch((error) => {
+          navigate("/admin/list");
+        }, 3000);
+      } catch (error) {
         toast.error("Lỗi");
-      })
-   
+      }
     }
   };
 
@@ -121,9 +108,16 @@ const AddProduct = () => {
           <label htmlFor="password" className="form-label">
             Danh mục
           </label>
-          <select id="selectOption" className="form-control" name="categoryId" onChange={handleInputChange}>
-            {categories.map((category,index) => (
-              <option value={category.id} key={index}>{category.name}</option>
+          <select
+            id="selectOption"
+            className="form-control"
+            name="categoryId"
+            onChange={handleInputChange}
+          >
+            {categories.map((category, index) => (
+              <option value={category.id} key={index}>
+                {category.name}
+              </option>
             ))}
           </select>
         </div>

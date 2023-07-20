@@ -1,9 +1,8 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 
 const SidebarAdmin = () => {
-  const [open, setOpen] = useState(true);
+  // const [open, setOpen] = useState(true);
   const Menus = [
     { title: "Dashboard", path: "" },
     { title: "Danh sách sản phẩm", path: "list" },
@@ -13,10 +12,13 @@ const SidebarAdmin = () => {
   ];
 
   return (
-    <div className="sidebar">
+    <div className="vh-100 d-flex">
+
+    <div className="sidebar" style={{minHeight:"100vh"}}>
       <ul
         className="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion"
         id="accordionSidebar"
+        style={{minHeight:"100vh"}}
       >
         {/* Sidebar - Brand */}
         <a
@@ -41,6 +43,7 @@ const SidebarAdmin = () => {
         
         {/* Sidebar Message */}
       </ul>
+    </div>
     </div>
   );
 };
