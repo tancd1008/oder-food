@@ -5,6 +5,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ConfirmBox from "../../components/ConfirmBox";
 import { deleteProduct, updateProduct } from "../../services/products";
+import { Link } from "react-router-dom";
 const ListProducts = () => {
   const [products, setProducts] = useState([]);
   const [showConfirm, setShowConfirm] = useState(false);
@@ -84,7 +85,9 @@ const ListProducts = () => {
                   onConfirm={() => handleDelete(product.id)}
                   onCancel={()=>handleCancel()}
                 />
+                <Link to={`/admin/products/edit/${product.id}`}>
                 <button className="btn btn-warning ms-1">Sửa</button>
+                </Link>
                 <button className={`${product.status === 0 ? "btn btn-secondary ms-1" : "btn btn-success ms-1"}`}  onClick={() => handleUpdateStatus(product)}>{product.status === 0 ? "Dừng" : "Bán"}</button>
               </th>
             </tr>
