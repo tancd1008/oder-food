@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getDatabase } from "firebase/database";
+import { getFirestore } from 'firebase/firestore';
 import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
@@ -12,6 +12,7 @@ const firebaseConfig = {
   measurementId: "G-2CPBWMXBR1",
 };
 const app = initializeApp(firebaseConfig);
-const fireDb = getDatabase(app);
+// const fireDb = getDatabase(app);
 export const storage = getStorage(app);
-export default fireDb;
+export const database = getFirestore(app)
+// export default fireDb;

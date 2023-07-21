@@ -4,11 +4,30 @@ import { Route, Routes } from "react-router-dom";
 import AdminLayout from "./components/Layout/AdminLayout";
 import Layout from "./components/Layout/Layout";
 import { privateRoutes, publicRoutes } from "./routes/Routers";
+import { createRestaurant } from "./services/restaurents";
+import { getUserIdByEmail } from "./services/users";
 
 function App() {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
+    // createUser({
+    //   email:"orderfood333@gmail.com",
+    //   role:"ADMIN",
+    //   imageUrl:"",
+    //   isActive:true,
+    //   createAt:"",
+    //   idRestaurant:"",
+    //   refRestaurant:"",
+    //   name:"ADMIN"
+    // })
+    getUserIdByEmail("orderfood333@gmail.com")
+    createRestaurant({
+      address:"test",
+      name:"nha hang 1",
+      createAt:"",
+      userId:""
+    },"orderfood333@gmail.com")
     const getProducts = async () => {
       const db = getDatabase();
       const productRef = ref(db, "products/");
