@@ -6,6 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 const innititalState = {
   name: "",
   desc: "",
+  is_active: ""
 };
 const AddCategory = () => {
   const [state, setState] = useState(innititalState);
@@ -25,15 +26,7 @@ const AddCategory = () => {
       const newCategoryRef = push(categoriesRef);
       const newCategoryId = newCategoryRef.key;
       const newCategoryData = {...state, id: newCategoryId};
-      set(newCategoryRef,newCategoryData).then(() => {
-        toast.success("Thêm danh mục thành công")
-        setTimeout(() => {
-          navigate("/admin")
-        },3000)
-      })
-      .catch((error) => {
-        toast.error("Lỗi")
-      });
+      console.log(newCategoryData)
      
     }
   };

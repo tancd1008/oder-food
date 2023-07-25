@@ -11,7 +11,7 @@ const innititalState = {
   desc: "",
   imgSrc: "",
   categoryId: "",
-  status: 0,
+  is_active: 0,
 };
 const AddProduct = () => {
   const [state, setState] = useState(innititalState);
@@ -20,7 +20,6 @@ const AddProduct = () => {
   const { name, price, desc, imgSrc } = state;
 
   
-  const navigate = useNavigate();
   useEffect(() => {
     const getCategory = async () => {
       const db = getDatabase();
@@ -47,19 +46,8 @@ const AddProduct = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!name || !price || !desc || !imgSrc) {
-      toast.error("Mời bạn nhập!");
-    } else {
-      try {
-        addProduct(state);
-        toast.success("Thêm sản phẩm thành công");
-        setTimeout(() => {
-          navigate("/admin/list");
-        }, 3000);
-      } catch (error) {
-        toast.error("Lỗi");
-      }
-    }
+    const newProductData = {...state}
+   console.log(newProductData)
   };
 
   return (

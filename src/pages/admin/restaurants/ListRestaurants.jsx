@@ -50,7 +50,7 @@ const ListRestaurants = () => {
     <div>
         <div className="d-sm-flex align-items-center justify-content-between mb-4">
       <h1 className="text-center">Danh sách nhà hàng</h1>
-      <a href="/admin/restaurant/add" className="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i className="fas fa-download fa-sm text-white-50" /> Thêm nhà hàng</a>
+      <Link to="/admin/restaurant/add" className="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i className="fas fa-download fa-sm text-white-50" /> Thêm nhà hàng</Link>
         </div>
       <table className="table table-hover text-nowrap">
         <thead>

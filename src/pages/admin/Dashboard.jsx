@@ -16,7 +16,6 @@ const Dashboard = () => {
         <option value="">Nhà hàng 1</option>
       </select>
     </div>
-    <a href="/admin/restaurant/add" className="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i className="fas fa-download fa-sm text-white-50" /> Thêm nhà hàng</a>
   </div>
   <div className="row">
     {/* Earnings (Monthly) Card Example */}

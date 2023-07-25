@@ -1,7 +1,19 @@
-import React from "react";
-
+import React, { useState } from "react";
+const innititalState = {
+  name: "",
+  address:""
+};
 const AddRestaurant = () => {
-  const handleSubmit = () => {};
+  const [state, setState] = useState(innititalState);
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setState({ ...state, [name]: value });
+  };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(state);
+  };
+
   return (
     <div>
       <form onSubmit={handleSubmit}>
@@ -16,45 +28,49 @@ const AddRestaurant = () => {
             name="nameRestaurant"
             className="form-control"
             placeholder="Nhà Hàng"
+            onChange={handleInputChange}
           />
         </div>
         <div className="mb-3">
-          <label htmlFor="password" className="form-label">
+          <label htmlFor="address" className="form-label">
             Địa chỉ
           </label>
           <input
             type="text"
-            id="pdescrice"
-            name="desc"
+            id="address"
+            name="address"
             className="form-control"
             placeholder="Địa chỉ"
+            onChange={handleInputChange}
           />
         </div>
         <div className="mb-3">
-          <label htmlFor="password" className="form-label">
+          <label htmlFor="email" className="form-label">
             Email chủ nhà hàng
           </label>
           <input
             type="text"
-            id="pdescrice"
-            name="desc"
+            id="email"
+            name="email"
             className="form-control"
             placeholder="Email"
+            onChange={handleInputChange}
           />
         </div>{" "}
         <div className="mb-3">
-          <label htmlFor="password" className="form-label">
+          <label htmlFor="phone" className="form-label">
             Số điện thoại
           </label>
           <input
             type="text"
-            id="pdescrice"
-            name="desc"
+            id="phone"
+            name="phone"
             className="form-control"
             placeholder="Số điện thoại"
+            onChange={handleInputChange}
+
           />
         </div>{" "}
-        
         <button type="submit" className="btn btn-primary">
           Thêm mới
         </button>
