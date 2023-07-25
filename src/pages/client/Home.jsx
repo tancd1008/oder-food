@@ -1,28 +1,28 @@
 import React, { useState, useEffect } from "react";
 
-import Helmet from "../components/Helmet/Helmet.js";
+import Helmet from "../../components/Helmet/Helmet.js";
 import { Container, Row, Col } from "reactstrap";
 
 // import heroImg from "../assets/images/hero.png";
-import "../styles/hero-section.css";
+import "../../styles/hero-section.css";
 
 // import { Link } from "react-router-dom";
 
 // import Category from "../components/UI/category/Category.jsx";
 
-import "../styles/home.css";
+import "../../styles/home.css";
 
 // import featureImg01 from "../assets/images/service-01.png";
 // import featureImg02 from "../assets/images/service-02.png";
 // import featureImg03 from "../assets/images/service-03.png";
 
-import products from "../assets/fake-data/products.js";
+import products from "../../assets/fake-data/products.js";
 
-import foodCategoryImg01 from "../assets/images/hamburger.png";
-import foodCategoryImg02 from "../assets/images/pizza.png";
-import foodCategoryImg03 from "../assets/images/bread.png";
+import foodCategoryImg01 from "../../assets/images/hamburger.png";
+import foodCategoryImg02 from "../../assets/images/pizza.png";
+import foodCategoryImg03 from "../../assets/images/bread.png";
 
-import ProductCard from "../components/UI/product-card/ProductCard.jsx";
+import ProductCard from "../../components/UI/product-card/ProductCard.jsx";
 
 // import whyImg from "../assets/images/location.png";
 

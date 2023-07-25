@@ -3,8 +3,8 @@ import React, { useEffect, useState } from "react";
 
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import ConfirmBox from "../../components/ConfirmBox";
-import { deleteProduct, updateProduct } from "../../services/products";
+import ConfirmBox from "../../../components/ConfirmBox";
+import { deleteProduct, updateProduct } from "../../../services/products";
 import { Link } from "react-router-dom";
 const ListProducts = () => {
   const [products, setProducts] = useState([]);
@@ -48,7 +48,25 @@ const ListProducts = () => {
 
   return (
     <div>
-      <h1 className="text-center">Danh sách sản phẩm</h1>
+      <div>
+        <div className="row">
+
+      <h1 className="text-center">Danh sách sản phẩm</h1> 
+        </div>
+        <div className="d-sm-flex align-items-center justify-content-between mb-4">
+          <div className="">
+          <select name="" id="">
+            <option value="">Nhà hàng 1</option>
+          </select>
+          </div>
+          <div className="">
+
+          <Link to="/admin/product/add" className="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i className="fas fa-download fa-sm text-white-50" /> Thêm sản phẩm</Link>
+          </div>
+          <div></div>
+        </div>
+
+      </div>
       <table className="table table-hover text-nowrap">
         <thead>
           <tr>

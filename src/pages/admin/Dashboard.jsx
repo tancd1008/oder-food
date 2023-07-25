@@ -7,10 +7,17 @@ const Dashboard = () => {
   <div className="container-fluid">
   {/* Page Heading */}
   <div className="d-sm-flex align-items-center justify-content-between mb-4">
+    <div>
+
     <h1 className="h3 mb-0 text-gray-800">Trang chủ</h1>
-    <a href="/" className="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i className="fas fa-download fa-sm text-white-50" /> Generate Report</a>
+    </div>
+    <div>
+      <select name="" id="">
+        <option value="">Nhà hàng 1</option>
+      </select>
+    </div>
+    <a href="/admin/restaurant/add" className="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i className="fas fa-download fa-sm text-white-50" /> Thêm nhà hàng</a>
   </div>
-  {/* Content Row */}
   <div className="row">
     {/* Earnings (Monthly) Card Example */}
     <div className="col-xl-3 col-md-6 mb-4">
@@ -84,9 +91,7 @@ const Dashboard = () => {
       </div>
     </div>
   </div>
-  {/* Content Row */}
   <div className="row">
-    {/* Area Chart */}
     <div className="col-xl-8 col-lg-7">
       <div className="card shadow mb-4">
         {/* Card Header - Dropdown */}

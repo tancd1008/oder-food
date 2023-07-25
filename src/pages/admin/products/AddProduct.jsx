@@ -1,24 +1,25 @@
-import React, { useEffect, useState } from "react";
 import { getDatabase, onValue, ref } from "@firebase/database";
-import { useNavigate, useParams } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import {  getProductDetail, updateProduct } from "../../services/products";
-
-const EditProduct = () => {
-  const [state, setState] = useState({
-    id: "",
-    name: "",
-    price: "",
-    desc: "",
-    imgSrc: "",
-    categoryId: "",
-    status: 0,
-  });
+import { addProduct } from "../../../services/products";
+const innititalState = {
+  id: "",
+  name: "",
+  price: "",
+  desc: "",
+  imgSrc: "",
+  categoryId: "",
+  status: 0,
+};
+const AddProduct = () => {
+  const [state, setState] = useState(innititalState);
   const [categories, setCategories] = useState([]);
 
-  // const navigate = useNavigate();
-  const {id} = useParams();
+  const { name, price, desc, imgSrc } = state;
+
+  
   const navigate = useNavigate();
   useEffect(() => {
     const getCategory = async () => {
@@ -31,21 +32,9 @@ const EditProduct = () => {
         });
         setCategories(newData);
       });
-    }; const getProduct = async () => {
-      const productData = await getProductDetail(id);
-      if(productData) {
-        setState(productData); // Cập nhật dữ liệu vào state sau khi lấy được sản phẩm
-      }
-     
     };
-    getProduct();
-   
-    
     getCategory();
-   
-  }, [id]);
- 
- 
+  }, []);
   
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -58,20 +47,24 @@ const EditProduct = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-   
-   try {
-    updateProduct(id,state)
-    toast.success("Cập nhật sản phẩm thành công");
-    setTimeout(() => {
-      navigate("/admin/list");
-    }, 3000);
-  } catch (error) {
-    toast.error("Lỗi");
-  }
+    if (!name || !price || !desc || !imgSrc) {
+      toast.error("Mời bạn nhập!");
+    } else {
+      try {
+        addProduct(state);
+        toast.success("Thêm sản phẩm thành công");
+        setTimeout(() => {
+          navigate("/admin/list");
+        }, 3000);
+      } catch (error) {
+        toast.error("Lỗi");
+      }
+    }
   };
+
   return (
     <div>
-       <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit}>
         <h1 className="text-center">Thêm mới món ăn</h1>
         <div className="mb-3">
           <label htmlFor="email" className="form-label">
@@ -83,7 +76,7 @@ const EditProduct = () => {
             name="name"
             className="form-control"
             placeholder="Sản phẩm...."
-            value={state.name}
+            value={name}
             onChange={handleInputChange}
           />
         </div>
@@ -114,7 +107,7 @@ const EditProduct = () => {
             name="price"
             placeholder="00000$"
             className="form-control"
-            value={state.price}
+            value={price}
             onChange={handleInputChange}
           />
         </div>
@@ -128,7 +121,7 @@ const EditProduct = () => {
             name="desc"
             placeholder="Nội dung...."
             className="form-control"
-            value={state.desc}
+            value={desc}
             onChange={handleInputChange}
           />
         </div>
@@ -144,13 +137,19 @@ const EditProduct = () => {
           </label>
         </div>
         <button type="submit" className="btn btn-primary">
-          Cập nhật
+          Thêm mới
         </button>
-       
+        <div className="aspect-h-4 aspect-w-3 hidden overflow-hidden rounded-lg lg:block">
+          {/* <img
+            src={urlImage}
+            alt="Two each of gray, white, and black shirts laying flat."
+            className="rounded-[1rem] object-cover object-center"
+          /> */}
+        </div>
         <ToastContainer position="top-center" />
       </form>
     </div>
-  )
-}
+  );
+};
 
-export default EditProduct
+export default AddProduct;

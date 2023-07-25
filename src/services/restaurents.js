@@ -16,6 +16,7 @@ export const createRestaurant = async (restaurant, email) => {
     const userId = await getUserIdByEmail(email);
     restaurant.userId = userId;
     restaurant.createdAt = serverTimestamp();
+    // const newRestaurantId = restaurant.id;
 
     // Kiểm tra xem userId đã tồn tại trong tài liệu "restaurants" hay chưa
     const restaurantRef = doc(collection(database, COLLECTION_NAME), userId);
@@ -26,7 +27,7 @@ export const createRestaurant = async (restaurant, email) => {
       // Nếu userId chưa tồn tại, thêm tài liệu vào bộ sưu tập "restaurants" và chỉ định ID của tài liệu mới
       batch.set(restaurantRef, restaurant);
 
-      const collections = ["category", "detail", "food", "option"];
+      const collections = ["category", "bill", "food", "option", "voucher", "shift"];
       collections.forEach((collectionName) => {
         // Thêm tài liệu vào các bộ sưu tập con và chỉ định ID của tài liệu con
         const subcollectionRef = doc(
@@ -49,3 +50,6 @@ export const createRestaurant = async (restaurant, email) => {
     console.error("Error adding document to 'restaurants' collection: ", error);
   }
 };
+export const getRestaurant = () =>{
+
+}

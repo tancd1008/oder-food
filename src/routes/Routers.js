@@ -1,18 +1,21 @@
 
 import UploadImage from "../components/UploadImage";
-import AllFoods from "../pages/AllFoods";
-import Cart from "../pages/Cart";
-import Checkout from "../pages/Checkout";
-import FoodDetails from "../pages/FoodDetails";
-import Home from "../pages/Home";
-import Login from "../pages/Login";
-import NotFoundPage from "../pages/NotFoundPage";
-import Register from "../pages/Register";
-import AddCategory from "../pages/admin/AddCategory";
-import AddProduct from "../pages/admin/AddProduct";
+import AllFoods from "../pages/client/AllFoods";
+import Cart from "../pages/client/Cart";
+import Checkout from "../pages/client/Checkout";
+import FoodDetails from "../pages/client/FoodDetails";
+import Home from "../pages/client/Home";
+import Login from "../pages/client/Login";
+import NotFoundPage from "../pages/client/NotFoundPage";
+import Register from "../pages/client/Register";
+import AddCategory from "../pages/admin/categories/AddCategory";
+import AddProduct from "../pages/admin/products/AddProduct";
 import Dashboard from "../pages/admin/Dashboard";
-import EditProduct from "../pages/admin/EditProduct";
-import ListProducts from "../pages/admin/ListProducts";
+import EditProduct from "../pages/admin/products/EditProduct";
+import ListProducts from "../pages/admin/products/ListProducts";
+import AddRestaurant from "../pages/admin/restaurants/AddRestaurant";
+import ListRestaurants from "../pages/admin/restaurants/ListRestaurants";
+import ListCategories from "../pages/admin/categories/ListCategories";
 
 
 
@@ -41,11 +44,11 @@ const privateRoutes = [
     component: NotFoundPage,
   },
   {
-    path: "list",
+    path: "product/list",
     component: ListProducts,
   },
   {
-    path: "products/add",
+    path: "product/add",
     component: AddProduct,
   },
   {
@@ -53,8 +56,20 @@ const privateRoutes = [
     component: EditProduct,
   },
   {
+    path: "category/list",
+    component: ListCategories,
+  },
+  {
     path: "category/add",
     component: AddCategory,
+  },
+  {
+    path: "restaurant/add",
+    component: AddRestaurant,
+  },
+  {
+    path: "restaurant/list",
+    component: ListRestaurants,
   },
 ];
 const authenticationRoutes = [

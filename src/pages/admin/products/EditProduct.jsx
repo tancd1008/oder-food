@@ -1,27 +1,24 @@
-import { getDatabase, onValue, ref } from "@firebase/database";
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { getDatabase, onValue, ref } from "@firebase/database";
+import { useNavigate, useParams } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { addProduct } from "../../services/products";
-import { uploadImage } from "../../services/uploadImage";
-const innititalState = {
-  id: "",
-  name: "",
-  price: "",
-  desc: "",
-  imgSrc: "",
-  categoryId: "",
-  status: 0,
-};
-const AddProduct = () => {
-  const [state, setState] = useState(innititalState);
+import {  getProductDetail, updateProduct } from "../../../services/products";
+
+const EditProduct = () => {
+  const [state, setState] = useState({
+    id: "",
+    name: "",
+    price: "",
+    desc: "",
+    imgSrc: "",
+    categoryId: "",
+    status: 0,
+  });
   const [categories, setCategories] = useState([]);
-  const [urlImage, setUrlImage] = useState("");
 
-  const { name, price, desc, imgSrc } = state;
-
-  const imgTail = ["png", "jpg", "jpeg", "svg", "gif"];
+  // const navigate = useNavigate();
+  const {id} = useParams();
   const navigate = useNavigate();
   useEffect(() => {
     const getCategory = async () => {
@@ -34,32 +31,22 @@ const AddProduct = () => {
         });
         setCategories(newData);
       });
+    }; const getProduct = async () => {
+      const productData = await getProductDetail(id);
+      if(productData) {
+        setState(productData); // Cập nhật dữ liệu vào state sau khi lấy được sản phẩm
+      }
+     
     };
+    getProduct();
+   
+    
     getCategory();
-  }, []);
-  const checkImage = (imageName) => {
-    console.log(typeof imageName);
-    var check = false;
-    for (let i = 0; i < imgTail.length; i++) {
-      if (imageName.includes(imgTail[i])) {
-        check = true;
-        break;
-      }
-    }
-    return check;
-  };
-  const uploadFileImage = (imageFile) => {
-    var check = checkImage(imageFile.name);
-    if (!check) {
-      toast.error(`File upload phải có đuôi là : ${imgTail.join(", ")} `);
-    } else {
-      try {
-        uploadImage(imageFile, setUrlImage);
-      } catch (error) {
-        toast.error(error);
-      }
-    }
-  };
+   
+  }, [id]);
+ 
+ 
+  
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     if (!e.target.files) {
@@ -71,24 +58,20 @@ const AddProduct = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!name || !price || !desc || !imgSrc) {
-      toast.error("Mời bạn nhập!");
-    } else {
-      try {
-        addProduct(state);
-        toast.success("Thêm sản phẩm thành công");
-        setTimeout(() => {
-          navigate("/admin/list");
-        }, 3000);
-      } catch (error) {
-        toast.error("Lỗi");
-      }
-    }
+   
+   try {
+    updateProduct(id,state)
+    toast.success("Cập nhật sản phẩm thành công");
+    setTimeout(() => {
+      navigate("/admin/list");
+    }, 3000);
+  } catch (error) {
+    toast.error("Lỗi");
+  }
   };
-
   return (
     <div>
-      <form onSubmit={handleSubmit}>
+       <form onSubmit={handleSubmit}>
         <h1 className="text-center">Thêm mới món ăn</h1>
         <div className="mb-3">
           <label htmlFor="email" className="form-label">
@@ -100,7 +83,7 @@ const AddProduct = () => {
             name="name"
             className="form-control"
             placeholder="Sản phẩm...."
-            value={name}
+            value={state.name}
             onChange={handleInputChange}
           />
         </div>
@@ -131,7 +114,7 @@ const AddProduct = () => {
             name="price"
             placeholder="00000$"
             className="form-control"
-            value={price}
+            value={state.price}
             onChange={handleInputChange}
           />
         </div>
@@ -145,7 +128,7 @@ const AddProduct = () => {
             name="desc"
             placeholder="Nội dung...."
             className="form-control"
-            value={desc}
+            value={state.desc}
             onChange={handleInputChange}
           />
         </div>
@@ -161,19 +144,13 @@ const AddProduct = () => {
           </label>
         </div>
         <button type="submit" className="btn btn-primary">
-          Thêm mới
+          Cập nhật
         </button>
-        <div className="aspect-h-4 aspect-w-3 hidden overflow-hidden rounded-lg lg:block">
-          <img
-            src={urlImage}
-            alt="Two each of gray, white, and black shirts laying flat."
-            className="rounded-[1rem] object-cover object-center"
-          />
-        </div>
+       
         <ToastContainer position="top-center" />
       </form>
     </div>
-  );
-};
+  )
+}
 
-export default AddProduct;
+export default EditProduct

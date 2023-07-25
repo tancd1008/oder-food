@@ -33,7 +33,7 @@ export const addProduct = async (product) => {
     const newProductRef = push(productRef);
     const newProductId = newProductRef.key;
     product.id = newProductId;
-
+    
     // Tải lên ảnh đại diện vào Firebase Storage
     const imageStorageRef = storageRef(storage, `images/${product.imgSrc.name}`);
     const uploadTask = uploadBytesResumable(imageStorageRef, product.imgSrc);

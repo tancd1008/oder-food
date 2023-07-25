@@ -5,29 +5,26 @@ import AdminLayout from "./components/Layout/AdminLayout";
 import Layout from "./components/Layout/Layout";
 import { privateRoutes, publicRoutes } from "./routes/Routers";
 import { createRestaurant } from "./services/restaurents";
-import { getUserIdByEmail } from "./services/users";
+import { createUser, getUserIdByEmail } from "./services/users";
 
 function App() {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
     // createUser({
-    //   email:"orderfood333@gmail.com",
-    //   role:"ADMIN",
+    //   email:"user1@gmail.com",
+    //   role: 0,
     //   imageUrl:"",
     //   isActive:true,
-    //   createAt:"",
     //   idRestaurant:"",
     //   refRestaurant:"",
-    //   name:"ADMIN"
+    //   name:"user1"
     // })
-    getUserIdByEmail("orderfood333@gmail.com")
+    getUserIdByEmail("user1@gmail.com")
     createRestaurant({
-      address:"test",
+      address:"akihabara",
       name:"nha hang 1",
-      createAt:"",
-      userId:""
-    },"orderfood333@gmail.com")
+    },"user1@gmail.com")
     const getProducts = async () => {
       const db = getDatabase();
       const productRef = ref(db, "products/");
