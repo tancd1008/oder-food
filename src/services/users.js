@@ -86,3 +86,22 @@ export const getUserIdByEmail = async (email) => {
     console.error("Error getting user data: ", error);
   }
 };
+export const getAllUser= async () => {
+  try {
+    const usersRef = collection(database, COLLECTION_NAME);
+    const querySnapshot = await getDocs(usersRef);
+
+    const users = [];
+    querySnapshot.forEach((doc) => {
+      users.push({ id: doc.id, ...doc.data() });
+    });
+
+    return users;
+  } catch (error) {
+    console.error(
+      "Error getting documents from 'users' collection: ",
+      error
+    );
+    return [];
+  }
+};

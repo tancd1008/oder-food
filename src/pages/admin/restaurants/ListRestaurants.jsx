@@ -1,28 +1,20 @@
-import { getDatabase, onValue, ref } from "firebase/database";
 import React, { useEffect, useState } from "react";
 
+import { Link } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ConfirmBox from "../../../components/ConfirmBox";
-import { deleteProduct, updateProduct } from "../../../services/products";
-import { Link } from "react-router-dom";
+import { getAllRestaurants } from "../../../services/restaurents";
 const ListRestaurants = () => {
   const [products, setProducts] = useState([]);
   const [showConfirm, setShowConfirm] = useState(false);
 
   useEffect(() => {
-    const getProducts = async () => {
-      const db = getDatabase();
-      const productRef = ref(db, "products/");
-      onValue(productRef, (snapshot) => {
-        var newData = [];
-        snapshot.forEach((item) => {
-          newData.push(item.val());
-        });
-        setProducts(newData);
-      });
+    const fetchRestaurants = async () => {
+      const restaurantList = await getAllRestaurants();
+      setProducts(restaurantList);
     };
-    getProducts();
+    fetchRestaurants();
   }, []);
   const handleDelete = (id) => {
     // console.log("id", id);
@@ -68,11 +60,11 @@ const ListRestaurants = () => {
           {products.map((product, index) => (
             <tr key={index}>
               <th>{index + 1}</th>
-              <th>{product.name}</th>
+              <th>{product.email}</th>
               <th>
                 <img className="rounded mx-auto d-block w-25 h-25" src={product.imgSrc} alt=""/>
               </th>
-              <th>{product.price}</th>
+              <th>{product.address}</th>
               <th>{product.desc}</th>
               <th >{product.status === 0 ? <p className="text-success">Hoạt động</p> : <p className="text-danger">Ngừng bán</p>}</th>
               <th className="">

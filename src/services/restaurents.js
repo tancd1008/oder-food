@@ -22,7 +22,14 @@ async function isEmailExist(email) {
 
 // Hàm tạo các bộ sưu tập con trong bộ sưu tập "restaurants"
 async function createSubcollections(userId, batch) {
-  const collections = ["food", "category", "bill", "option", "voucher", "shift"];
+  const collections = [
+    "food",
+    "category",
+    "bill",
+    "option",
+    "voucher",
+    "shift",
+  ];
 
   collections.forEach((collectionName) => {
     const subcollectionRef = doc(
@@ -50,7 +57,10 @@ export const createRestaurant = async (restaurant) => {
       // Thực thi batch để thêm dữ liệu vào "restaurants" và các bộ sưu tập con cùng một lúc
       await batch.commit();
 
-      console.log("New document added to 'restaurants' collection with ID:", restaurantRef.id);
+      console.log(
+        "New document added to 'restaurants' collection with ID:",
+        restaurantRef.id
+      );
 
       // Sau khi thêm nhà hàng, thêm bản ghi mới vào collection "users" với thông tin email và id của nhà hàng
       await createUser({
@@ -59,9 +69,30 @@ export const createRestaurant = async (restaurant) => {
         // Các thông tin người dùng khác (nếu có)
       });
     } else {
-      console.log(`A restaurant with email ${restaurant.email} already exists.`);
+      console.log(
+        `A restaurant with email ${restaurant.email} already exists.`
+      );
     }
   } catch (error) {
     console.error("Error adding document to 'restaurants' collection: ", error);
+  }
+};
+export const getAllRestaurants = async () => {
+  try {
+    const restaurantsRef = collection(database, COLLECTION_NAME);
+    const querySnapshot = await getDocs(restaurantsRef);
+
+    const restaurants = [];
+    querySnapshot.forEach((doc) => {
+      restaurants.push({ id: doc.id, ...doc.data() });
+    });
+
+    return restaurants;
+  } catch (error) {
+    console.error(
+      "Error getting documents from 'restaurants' collection: ",
+      error
+    );
+    return [];
   }
 };
