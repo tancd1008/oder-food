@@ -1,16 +1,18 @@
 import React, { useState } from "react";
-const innititalState = {
-  name: "",
+import { createRestaurant } from "../../../services/restaurents";
+const initialState = {
+  nameRestaurant: "",
   address:""
 };
 const AddRestaurant = () => {
-  const [state, setState] = useState(innititalState);
+  const [state, setState] = useState(initialState);
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setState({ ...state, [name]: value });
   };
   const handleSubmit = (e) => {
     e.preventDefault();
+    createRestaurant(state)
     console.log(state);
   };
 
