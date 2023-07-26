@@ -1,31 +1,17 @@
 import { useEffect, useState } from "react";
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import AdminLayout from "./components/Layout/AdminLayout";
 import Layout from "./components/Layout/Layout";
 import { authenticationRoutes, privateRoutes, publicRoutes } from "./routes/Routers";
-import { loginAndFetchUserData } from "./services/users";
 import AuthLayout from "./components/Layout/AuthLayout";
 
 function App() {
-  const [products] = useState([]);
+  const user = JSON.parse(sessionStorage.getItem('user'));
 
   useEffect(() => {
-    // const getProducts = async () => {
-    //   const db = getDatabase();
-    //   const productRef = ref(db, "products/");
-    //   onValue(productRef, (snapshot) => {
-    //     var newData = []
-    //     snapshot.forEach((item)=>{
-    //       newData.push(item.val())
-    //     })
-    //     setProducts(newData)
-    //   });
-
-    // };
-    // getProducts();
-    // loginAndFetchUserData("lythatda@gmail.com","Aa@12345")
+   
   }, []);
-
+    console.log(user)
   return (
     <div className="App " style={{minHeight:"100vh"}}>
       <Routes>
@@ -35,8 +21,8 @@ function App() {
             return <Route key={index} path={route.path} element={<Page />} />;
           })}
         </Route>
-        <Route path="admin" element={<AdminLayout />}>
-          {privateRoutes.map((route, index) => {
+        <Route path="admin" element={user ? <AdminLayout /> : <Navigate to="/auth/login" />} >
+          {user && privateRoutes.map((route, index) => {
             const Page = route.component;
             return <Route key={index} path={route.path} element={<Page />} />;
           })}

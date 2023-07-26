@@ -16,6 +16,7 @@ import {
 import { decodeToken } from "react-jwt";
 import { auth, database } from "../firebase-config";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router";
 
 const COLLECTION_NAME = "users";
 export const createUser = async (userInfo) => {
@@ -117,6 +118,7 @@ export const getAllUser = async () => {
 };
 export const loginAndFetchUserData = async (account) => {
   try {
+
     // Đăng nhập bằng email và mật khẩu
     const userCredential = await signInWithEmailAndPassword(
       auth,

@@ -1,10 +1,10 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import { loginAndFetchUserData } from "../../../services/users";
 import { Link } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 
 const Login = () => {
-  const [account,setAccount] = useState()
+  const [account,setAccount] = useState();
   const handleInputChange = (e) => {
     const {name, value} = e.target;
     setAccount({...account,[name] : value})
@@ -14,6 +14,7 @@ const Login = () => {
     e.preventDefault();
 
    loginAndFetchUserData(account);
+   
    
   };
 
