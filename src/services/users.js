@@ -117,6 +117,7 @@ export const getAllUser = async () => {
   }
 };
 export const loginAndFetchUserData = async (account) => {
+  
   try {
 
     // Đăng nhập bằng email và mật khẩu
@@ -145,6 +146,10 @@ export const loginAndFetchUserData = async (account) => {
       toast.success("Bạn đăng nhập thành công!");
       const user = {...userData, token,userId}
       sessionStorage.setItem(`user`, JSON.stringify(user))
+      setTimeout(() => {
+        window.location.href = "/admin"
+        
+      }, 3000);
     } else {
       console.log("User not found in Firestore.");
       toast.error("Sai thông tin đăng nhập!");

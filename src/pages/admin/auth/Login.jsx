@@ -10,9 +10,8 @@ const Login = () => {
     setAccount({...account,[name] : value})
   }
   const handleSubmit = (e) => {
-    console.log(account)
     e.preventDefault();
-
+    
    loginAndFetchUserData(account);
    
    
