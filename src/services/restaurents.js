@@ -66,7 +66,7 @@ export const createRestaurant = async (restaurant) => {
       await createUser({
         restaurantId: restaurantRef.id,
         email: restaurant.email,
-        role:"ADMIN"
+        role:"USER"
         // Các thông tin người dùng khác (nếu có)
       });
     } else {

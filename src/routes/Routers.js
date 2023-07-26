@@ -5,7 +5,7 @@ import Cart from "../pages/client/Cart";
 import Checkout from "../pages/client/Checkout";
 import FoodDetails from "../pages/client/FoodDetails";
 import Home from "../pages/client/Home";
-import Login from "../pages/client/Login";
+import Login from "../pages/admin/auth/Login";
 import NotFoundPage from "../pages/client/NotFoundPage";
 import Register from "../pages/client/Register";
 import AddCategory from "../pages/admin/categories/AddCategory";

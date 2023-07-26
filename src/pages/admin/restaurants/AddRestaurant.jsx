@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { createRestaurant } from "../../../services/restaurents";
 const initialState = {
   nameRestaurant: "",
-  address:""
+  address:"",
+  status: 0
 };
 const AddRestaurant = () => {
   const [state, setState] = useState(initialState);

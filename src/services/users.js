@@ -15,6 +15,7 @@ import {
 } from "firebase/firestore";
 import { decodeToken } from "react-jwt";
 import { auth, database } from "../firebase-config";
+import { toast } from "react-toastify";
 
 const COLLECTION_NAME = "users";
 export const createUser = async (userInfo) => {
@@ -114,13 +115,13 @@ export const getAllUser = async () => {
     return [];
   }
 };
-export const loginAndFetchUserData = async (email, password) => {
+export const loginAndFetchUserData = async (account) => {
   try {
     // Đăng nhập bằng email và mật khẩu
     const userCredential = await signInWithEmailAndPassword(
       auth,
-      email,
-      password
+      account.email,
+      account.password
     );
     const user = userCredential.user;
     const userId = user.uid;
@@ -139,10 +140,17 @@ export const loginAndFetchUserData = async (email, password) => {
       // Tài liệu tồn tại, lấy thông tin người dùng từ Firestore
       const userData = docSnapshot.data();
       console.log("User data:", userData);
+      toast.success("Bạn đăng nhập thành công!");
+      const user = {...userData, token,userId}
+      sessionStorage.setItem(`user`, JSON.stringify(user))
     } else {
       console.log("User not found in Firestore.");
+      toast.error("Sai thông tin đăng nhập!");
+
     }
   } catch (error) {
     console.error("Error signing in or getting user document: ", error);
+    toast.error("Sai thông tin đăng nhập!");
+
   }
 };

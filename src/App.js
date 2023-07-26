@@ -2,8 +2,9 @@ import { useEffect, useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import AdminLayout from "./components/Layout/AdminLayout";
 import Layout from "./components/Layout/Layout";
-import { privateRoutes, publicRoutes } from "./routes/Routers";
+import { authenticationRoutes, privateRoutes, publicRoutes } from "./routes/Routers";
 import { loginAndFetchUserData } from "./services/users";
+import AuthLayout from "./components/Layout/AuthLayout";
 
 function App() {
   const [products] = useState([]);
@@ -22,9 +23,8 @@ function App() {
 
     // };
     // getProducts();
-    loginAndFetchUserData("lythatda@gmail.com","Aa@12345")
+    // loginAndFetchUserData("lythatda@gmail.com","Aa@12345")
   }, []);
-  console.log(products);
 
   return (
     <div className="App " style={{minHeight:"100vh"}}>
@@ -37,6 +37,12 @@ function App() {
         </Route>
         <Route path="admin" element={<AdminLayout />}>
           {privateRoutes.map((route, index) => {
+            const Page = route.component;
+            return <Route key={index} path={route.path} element={<Page />} />;
+          })}
+        </Route>
+        <Route path="auth" element={<AuthLayout />}>
+          {authenticationRoutes.map((route, index) => {
             const Page = route.component;
             return <Route key={index} path={route.path} element={<Page />} />;
           })}
