@@ -1,19 +1,31 @@
-import { createUserWithEmailAndPassword } from "firebase/auth";
 import {
-  addDoc,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
+import {
   collection,
   doc,
+  getDoc,
   getDocs,
   query,
   serverTimestamp,
+  setDoc,
   updateDoc,
-  where
+  where,
 } from "firebase/firestore";
+import { decodeToken } from "react-jwt";
 import { auth, database } from "../firebase-config";
 
 const COLLECTION_NAME = "users";
 export const createUser = async (userInfo) => {
   try {
+    const userCredential = await createUserWithEmailAndPassword(
+      auth,
+      userInfo.email,
+      "Aa@12345"
+    );
+    const user = userCredential.user;
+    const uid = user.uid;
     const q = query(
       collection(database, "users"),
       where("email", "==", userInfo.email)
@@ -21,19 +33,16 @@ export const createUser = async (userInfo) => {
     const querySnapshot = await getDocs(q);
 
     userInfo.createAt = serverTimestamp();
-    userInfo.isActive = true
-    userInfo.imageUrl = ""
+    userInfo.isActive = true;
+    userInfo.imageUrl = "";
     if (querySnapshot.size === 0) {
       // Nếu không có email trùng lặp, thêm tài liệu mới vào "users"
-      const userRef = await addDoc(
-        collection(database, COLLECTION_NAME),
-        userInfo
-      );
+      const userRef = doc(collection(database, COLLECTION_NAME), uid);
+      await setDoc(userRef, userInfo);
       console.log(
         "New document added to 'users' collection with ID:",
         userRef.id
       );
-      await createUserWithEmailAndPassword(auth, userInfo.email, "Aa@1345");
     } else {
       console.log("Email is already in use.");
     }
@@ -44,13 +53,16 @@ export const createUser = async (userInfo) => {
 export const updateUserByEmail = async (email, updatedUserInfo) => {
   try {
     // Tạo truy vấn để tìm người dùng dựa trên địa chỉ email
-    const q = query(collection(database, COLLECTION_NAME), where("email", "==", email));
+    const q = query(
+      collection(database, COLLECTION_NAME),
+      where("email", "==", email)
+    );
     const querySnapshot = await getDocs(q);
 
     if (!querySnapshot.empty) {
       // Lấy ID của tài liệu người dùng tìm thấy
       const userId = querySnapshot.docs[0].id;
-      
+
       // Thêm thông tin 'updateAt' với thời điểm hiện tại
       updatedUserInfo.updateAt = serverTimestamp();
 
@@ -86,7 +98,7 @@ export const getUserIdByEmail = async (email) => {
     console.error("Error getting user data: ", error);
   }
 };
-export const getAllUser= async () => {
+export const getAllUser = async () => {
   try {
     const usersRef = collection(database, COLLECTION_NAME);
     const querySnapshot = await getDocs(usersRef);
@@ -98,10 +110,39 @@ export const getAllUser= async () => {
 
     return users;
   } catch (error) {
-    console.error(
-      "Error getting documents from 'users' collection: ",
-      error
-    );
+    console.error("Error getting documents from 'users' collection: ", error);
     return [];
+  }
+};
+export const loginAndFetchUserData = async (email, password) => {
+  try {
+    // Đăng nhập bằng email và mật khẩu
+    const userCredential = await signInWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
+    const user = userCredential.user;
+    const userId = user.uid;
+    // Lấy token đăng nhập từ user object
+    const token = await user.getIdToken();
+    console.log("Login Token:", token);
+
+    // Giải mã token để lấy thông tin người dùng
+    const decodedToken = await decodeToken(token);
+    console.log("Decoded Token:", decodedToken);
+    // Truy vấn vào bộ sưu tập "users" để lấy thông tin người dùng qua email
+    const userRef = doc(collection(database, COLLECTION_NAME), userId);
+    const docSnapshot = await getDoc(userRef);
+
+    if (docSnapshot.exists()) {
+      // Tài liệu tồn tại, lấy thông tin người dùng từ Firestore
+      const userData = docSnapshot.data();
+      console.log("User data:", userData);
+    } else {
+      console.log("User not found in Firestore.");
+    }
+  } catch (error) {
+    console.error("Error signing in or getting user document: ", error);
   }
 };

@@ -1,12 +1,12 @@
 import React from "react";
 
-import CommonSection from "../../components/UI/common-section/CommonSection";
-import Helmet from "../../components/Helmet/Helmet";
-import "../../styles/cart-page.css";
-import { useSelector, useDispatch } from "react-redux";
-import { Container, Row, Col } from "reactstrap";
-import { cartActions } from "../../store/shopping-cart/cartSlice";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { Col, Container, Row } from "reactstrap";
+import Helmet from "../../components/Helmet/Helmet";
+import CommonSection from "../../components/UI/common-section/CommonSection";
+import { cartActions } from "../../store/shopping-cart/cartSlice";
+import "../../styles/cart-page.css";
 
 const Cart = () => {
   const cartItems = useSelector((state) => state.cart.cartItems);
@@ -78,7 +78,7 @@ const Tr = (props) => {
       <td className="text-center">${price}</td>
       <td className="text-center">{quantity}px</td>
       <td className="text-center cart__item-del">
-        <i class="ri-delete-bin-line" onClick={deleteItem}></i>
+        <i className="ri-delete-bin-line" onClick={deleteItem}></i>
       </td>
     </tr>
   );

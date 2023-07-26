@@ -1,7 +1,7 @@
 import React from "react";
 
-import { ListGroup } from "reactstrap";
 import { Link } from "react-router-dom";
+import { ListGroup } from "reactstrap";
 import CartItem from "./CartItem";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -22,7 +22,7 @@ const Carts = () => {
       <ListGroup className="cart">
         <div className="cart__close">
           <span onClick={toggleCart}>
-            <i class="ri-close-fill"></i>
+            <i className="ri-close-fill"></i>
           </span>
         </div>
 

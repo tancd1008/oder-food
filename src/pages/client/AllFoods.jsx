@@ -2,14 +2,14 @@ import React, { useState } from "react";
 import Helmet from "../../components/Helmet/Helmet";
 import CommonSection from "../../components/UI/common-section/CommonSection";
 
-import { Container, Row, Col } from "reactstrap";
+import { Col, Container, Row } from "reactstrap";
 
+import ReactPaginate from "react-paginate";
 import products from "../../assets/fake-data/products";
 import ProductCard from "../../components/UI/product-card/ProductCard";
-import ReactPaginate from "react-paginate";
 
 import "../../styles/all-foods.css";
-import "../../styles/pagination.css"
+import "../../styles/pagination.css";
 
 const AllFoods = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -56,7 +56,7 @@ const AllFoods = () => {
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
                 <span>
-                  <i class="ri-search-line"></i>
+                  <i className="ri-search-line"></i>
                 </span>
               </div>
             </Col>

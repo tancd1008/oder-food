@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
+import { Col, Container, Row } from "reactstrap";
 import Helmet from "../../components/Helmet/Helmet.js";
-import { Container, Row, Col } from "reactstrap";
 
 // import heroImg from "../assets/images/hero.png";
 import "../../styles/hero-section.css";
@@ -18,9 +18,9 @@ import "../../styles/home.css";
 
 import products from "../../assets/fake-data/products.js";
 
+import foodCategoryImg03 from "../../assets/images/bread.png";
 import foodCategoryImg01 from "../../assets/images/hamburger.png";
 import foodCategoryImg02 from "../../assets/images/pizza.png";
-import foodCategoryImg03 from "../../assets/images/bread.png";
 
 import ProductCard from "../../components/UI/product-card/ProductCard.jsx";
 
@@ -109,7 +109,7 @@ const Home = () => {
 
                 <div className="hero__btns d-flex align-items-center gap-5 mt-4">
                   <button className="order__btn d-flex align-items-center justify-content-between">
-                    Order now <i class="ri-arrow-right-s-line"></i>
+                    Order now <i className="ri-arrow-right-s-line"></i>
                   </button>
 
                   <button className="all__foods-btn">
@@ -120,14 +120,14 @@ const Home = () => {
                 <div className=" hero__service  d-flex align-items-center gap-5 mt-5 ">
                   <p className=" d-flex align-items-center gap-2 ">
                     <span className="shipping__icon">
-                      <i class="ri-car-line"></i>
+                      <i className="ri-car-line"></i>
                     </span>{" "}
                     No shipping charge
                   </p>
 
                   <p className=" d-flex align-items-center gap-2 ">
                     <span className="shipping__icon">
-                      <i class="ri-shield-check-line"></i>
+                      <i className="ri-shield-check-line"></i>
                     </span>{" "}
                     100% secure checkout
                   </p>
@@ -264,7 +264,7 @@ const Home = () => {
                 <ListGroup className="mt-4">
                   <ListGroupItem className="border-0 ps-0">
                     <p className=" choose__us-title d-flex align-items-center gap-2 ">
-                      <i class="ri-checkbox-circle-line"></i> Fresh and tasty
+                      <i className="ri-checkbox-circle-line"></i> Fresh and tasty
                       foods
                     </p>
                     <p className="choose__us-desc">
@@ -275,7 +275,7 @@ const Home = () => {
 
                   <ListGroupItem className="border-0 ps-0">
                     <p className="choose__us-title d-flex align-items-center gap-2 ">
-                      <i class="ri-checkbox-circle-line"></i> Quality support
+                      <i className="ri-checkbox-circle-line"></i> Quality support
                     </p>
                     <p className="choose__us-desc">
                       Lorem ipsum dolor sit amet consectetur adipisicing elit.
@@ -285,7 +285,7 @@ const Home = () => {
 
                   <ListGroupItem className="border-0 ps-0">
                     <p className="choose__us-title d-flex align-items-center gap-2 ">
-                      <i class="ri-checkbox-circle-line"></i>Order from any
+                      <i className="ri-checkbox-circle-line"></i>Order from any
                       location{" "}
                     </p>
                     <p className="choose__us-desc">

@@ -3,9 +3,10 @@ import { Route, Routes } from "react-router-dom";
 import AdminLayout from "./components/Layout/AdminLayout";
 import Layout from "./components/Layout/Layout";
 import { privateRoutes, publicRoutes } from "./routes/Routers";
+import { loginAndFetchUserData } from "./services/users";
 
 function App() {
-  const [products, setProducts] = useState([]);
+  const [products] = useState([]);
 
   useEffect(() => {
     // const getProducts = async () => {
@@ -21,6 +22,7 @@ function App() {
 
     // };
     // getProducts();
+    loginAndFetchUserData("lythatda@gmail.com","Aa@12345")
   }, []);
   console.log(products);
 
