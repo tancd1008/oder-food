@@ -1,25 +1,33 @@
 import { getDatabase, onValue, ref } from "@firebase/database";
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { addProduct } from "../../../services/products";
+import Select from "react-select";
 const innititalState = {
   id: "",
   name: "",
   price: "",
   desc: "",
   imgSrc: "",
-  categoryId: "",
+  categoryId: [],
   is_active: 0,
 };
+const options = [
+  { value: "chocolate", label: "Chocolate" },
+  { value: "strawberry", label: "Strawberry" },
+  { value: "vanilla", label: "Vanilla" },
+];
 const AddProduct = () => {
   const [state, setState] = useState(innititalState);
   const [categories, setCategories] = useState([]);
 
   const { name, price, desc, imgSrc } = state;
+  const options = [
+    { value: "chocolate", label: "Chocolate" },
+    { value: "strawberry", label: "Strawberry" },
+    { value: "vanilla", label: "Vanilla" },
+  ];
 
-  
   useEffect(() => {
     const getCategory = async () => {
       const db = getDatabase();
@@ -34,7 +42,7 @@ const AddProduct = () => {
     };
     getCategory();
   }, []);
-  
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     if (!e.target.files) {
@@ -43,11 +51,14 @@ const AddProduct = () => {
       setState({ ...state, imgSrc: e.target.files[0] });
     }
   };
-
+  const handleSelectChange = (selectedOptions) => {
+    console.log(selectedOptions)
+    setState({...state, categoryId: selectedOptions})
+  }
   const handleSubmit = (e) => {
     e.preventDefault();
-    const newProductData = {...state}
-   console.log(newProductData)
+    const newProductData = { ...state };
+    console.log(newProductData);
   };
 
   return (
@@ -69,10 +80,10 @@ const AddProduct = () => {
           />
         </div>
         <div className="mb-3">
-          <label htmlFor="password" className="form-label">
+          <label htmlFor="categoryId" className="form-label">
             Danh mục
           </label>
-          <select
+          {/* <select
             id="selectOption"
             className="form-control"
             name="categoryId"
@@ -83,7 +94,15 @@ const AddProduct = () => {
                 {category.name}
               </option>
             ))}
-          </select>
+          </select> */}
+          <Select
+            isMulti
+            name="colors"
+            options={options}
+            className="basic-multi-select"
+            classNamePrefix="select"
+            onChange={handleSelectChange}
+          />
         </div>
         <div className="mb-3">
           <label htmlFor="password" className="form-label">
