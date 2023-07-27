@@ -5,6 +5,7 @@ const COLLECTION_NAME = "restaurants";
 
 export const addCategory = async (category, restaurantId) => {
   try {
+    category.status = 0;
     const categoryRef = await addDoc(
         collection(database, `${COLLECTION_NAME}/${restaurantId}/category`),
         category
