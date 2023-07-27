@@ -7,7 +7,7 @@ const SidebarAdmin = () => {
     { title: "Dashboard", path: "" },
     { title: "Danh sách nhà hàng", path: "restaurant/list" },
     { title: "Danh sách danh mục", path: "category/list" },
-    { title: "Danh sách sản phẩm", path: "product/list" },
+    { title: "Danh sách sản phẩm", path: "food/list" },
   ];
 
   return (

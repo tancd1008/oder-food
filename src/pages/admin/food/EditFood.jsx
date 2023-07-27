@@ -5,7 +5,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import {  getProductDetail, updateProduct } from "../../../services/products";
 
-const EditProduct = () => {
+const EditFood = () => {
   const [state, setState] = useState({
     id: "",
     name: "",
@@ -153,4 +153,4 @@ const EditProduct = () => {
   )
 }
 
-export default EditProduct
+export default EditFood

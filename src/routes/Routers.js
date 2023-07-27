@@ -9,14 +9,14 @@ import Login from "../pages/admin/auth/Login";
 import NotFoundPage from "../pages/client/NotFoundPage";
 import Register from "../pages/client/Register";
 import AddCategory from "../pages/admin/categories/AddCategory";
-import AddProduct from "../pages/admin/products/AddProduct";
 import Dashboard from "../pages/admin/Dashboard";
-import EditProduct from "../pages/admin/products/EditProduct";
-import ListProducts from "../pages/admin/products/ListProducts";
 import AddRestaurant from "../pages/admin/restaurants/AddRestaurant";
 import ListRestaurants from "../pages/admin/restaurants/ListRestaurants";
 import ListCategories from "../pages/admin/categories/ListCategories";
 import EditCategory from "../pages/admin/categories/EditCategory";
+import ListFood from "../pages/admin/food/ListFood";
+import AddFood from "../pages/admin/food/AddFood";
+import EditFood from "../pages/admin/food/EditFood";
 
 
 
@@ -45,16 +45,16 @@ const privateRoutes = [
     component: NotFoundPage,
   },
   {
-    path: "product/list",
-    component: ListProducts,
+    path: "food/list",
+    component: ListFood,
   },
   {
-    path: "product/add",
-    component: AddProduct,
+    path: "food/add",
+    component: AddFood,
   },
   {
-    path: "products/edit/:id",
-    component: EditProduct,
+    path: "Food/edit/:id",
+    component: EditFood,
   },
   {
     path: "category/list",

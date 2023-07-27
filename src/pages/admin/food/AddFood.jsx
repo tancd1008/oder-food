@@ -3,6 +3,8 @@ import React, { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Select from "react-select";
+import { getAllCategoriesInRestaurant } from "../../../services/category";
+import { convertOptions, createOptionsFromData } from "../../../helper/optionsSelect";
 const innititalState = {
   id: "",
   name: "",
@@ -17,28 +19,21 @@ const options = [
   { value: "strawberry", label: "Strawberry" },
   { value: "vanilla", label: "Vanilla" },
 ];
-const AddProduct = () => {
+const AddFood = () => {
   const [state, setState] = useState(innititalState);
   const [categories, setCategories] = useState([]);
 
   const { name, price, desc, imgSrc } = state;
-  const options = [
-    { value: "chocolate", label: "Chocolate" },
-    { value: "strawberry", label: "Strawberry" },
-    { value: "vanilla", label: "Vanilla" },
-  ];
+  const user = JSON.parse(sessionStorage.getItem("user"));
+  
 
   useEffect(() => {
     const getCategory = async () => {
-      const db = getDatabase();
-      const productRef = ref(db, "categories/");
-      onValue(productRef, (snapshot) => {
-        var newData = [];
-        snapshot.forEach((item) => {
-          newData.push(item.val());
-        });
-        setCategories(newData);
-      });
+      const listCategories = await getAllCategoriesInRestaurant(
+        user.restaurantId
+      );
+      console.log(listCategories)
+      setCategories(convertOptions(listCategories,"value-label"));
     };
     getCategory();
   }, []);
@@ -52,8 +47,7 @@ const AddProduct = () => {
     }
   };
   const handleSelectChange = (selectedOptions) => {
-    console.log(selectedOptions)
-    setState({...state, categoryId: selectedOptions})
+    setState({...state, categoryId: convertOptions(selectedOptions,"id-name")})
   }
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -98,7 +92,7 @@ const AddProduct = () => {
           <Select
             isMulti
             name="colors"
-            options={options}
+            options={categories}
             className="basic-multi-select"
             classNamePrefix="select"
             onChange={handleSelectChange}
@@ -159,4 +153,4 @@ const AddProduct = () => {
   );
 };
 
-export default AddProduct;
+export default AddFood;

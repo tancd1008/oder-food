@@ -7,3 +7,18 @@ export const createOptionsFromData = (data, valueKey, labelKey) => {
   });
   return options;
 };
+export const convertOptions = (options, targetType) => {
+  if (targetType === "id-name") {
+    return options.map((option) => ({
+      id: option.value,
+      name: option.label,
+    }));
+  } else if (targetType === "value-label") {
+    return options.map((option) => ({
+      value: option.id,
+      label: option.name,
+    }));
+  } else {
+    return options;
+  }
+};

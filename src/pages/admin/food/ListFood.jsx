@@ -6,7 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 import ConfirmBox from "../../../components/ConfirmBox";
 import { deleteProduct, updateProduct } from "../../../services/products";
 import { Link } from "react-router-dom";
-const ListProducts = () => {
+const ListFood = () => {
   const [products, setProducts] = useState([]);
   const [showConfirm, setShowConfirm] = useState(false);
 
@@ -61,7 +61,7 @@ const ListProducts = () => {
           </div>
           <div className="">
 
-          <Link to="/admin/product/add" className="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i className="fas fa-download fa-sm text-white-50" /> Thêm sản phẩm</Link>
+          <Link to="/admin/food/add" className="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i className="fas fa-download fa-sm text-white-50" /> Thêm sản phẩm</Link>
           </div>
           <div></div>
         </div>
@@ -117,4 +117,4 @@ const ListProducts = () => {
   );
 };
 
-export default ListProducts;
+export default ListFood;
