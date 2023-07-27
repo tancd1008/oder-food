@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { addCategory } from "../../../services/category";
 const innititalState = {
   name: "",
   desc: "",
@@ -11,6 +12,8 @@ const innititalState = {
 const AddCategory = () => {
   const [state, setState] = useState(innititalState);
   const { name, desc } = state;
+  const user = JSON.parse(sessionStorage.getItem('user'));
+  console.log(user)
   const navigate = useNavigate()
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -21,12 +24,16 @@ const AddCategory = () => {
     if (!name || !desc) {
       toast.error("Mời bạn nhập!");
     } else {
-      const db = getDatabase(); 
-      const categoriesRef = ref(db, 'categories/');
-      const newCategoryRef = push(categoriesRef);
-      const newCategoryId = newCategoryRef.key;
-      const newCategoryData = {...state, id: newCategoryId};
-      console.log(newCategoryData)
+      try {
+        addCategory(state,user.restaurantId);
+        toast.success("Bạn thêm danh mục thành công!")
+        setTimeout(() => {
+          navigate("/admin/category/list");
+        }, 3000);
+      } catch (error) {
+        toast.error("Lỗi")
+      }
+      
      
     }
   };
