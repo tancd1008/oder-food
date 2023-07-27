@@ -3,15 +3,16 @@ import React, { useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ConfirmBox from "../../../components/ConfirmBox";
-import { deleteProduct, updateProduct } from "../../../services/products";
+import { deleteProduct } from "../../../services/products";
 import { Link } from "react-router-dom";
-import { getAllCategoriesInRestaurant } from "../../../services/category";
+import { getAllCategoriesInRestaurant, updateCategory } from "../../../services/category";
 import { getAllRestaurants } from "../../../services/restaurents";
 const ListCategories = () => {
   const [categories, setCategories] = useState([]);
   const [restaurants, setRestaurants] = useState([]);
   const [showConfirm, setShowConfirm] = useState(false);
   const user = JSON.parse(sessionStorage.getItem("user"));
+  
   useEffect(() => {
     const getCategory = async () => {
       try {
@@ -41,17 +42,20 @@ const ListCategories = () => {
   const handleCancel = () => {
     setShowConfirm(false);
   };
-  const handleUpdateStatus = (product) => {
-    var newProduct = { ...product };
-    if (product.status === 0) {
-      newProduct = { ...product, status: 1 };
+  const handleUpdateStatus = async (category, restaurantId) => {
+    var newCategory = { ...category };
+    if (category.is_active === 0) {
+      newCategory = { ...category, is_active: 1 };
       console.log("1");
     } else {
       console.log("0");
-      newProduct = { ...product, status: 0 };
+      newCategory = { ...category, is_active: 0 };
     }
-    updateProduct(product.id, newProduct);
-    console.log(newProduct);
+    await updateCategory(category.id,restaurantId, newCategory);
+    const listCategories = await getAllCategoriesInRestaurant(restaurantId);
+      setCategories(listCategories);
+    
+    console.log(newCategory);
   };
   console.log(restaurants);
   return (
@@ -109,7 +113,7 @@ const ListCategories = () => {
               <th>{category.price}</th>
               <th>{category.desc}</th>
               <th>
-                {category.status === 0 ? (
+                {category.is_active === 0 ? (
                   <p className="text-success">Hoạt động</p>
                 ) : (
                   <p className="text-danger">Ngừng bán</p>
@@ -128,18 +132,18 @@ const ListCategories = () => {
                   onConfirm={() => handleDelete(category.id)}
                   onCancel={() => handleCancel()}
                 />
-                <Link to={`/admin/category/edit/${category.id}`}>
+                <Link to={`/admin/category/edit/${user.restaurantId}/${category.id}`}>
                   <button className="btn btn-warning ms-1">Sửa</button>
                 </Link>
                 <button
                   className={`${
-                    category.status === 0
+                    category.is_active === 0
                       ? "btn btn-secondary ms-1"
                       : "btn btn-success ms-1"
                   }`}
-                  onClick={() => handleUpdateStatus(category)}
+                  onClick={() => handleUpdateStatus(category,user.restaurantId)}
                 >
-                  {category.status === 0 ? "Dừng" : "Bán"}
+                  {category.is_active === 0 ? "Dừng" : "Bán"}
                 </button>
               </th>
             </tr>

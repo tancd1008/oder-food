@@ -1,4 +1,3 @@
-import { getDatabase, push, ref, set } from "firebase/database";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
@@ -8,6 +7,7 @@ const innititalState = {
   name: "",
   desc: "",
   is_active: 0,
+  restaurantId: "",
 };
 const AddCategory = () => {
   const [state, setState] = useState(innititalState);

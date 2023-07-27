@@ -16,6 +16,7 @@ import ListProducts from "../pages/admin/products/ListProducts";
 import AddRestaurant from "../pages/admin/restaurants/AddRestaurant";
 import ListRestaurants from "../pages/admin/restaurants/ListRestaurants";
 import ListCategories from "../pages/admin/categories/ListCategories";
+import EditCategory from "../pages/admin/categories/EditCategory";
 
 
 
@@ -62,6 +63,10 @@ const privateRoutes = [
   {
     path: "category/add",
     component: AddCategory,
+  },
+  {
+    path: "category/edit/:id/:id",
+    component: EditCategory,
   },
   {
     path: "restaurant/add",
