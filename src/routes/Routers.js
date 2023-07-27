@@ -65,7 +65,7 @@ const privateRoutes = [
     component: AddCategory,
   },
   {
-    path: "category/edit/:id/:id",
+    path: "category/edit/:restaurantId/:categoryId",
     component: EditCategory,
   },
   {

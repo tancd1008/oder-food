@@ -51,4 +51,20 @@ export const getAllCategoriesInRestaurant = async (restaurantId) => {
       throw error; // Ném lỗi để xử lý bên ngoài nếu cần
     }
   }
+  export const getDetailCategory = async (categoryId, restaurantId) => {
+    try {
+      const categoryRef = doc(
+        database,
+        `${COLLECTION_NAME}/${restaurantId}/category/${categoryId}`
+      );
+
+      // Lấy dữ liệu của document danh mục
+      const categoryDoc = await getDoc(categoryRef);
+      console.log("Thành công")
+      return categoryDoc
+    } catch (error) {
+      console.log("Lỗi")
+      return null
+    }
+  }
   
