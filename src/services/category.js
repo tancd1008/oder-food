@@ -1,4 +1,4 @@
-import { addDoc, collection, doc, getDoc, getDocs, updateDoc } from "firebase/firestore";
+import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, updateDoc } from "firebase/firestore";
 import { database } from "../firebase-config";
 
 const COLLECTION_NAME = "restaurants";
@@ -65,6 +65,23 @@ export const getAllCategoriesInRestaurant = async (restaurantId) => {
     } catch (error) {
       console.log("Lỗi")
       return null
+    }
+  }
+  export const deleteCategory = async (categoryId,restaurantId) => {
+    try {
+      // Tạo reference tới document danh mục cần xóa
+      const categoryRef = doc(
+        database,
+        `${COLLECTION_NAME}/${restaurantId}/category/${categoryId}`
+      );
+  
+      // Xóa document danh mục
+      await deleteDoc(categoryRef);
+  
+      console.log("Đã xóa danh mục thành công!");
+    } catch (error) {
+      console.error("Đã xảy ra lỗi khi xóa danh mục:", error);
+      throw error; // Ném lỗi để xử lý bên ngoài nếu cần
     }
   }
   

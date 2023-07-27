@@ -5,7 +5,7 @@ import "react-toastify/dist/ReactToastify.css";
 import ConfirmBox from "../../../components/ConfirmBox";
 import { deleteProduct } from "../../../services/products";
 import { Link } from "react-router-dom";
-import { getAllCategoriesInRestaurant, updateCategory } from "../../../services/category";
+import { deleteCategory, getAllCategoriesInRestaurant, updateCategory } from "../../../services/category";
 import { getAllRestaurants } from "../../../services/restaurents";
 const ListCategories = () => {
   const [categories, setCategories] = useState([]);
@@ -34,9 +34,13 @@ const ListCategories = () => {
     fetchRestaurants();
     getCategory();
   }, []);
-  const handleDelete = (id) => {
-    console.log("id", id);
-    deleteProduct(id);
+  const handleDelete = async (categoryId,restaurantId) => {
+    console.log("categoryId", categoryId);
+    deleteCategory(categoryId,restaurantId);
+    const listCategories = await getAllCategoriesInRestaurant(
+      user.restaurantId
+    );
+    setCategories(listCategories);
     setShowConfirm(false);
   };
   const handleCancel = () => {
@@ -129,7 +133,7 @@ const ListCategories = () => {
                 <ConfirmBox
                   show={showConfirm}
                   message="Bạn có chắc chắn muốn xóa bản ghi này không?"
-                  onConfirm={() => handleDelete(category.id)}
+                  onConfirm={() => handleDelete(category.id,user.restaurantId)}
                   onCancel={() => handleCancel()}
                 />
                 <Link to={`/admin/category/edit/${user.restaurantId}/${category.id}`}>
