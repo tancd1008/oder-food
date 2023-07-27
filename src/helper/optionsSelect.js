@@ -1,12 +1,4 @@
-export const createOptionsFromData = (data, valueKey, labelKey) => {
-  const options = [];
-  data.forEach((item) => {
-    const value = valueKey ? item[valueKey] : item;
-    const label = labelKey ? item[labelKey] : item;
-    options.push({ value, label });
-  });
-  return options;
-};
+
 export const convertOptions = (options, targetType) => {
   if (targetType === "id-name") {
     return options.map((option) => ({
@@ -21,4 +13,15 @@ export const convertOptions = (options, targetType) => {
   } else {
     return options;
   }
+};
+export const createOptionsFromData = (data, valueKeys, labelKeys) => {
+  const options = [];
+  data.forEach((item) => {
+    const option = {};
+    labelKeys.forEach((labelKey, index) => {
+      option[labelKey] = item[valueKeys[index]];
+    });
+    options.push(option);
+  });
+  return options;
 };

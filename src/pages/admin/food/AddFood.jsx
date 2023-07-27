@@ -25,7 +25,8 @@ const AddFood = () => {
 
   const { name, price, desc, imgSrc } = state;
   const user = JSON.parse(sessionStorage.getItem("user"));
-  
+  const valueKeys = ["id","name"];
+  const labelKeys = ["value", "label"]
 
   useEffect(() => {
     const getCategory = async () => {
@@ -33,7 +34,7 @@ const AddFood = () => {
         user.restaurantId
       );
       console.log(listCategories)
-      setCategories(convertOptions(listCategories,"value-label"));
+      setCategories(createOptionsFromData(listCategories,valueKeys,labelKeys));
     };
     getCategory();
   }, []);
@@ -47,7 +48,7 @@ const AddFood = () => {
     }
   };
   const handleSelectChange = (selectedOptions) => {
-    setState({...state, categoryId: convertOptions(selectedOptions,"id-name")})
+    setState({...state, categoryId: createOptionsFromData(selectedOptions,labelKeys,valueKeys)})
   }
   const handleSubmit = (e) => {
     e.preventDefault();
