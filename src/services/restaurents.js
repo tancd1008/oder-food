@@ -21,7 +21,7 @@ async function isEmailExist(email) {
 }
 
 // Hàm tạo các bộ sưu tập con trong bộ sưu tập "restaurants"
-async function createSubcollections(userId, batch) {
+async function createCollections(restaurantRefId, restaurantRef, batch) {
   const collections = [
     "food",
     "category",
@@ -32,10 +32,15 @@ async function createSubcollections(userId, batch) {
   ];
 
   collections.forEach((collectionName) => {
-    const subcollectionRef = doc(
-      collection(database, `${COLLECTION_NAME}/${userId}/${collectionName}`)
-    );
-    batch.set(subcollectionRef, {});
+    if (collectionName === "category") {
+      const subCollectionRef = doc(
+        collection(
+          database,
+          `${COLLECTION_NAME}/${restaurantRefId}/${collectionName}`
+        )
+      );
+      batch.set(subCollectionRef, { name: "Other category" });
+    }
   });
 }
 
@@ -52,21 +57,17 @@ export const createRestaurant = async (restaurant) => {
       const batch = writeBatch(database);
       const restaurantRef = doc(collection(database, COLLECTION_NAME));
       batch.set(restaurantRef, restaurant);
-      await createSubcollections(restaurantRef.id, batch);
+      await createCollections(restaurantRef.id, restaurantRef, batch);
 
       // Thực thi batch để thêm dữ liệu vào "restaurants" và các bộ sưu tập con cùng một lúc
       await batch.commit();
 
-      console.log(
-        "New document added to 'restaurants' collection with ID:",
-        restaurantRef.id
-      );
-
       // Sau khi thêm nhà hàng, thêm bản ghi mới vào collection "users" với thông tin email và id của nhà hàng
+      const role = "USER"; // Vai trò của người dùng khi tạo nhà hàng mới
       await createUser({
         restaurantId: restaurantRef.id,
         email: restaurant.email,
-        role:"USER"
+        role,
         // Các thông tin người dùng khác (nếu có)
       });
     } else {

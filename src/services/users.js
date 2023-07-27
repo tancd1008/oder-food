@@ -13,10 +13,8 @@ import {
   updateDoc,
   where,
 } from "firebase/firestore";
-import { decodeToken } from "react-jwt";
-import { auth, database } from "../firebase-config";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router";
+import { auth, database } from "../firebase-config";
 
 const COLLECTION_NAME = "users";
 export const createUser = async (userInfo) => {
@@ -41,12 +39,18 @@ export const createUser = async (userInfo) => {
       // Nếu không có email trùng lặp, thêm tài liệu mới vào "users"
       const userRef = doc(collection(database, COLLECTION_NAME), uid);
       await setDoc(userRef, userInfo);
-      console.log(
-        "New document added to 'users' collection with ID:",
-        userRef.id
-      );
+
     } else {
       console.log("Email is already in use.");
+      const { restaurantId } = userInfo;
+
+      if (restaurantId) {
+        // Thực hiện cập nhật trường restaurantId cho tài liệu người dùng
+        const userDoc = querySnapshot.docs[0]; // Giả sử chỉ có một tài liệu trùng lặp (email là duy nhất)
+        const userRef = doc(collection(database, COLLECTION_NAME), userDoc.id);
+        await updateDoc(userRef, { restaurantId });
+        console.log("RestaurantId updated for existing user.");
+      }
     }
   } catch (error) {
     console.error("Error adding document to 'users' collection: ", error);
@@ -117,9 +121,7 @@ export const getAllUser = async () => {
   }
 };
 export const loginAndFetchUserData = async (account) => {
-  
   try {
-
     // Đăng nhập bằng email và mật khẩu
     const userCredential = await signInWithEmailAndPassword(
       auth,
@@ -130,11 +132,6 @@ export const loginAndFetchUserData = async (account) => {
     const userId = user.uid;
     // Lấy token đăng nhập từ user object
     const token = await user.getIdToken();
-    console.log("Login Token:", token);
-
-    // Giải mã token để lấy thông tin người dùng
-    const decodedToken = await decodeToken(token);
-    console.log("Decoded Token:", decodedToken);
     // Truy vấn vào bộ sưu tập "users" để lấy thông tin người dùng qua email
     const userRef = doc(collection(database, COLLECTION_NAME), userId);
     const docSnapshot = await getDoc(userRef);
@@ -142,22 +139,17 @@ export const loginAndFetchUserData = async (account) => {
     if (docSnapshot.exists()) {
       // Tài liệu tồn tại, lấy thông tin người dùng từ Firestore
       const userData = docSnapshot.data();
-      console.log("User data:", userData);
       toast.success("Bạn đăng nhập thành công!");
-      const user = {...userData, token,userId}
-      sessionStorage.setItem(`user`, JSON.stringify(user))
+      const user = { ...userData, token, userId };
+      sessionStorage.setItem(`user`, JSON.stringify(user));
       setTimeout(() => {
-        window.location.href = "/admin"
-        
+        window.location.href = "/admin";
       }, 3000);
     } else {
-      console.log("User not found in Firestore.");
       toast.error("Sai thông tin đăng nhập!");
-
     }
   } catch (error) {
     console.error("Error signing in or getting user document: ", error);
     toast.error("Sai thông tin đăng nhập!");
-
   }
 };

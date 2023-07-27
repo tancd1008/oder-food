@@ -5,12 +5,10 @@ const COLLECTION_NAME = "restaurants";
 
 export const addCategory = async (category, restaurantId) => {
   try {
-    console.log(category)
     const categoryRef = await addDoc(
         collection(database, `${COLLECTION_NAME}/${restaurantId}/category`),
         {...category, restaurantId: restaurantId}
       );
-      console.log('Đã thêm danh mục thành công:', categoryRef.id);
       return categoryRef.id;
   } catch (error) {
     console.error(error);
