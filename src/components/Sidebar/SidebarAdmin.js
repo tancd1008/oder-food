@@ -3,11 +3,13 @@ import { Link } from "react-router-dom";
 
 const SidebarAdmin = () => {
   // const [open, setOpen] = useState(true);
+  const userRole = JSON.parse(sessionStorage.getItem("user")).role;
+  console.log(userRole);
   const Menus = [
     { title: "Dashboard", path: "" },
-    { title: "Danh sách nhà hàng", path: "restaurant/list" },
-    { title: "Danh sách danh mục", path: "category/list" },
-    { title: "Danh sách sản phẩm", path: "food/list" },
+    { title: "Danh sách nhà hàng", path: "restaurant/list", show: userRole ==="ADMIN" },
+    { title: "Danh sách danh mục", path: "category/list",show: userRole ==="USER" || userRole ==="ADMIN" },
+    { title: "Danh sách sản phẩm", path: "food/list",show: userRole ==="USER" || userRole ==="ADMIN" },
   ];
 
   return (
@@ -30,11 +32,13 @@ const SidebarAdmin = () => {
           </div>
         </a>
         {Menus.map((Menu, index) => (
+          Menu.show ? (
           <li key={index}>
             <Link to={Menu.path} className="sidebar-link text-light">
               <span>{Menu.title}</span>
             </Link>
           </li>
+          ) : null
         ))}
 
         

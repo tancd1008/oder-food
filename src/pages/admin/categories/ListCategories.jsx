@@ -70,13 +70,18 @@ const ListCategories = () => {
         </div>
         <div className="d-sm-flex align-items-center justify-content-between mb-4">
           <div className="">
-            <select name="" id="">
-              {restaurants.map((restaurant, index) => (
-                <option value={restaurant.id} key={index}>
-                  {restaurant.nameRestaurant}
-                </option>
-              ))}
-            </select>
+            {user.role === "ADMIN" ? (
+               <div className="">
+               <select name="" id="">
+                 {restaurants.map((restaurant, index) => (
+                   <option value={restaurant.id} key={index}>
+                     {restaurant.nameRestaurant}
+                   </option>
+                 ))}
+               </select>
+             </div>
+            ): null}
+            
           </div>
           <div className="">
             <Link

@@ -6,23 +6,21 @@ import "react-toastify/dist/ReactToastify.css";
 import ConfirmBox from "../../../components/ConfirmBox";
 import { deleteProduct, updateProduct } from "../../../services/products";
 import { Link } from "react-router-dom";
+import { getAllCategoriesInRestaurant } from "../../../services/category";
+import { getAllRestaurants } from "../../../services/restaurents";
 const ListFood = () => {
   const [products, setProducts] = useState([]);
+  const [restaurants, setRestaurants] = useState([]);
   const [showConfirm, setShowConfirm] = useState(false);
+  const user = JSON.parse(sessionStorage.getItem("user"));
 
   useEffect(() => {
-    const getProducts = async () => {
-      const db = getDatabase();
-      const productRef = ref(db, "products/");
-      onValue(productRef, (snapshot) => {
-        var newData = [];
-        snapshot.forEach((item) => {
-          newData.push(item.val());
-        });
-        setProducts(newData);
-      });
+   
+    const fetchRestaurants = async () => {
+      const restaurantList = await getAllRestaurants();
+      setRestaurants(restaurantList);
     };
-    getProducts();
+    fetchRestaurants();
   }, []);
   const handleDelete = (id) => {
     console.log("id", id);
@@ -55,9 +53,17 @@ const ListFood = () => {
         </div>
         <div className="d-sm-flex align-items-center justify-content-between mb-4">
           <div className="">
-          <select name="" id="">
-            <option value="">Nhà hàng 1</option>
-          </select>
+          {user.role === "ADMIN" ? (
+               <div className="">
+               <select name="" id="">
+                 {restaurants.map((restaurant, index) => (
+                   <option value={restaurant.id} key={index}>
+                     {restaurant.nameRestaurant}
+                   </option>
+                 ))}
+               </select>
+             </div>
+            ): null}
           </div>
           <div className="">
 
