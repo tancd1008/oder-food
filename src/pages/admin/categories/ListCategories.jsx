@@ -1,4 +1,3 @@
-import { getDatabase, onValue, ref } from "firebase/database";
 import React, { useEffect, useState } from "react";
 
 import { ToastContainer } from "react-toastify";
@@ -6,23 +5,22 @@ import "react-toastify/dist/ReactToastify.css";
 import ConfirmBox from "../../../components/ConfirmBox";
 import { deleteProduct, updateProduct } from "../../../services/products";
 import { Link } from "react-router-dom";
+import { getAllCategoriesInRestaurant } from "../../../services/category";
 const ListCategories = () => {
-  const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [showConfirm, setShowConfirm] = useState(false);
-
+  const user = JSON.parse(sessionStorage.getItem('user'));
   useEffect(() => {
-    const getProducts = async () => {
-      const db = getDatabase();
-      const productRef = ref(db, "products/");
-      onValue(productRef, (snapshot) => {
-        var newData = [];
-        snapshot.forEach((item) => {
-          newData.push(item.val());
-        });
-        setProducts(newData);
-      });
+    const getCategory = async () => {
+      try {
+        const listCategories = await getAllCategoriesInRestaurant(user.restaurantId);
+     setCategories(listCategories)
+      } catch (error) {
+        console.error("Đã xảy ra lỗi khi lấy danh mục:", error);
+      }
+     
     };
-    getProducts();
+    getCategory();
   }, []);
   const handleDelete = (id) => {
     console.log("id", id);
@@ -45,7 +43,7 @@ const ListCategories = () => {
     updateProduct(product.id,newProduct)
     console.log(newProduct)
   }
-
+  console.log(categories)
   return (
     <div>
       <div>
@@ -80,16 +78,16 @@ const ListCategories = () => {
           </tr>
         </thead>
         <tbody>
-          {products.map((product, index) => (
+          {categories.map((category, index) => (
             <tr key={index}>
               <th>{index + 1}</th>
-              <th>{product.name}</th>
+              <th>{category.name}</th>
               <th>
-                <img className="rounded mx-auto d-block w-25 h-25" src={product.imgSrc} alt=""/>
+                <img className="rounded mx-auto d-block w-25 h-25" src={category.imgSrc} alt=""/>
               </th>
-              <th>{product.price}</th>
-              <th>{product.desc}</th>
-              <th >{product.status === 0 ? <p className="text-success">Hoạt động</p> : <p className="text-danger">Ngừng bán</p>}</th>
+              <th>{category.price}</th>
+              <th>{category.desc}</th>
+              <th >{category.status === 0 ? <p className="text-success">Hoạt động</p> : <p className="text-danger">Ngừng bán</p>}</th>
               <th className="">
                 <button
                   className="btn btn-danger"
@@ -100,13 +98,13 @@ const ListCategories = () => {
                 <ConfirmBox
                   show={showConfirm}
                   message="Bạn có chắc chắn muốn xóa bản ghi này không?"
-                  onConfirm={() => handleDelete(product.id)}
+                  onConfirm={() => handleDelete(category.id)}
                   onCancel={()=>handleCancel()}
                 />
-                <Link to={`/admin/products/edit/${product.id}`}>
+                <Link to={`/admin/category/edit/${category.id}`}>
                 <button className="btn btn-warning ms-1">Sửa</button>
                 </Link>
-                <button className={`${product.status === 0 ? "btn btn-secondary ms-1" : "btn btn-success ms-1"}`}  onClick={() => handleUpdateStatus(product)}>{product.status === 0 ? "Dừng" : "Bán"}</button>
+                <button className={`${category.status === 0 ? "btn btn-secondary ms-1" : "btn btn-success ms-1"}`}  onClick={() => handleUpdateStatus(category)}>{category.status === 0 ? "Dừng" : "Bán"}</button>
               </th>
             </tr>
           ))}

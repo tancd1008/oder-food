@@ -7,7 +7,7 @@ import { addCategory } from "../../../services/category";
 const innititalState = {
   name: "",
   desc: "",
-  is_active: ""
+  is_active: 0,
 };
 const AddCategory = () => {
   const [state, setState] = useState(innititalState);
