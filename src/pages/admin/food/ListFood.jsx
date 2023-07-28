@@ -141,7 +141,7 @@ const ListFood = () => {
                   onConfirm={() => handleDelete(food.id, food.restaurantId)}
                   onCancel={() => handleCancel()}
                 />
-                <Link to={`/admin/products/edit/${food.id}`}>
+                <Link to={`/admin/food/edit/${user.restaurantId}/${food.id}`}>
                   <button className="btn btn-warning ms-1">Sửa</button>
                 </Link>
                 <button

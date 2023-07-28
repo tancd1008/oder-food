@@ -53,7 +53,7 @@ const privateRoutes = [
     component: AddFood,
   },
   {
-    path: "Food/edit/:id",
+    path: "Food/edit/:restaurantId/:foodId",
     component: EditFood,
   },
   {

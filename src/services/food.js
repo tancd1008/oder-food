@@ -2,6 +2,7 @@ import {
   collection,
   deleteDoc,
   doc,
+  getDoc,
   getDocs,
   setDoc,
   updateDoc,
@@ -92,5 +93,20 @@ export const updateFood = async (foodId, restaurantId, foodUpdate) => {
   } catch (error) {
     console.error("edit food failed:", error);
     throw error; // Ném lỗi để xử lý bên ngoài nếu cần
+  }
+};
+export const getDetailFood = async (foodId, restaurantId) => {
+  try {
+    const foodRef = doc(
+      database,
+      `${COLLECTION_NAME}/${restaurantId}/food/${foodId}`
+    );
+
+    // Lấy dữ liệu của document danh mục
+    const foodDoc = await getDoc(foodRef);
+   
+    return foodDoc;
+  } catch (error) {
+    return null;
   }
 };

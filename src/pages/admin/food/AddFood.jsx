@@ -95,21 +95,10 @@ const AddFood = () => {
           <label htmlFor="categoryId" className="form-label">
             Danh mục
           </label>
-          {/* <select
-            id="selectOption"
-            className="form-control"
-            name="categoryId"
-            onChange={handleInputChange}
-          >
-            {categories.map((category, index) => (
-              <option value={category.id} key={index}>
-                {category.name}
-              </option>
-            ))}
-          </select> */}
+        
           <Select
             isMulti
-            name="colors"
+            name="categories"
             options={categories}
             className="basic-multi-select"
             classNamePrefix="select"

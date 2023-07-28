@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { getDatabase, onValue, ref } from "@firebase/database";
 import { useNavigate, useParams } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { createOptionsFromData } from "../../../helper/optionsSelect";
+import { getAllCategoriesInRestaurant } from "../../../services/category";
+import { getDetailFood } from "../../../services/food";
+import Select from "react-select";
 
 const EditFood = () => {
   const [state, setState] = useState({
@@ -15,14 +18,27 @@ const EditFood = () => {
     status: 0,
   });
   const [categories, setCategories] = useState([]);
-
-  // const navigate = useNavigate();
-  const {id} = useParams();
+  const { restaurantId, foodId } = useParams();
+  const valueKeys = ["id", "name"];
+  const labelKeys = ["value", "label"];
   const navigate = useNavigate();
   useEffect(() => {
+    const getCategory = async () => {
+      const listCategories = await getAllCategoriesInRestaurant(
+        restaurantId
+      );
+      setCategories(
+        createOptionsFromData(listCategories, valueKeys, labelKeys)
+      );
+    };
+    const getFood = async () => {
+      const foodDoc = await getDetailFood(foodId,restaurantId)
+      setState(foodDoc.data())
+    }
+    getCategory();
+    getFood()
    
-   
-  }, [id]);
+  }, [restaurantId,foodId]);
  
  
   
@@ -34,7 +50,17 @@ const EditFood = () => {
       setState({ ...state, imgSrc: e.target.files[0] });
     }
   };
-
+  const handleSelectChange = (selectedOptions) => {
+    setState({
+      ...state,
+      categoryId: createOptionsFromData(selectedOptions, labelKeys, valueKeys),
+    });
+  };
+  const initialSelectedCategories = createOptionsFromData(
+    state.categoryId,
+    labelKeys,
+    valueKeys,
+  );
   const handleSubmit = (e) => {
     e.preventDefault();
    
@@ -48,10 +74,11 @@ const EditFood = () => {
     toast.error("Lỗi");
   }
   };
+  console.log(state);
   return (
     <div>
        <form onSubmit={handleSubmit}>
-        <h1 className="text-center">Thêm mới món ăn</h1>
+        <h1 className="text-center">Cập nhật món ăn</h1>
         <div className="mb-3">
           <label htmlFor="email" className="form-label">
             Tên sản phẩm
@@ -70,18 +97,15 @@ const EditFood = () => {
           <label htmlFor="password" className="form-label">
             Danh mục
           </label>
-          <select
-            id="selectOption"
-            className="form-control"
-            name="categoryId"
-            onChange={handleInputChange}
-          >
-            {categories.map((category, index) => (
-              <option value={category.id} key={index}>
-                {category.name}
-              </option>
-            ))}
-          </select>
+          <Select
+            isMulti
+            name="categories"
+            options={categories}
+            className="basic-multi-select"
+            classNamePrefix="select"
+            onChange={handleSelectChange}
+            value={initialSelectedCategories}
+          />
         </div>
         <div className="mb-3">
           <label htmlFor="password" className="form-label">
