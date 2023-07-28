@@ -1,14 +1,16 @@
-import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, updateDoc } from "firebase/firestore";
+import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, setDoc, updateDoc } from "firebase/firestore";
 import { database } from "../firebase-config";
+import { v4 as uuidv4 } from "uuid"
 
 const COLLECTION_NAME = "restaurants";
 
 export const addCategory = async (category, restaurantId) => {
   try {
-    const categoryRef = await addDoc(
-        collection(database, `${COLLECTION_NAME}/${restaurantId}/category`),
-        {...category, restaurantId: restaurantId}
-      );
+    const categoryId = uuidv4();
+    const categoryRef = doc(database, `${COLLECTION_NAME}/${restaurantId}/category/${categoryId}`);
+    
+    // Thêm dữ liệu của danh mục vào tài liệu
+    await setDoc(categoryRef, {...category, id: categoryId, restaurantId: restaurantId});
       return categoryRef.id;
   } catch (error) {
     console.error(error);

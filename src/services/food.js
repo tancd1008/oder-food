@@ -5,6 +5,7 @@ import {
   doc,
   getDoc,
   getDocs,
+  setDoc,
   updateDoc,
 } from "firebase/firestore";
 import { database } from "../firebase-config";
@@ -14,10 +15,14 @@ import {
   ref as storageRef,
   uploadBytesResumable,
 } from "firebase/storage";
+import { v4 as uuidv4 } from "uuid"
 const COLLECTION_NAME = "restaurants";
 
 export const addFood = async (food, restaurantId) => {
   try {
+    const foodId = uuidv4()
+    const foodRef = doc(database, `${COLLECTION_NAME}/${restaurantId}/food/${foodId}`);
+    
     const imageStorageRef = storageRef(storage, `images/${food.imgSrc.name}`);
     const uploadTask = uploadBytesResumable(imageStorageRef, food.imgSrc);
     const snapshot = await uploadTask;
@@ -26,10 +31,7 @@ export const addFood = async (food, restaurantId) => {
 
     // Cập nhật trường imgSrc trong đối tượng sản phẩm với URL tải xuống
     food.imgSrc = downloadURL;
-    const foodRef = await addDoc(
-      collection(database, `${COLLECTION_NAME}/${restaurantId}/food`),
-      { ...food, restaurantId: restaurantId }
-    );
+    await setDoc(foodRef, {...food, id: foodId, restaurantId: restaurantId});
     return foodRef.id;
   } catch (error) {
     console.error(error);
