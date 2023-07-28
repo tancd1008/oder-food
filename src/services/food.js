@@ -1,9 +1,7 @@
 import {
-  addDoc,
   collection,
   deleteDoc,
   doc,
-  getDoc,
   getDocs,
   setDoc,
   updateDoc,
@@ -58,20 +56,37 @@ export const getAllFoodInRestaurant = async (restaurantId) => {
     return []; // Trả về một mảng rỗng nếu có lỗi xảy ra
   }
 };
-export const deleteFood = async (foodId, restaurantId) => {
-  try {
-    // Tạo reference tới document danh mục cần xóa
-    const foodRef = doc(
-      database,
-      `${COLLECTION_NAME}/${restaurantId}/food/${foodId}`
-    );
 
-    // Xóa document danh mục
-    await deleteDoc(foodRef);
-
-    console.log("Delete food successfully!");
-  } catch (error) {
-    console.error("Delete food failed!", error);
-    throw error; // Ném lỗi để xử lý bên ngoài nếu cần
+   
+ 
+  export const deleteFood = async (foodId,restaurantId) => {
+    try {
+      // Tạo reference tới document danh mục cần xóa
+      const foodRef = doc(
+        database,
+        `${COLLECTION_NAME}/${restaurantId}/food/${foodId}`
+      );
+  
+      // Xóa document danh mục
+      await deleteDoc(foodRef);
+  
+      console.log("Delete food successfully!");
+    } catch (error) {
+      console.error("Delete food failed!", error);
+      throw error; // Ném lỗi để xử lý bên ngoài nếu cần
+    }
   }
-};
+  export const updateFood = async (foodId,restaurantId,foodUpdate) => {
+    try {
+      // Lấy reference của document danh mục dựa trên foodId
+      const foodRef = doc(database, `${COLLECTION_NAME}/${restaurantId}/food/${foodId}`);
+  
+      // Cập nhật thông tin danh mục bằng foodUpdate
+      await updateDoc(foodRef, foodUpdate);
+  
+      console.log("Edit food successfully!");
+    } catch (error) {
+      console.error("edit food failed:", error);
+      throw error; // Ném lỗi để xử lý bên ngoài nếu cần
+    }
+  }

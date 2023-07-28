@@ -6,7 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 import ConfirmBox from "../../../components/ConfirmBox";
 import { Link } from "react-router-dom";
 import { getAllRestaurants } from "../../../services/restaurents";
-import { deleteFood, getAllFoodInRestaurant } from "../../../services/food";
+import { deleteFood, getAllFoodInRestaurant, updateFood } from "../../../services/food";
 const ListFood = () => {
   const [foods, setFoods] = useState([]);
   const [restaurants, setRestaurants] = useState([]);
@@ -47,16 +47,17 @@ const ListFood = () => {
   const handleCancel = () => {
     setShowConfirm(false);
   };
-  const handleUpdateStatus = (product) => {
-    var newProduct = { ...product };
-    if (product.status === 0) {
-      newProduct = { ...product, status: 1 };
-      console.log("1");
+  const handleUpdateStatus = async (food) => {
+    var newFood = { ...food };
+    if (food.is_active === 0) {
+      newFood = { ...food, is_active: 1 };
     } else {
-      console.log("0");
-      newProduct = { ...product, status: 0 };
+      newFood = { ...food, is_active: 0 };
     }
-    console.log(newProduct);
+    await updateFood(food.id, food.restaurantId, newFood);
+    const listFoods = await getAllFoodInRestaurant(user.restaurantId);
+    setFoods(listFoods);
+    
   };
 
   return (
@@ -118,7 +119,7 @@ const ListFood = () => {
               <th>{food.price}</th>
               <th>{food.desc}</th>
               <th>
-                {food.status === 0 ? (
+                {food.is_active === 0 ? (
                   <p className="text-success">Hoạt động</p>
                 ) : (
                   <p className="text-danger">Ngừng bán</p>
@@ -134,7 +135,7 @@ const ListFood = () => {
                 <ConfirmBox
                   show={showConfirm}
                   message="Bạn có chắc chắn muốn xóa bản ghi này không?"
-                  onConfirm={() => handleDelete(food.id, user.restaurantId)}
+                  onConfirm={() => handleDelete(food.id, food.restaurantId)}
                   onCancel={() => handleCancel()}
                 />
                 <Link to={`/admin/products/edit/${food.id}`}>
@@ -142,13 +143,13 @@ const ListFood = () => {
                 </Link>
                 <button
                   className={`${
-                    food.status === 0
+                    food.is_active === 0
                       ? "btn btn-secondary ms-1"
                       : "btn btn-success ms-1"
                   }`}
                   onClick={() => handleUpdateStatus(food)}
                 >
-                  {food.status === 0 ? "Dừng" : "Bán"}
+                  {food.is_active === 0 ? "Dừng" : "Bán"}
                 </button>
               </th>
             </tr>
