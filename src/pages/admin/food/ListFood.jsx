@@ -6,7 +6,11 @@ import "react-toastify/dist/ReactToastify.css";
 import ConfirmBox from "../../../components/ConfirmBox";
 import { Link } from "react-router-dom";
 import { getAllRestaurants } from "../../../services/restaurents";
-import { deleteFood, getAllFoodInRestaurant, updateFood } from "../../../services/food";
+import {
+  deleteFood,
+  getAllFoodInRestaurant,
+  updateFood,
+} from "../../../services/food";
 const ListFood = () => {
   const [foods, setFoods] = useState([]);
   const [restaurants, setRestaurants] = useState([]);
@@ -36,9 +40,9 @@ const ListFood = () => {
     try {
       console.log(foodId);
       deleteFood(foodId, restaurantId);
-      setShowConfirm(false);
       const listFoods = await getAllFoodInRestaurant(restaurantId);
       setFoods(listFoods);
+      setShowConfirm(false);
     } catch (error) {
       console.log(error);
     }
@@ -57,7 +61,6 @@ const ListFood = () => {
     await updateFood(food.id, food.restaurantId, newFood);
     const listFoods = await getAllFoodInRestaurant(user.restaurantId);
     setFoods(listFoods);
-    
   };
 
   return (
