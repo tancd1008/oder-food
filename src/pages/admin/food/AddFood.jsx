@@ -19,11 +19,7 @@ const innititalState = {
   categoryId: [],
   is_active: 0,
 };
-const options = [
-  { value: "chocolate", label: "Chocolate" },
-  { value: "strawberry", label: "Strawberry" },
-  { value: "vanilla", label: "Vanilla" },
-];
+
 const AddFood = () => {
   const [state, setState] = useState(innititalState);
   const [categories, setCategories] = useState([]);
@@ -62,7 +58,7 @@ const AddFood = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const newFoodData = { ...state };
-    console.log(newFoodData)
+    console.log(newFoodData);
     await addFood(newFoodData, user.restaurantId)
       .then((foodId) => {
         console.log("Food added successfully with ID: ", foodId);
