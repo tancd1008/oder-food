@@ -4,7 +4,12 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Select from "react-select";
 import { getAllCategoriesInRestaurant } from "../../../services/category";
-import { convertOptions, createOptionsFromData } from "../../../helper/optionsSelect";
+import {
+  convertOptions,
+  createOptionsFromData,
+} from "../../../helper/optionsSelect";
+import { addFood } from "../../../services/food";
+import { useNavigate } from "react-router-dom";
 const innititalState = {
   id: "",
   name: "",
@@ -22,19 +27,20 @@ const options = [
 const AddFood = () => {
   const [state, setState] = useState(innititalState);
   const [categories, setCategories] = useState([]);
-
+  const navigate = useNavigate();
   const { name, price, desc, imgSrc } = state;
   const user = JSON.parse(sessionStorage.getItem("user"));
-  const valueKeys = ["id","name"];
-  const labelKeys = ["value", "label"]
+  const valueKeys = ["id", "name"];
+  const labelKeys = ["value", "label"];
 
   useEffect(() => {
     const getCategory = async () => {
       const listCategories = await getAllCategoriesInRestaurant(
         user.restaurantId
       );
-      console.log(listCategories)
-      setCategories(createOptionsFromData(listCategories,valueKeys,labelKeys));
+      setCategories(
+        createOptionsFromData(listCategories, valueKeys, labelKeys)
+      );
     };
     getCategory();
   }, []);
@@ -48,12 +54,27 @@ const AddFood = () => {
     }
   };
   const handleSelectChange = (selectedOptions) => {
-    setState({...state, categoryId: createOptionsFromData(selectedOptions,labelKeys,valueKeys)})
-  }
-  const handleSubmit = (e) => {
+    setState({
+      ...state,
+      categoryId: createOptionsFromData(selectedOptions, labelKeys, valueKeys),
+    });
+  };
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const newProductData = { ...state };
-    console.log(newProductData);
+    const newFoodData = { ...state };
+    console.log(newFoodData)
+    await addFood(newFoodData, user.restaurantId)
+      .then((foodId) => {
+        console.log("Food added successfully with ID: ", foodId);
+        toast.success("Food added successfully!");
+        setTimeout(() => {
+          navigate("/admin/food/list");
+        }, 2500);
+      })
+      .catch((error) => {
+        console.error("Failed to add food: ", error);
+        toast.error("Failed to add food!");
+      });
   };
 
   return (

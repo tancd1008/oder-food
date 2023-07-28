@@ -1,0 +1,26 @@
+import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, updateDoc } from "firebase/firestore";
+import { database } from "../firebase-config";
+import { storage } from "../firebase-config";
+import { getDownloadURL, ref as storageRef, uploadBytesResumable } from "firebase/storage";
+const COLLECTION_NAME = "restaurants";
+
+export const addFood = async (food, restaurantId) => {
+    try {
+        const imageStorageRef = storageRef(storage, `images/${food.imgSrc.name}`);
+            const uploadTask = uploadBytesResumable(imageStorageRef, food.imgSrc);
+            const snapshot = await uploadTask;
+            // Lấy URL tải xuống từ ảnh đã tải lên
+            const downloadURL = await getDownloadURL(snapshot.ref);
+        
+            // Cập nhật trường imgSrc trong đối tượng sản phẩm với URL tải xuống
+            food.imgSrc = downloadURL;
+      const foodRef = await addDoc(
+          collection(database, `${COLLECTION_NAME}/${restaurantId}/food`),
+          {...food, restaurantId: restaurantId}
+        );
+        return foodRef.id;
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
+  };

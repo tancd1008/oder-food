@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ConfirmBox from "../../../components/ConfirmBox";
-import { deleteProduct, updateProduct } from "../../../services/products";
 import { Link } from "react-router-dom";
 import { getAllCategoriesInRestaurant } from "../../../services/category";
 import { getAllRestaurants } from "../../../services/restaurents";
@@ -24,7 +23,6 @@ const ListFood = () => {
   }, []);
   const handleDelete = (id) => {
     console.log("id", id);
-    deleteProduct(id);
     setShowConfirm(false);
   };
 
@@ -40,7 +38,6 @@ const ListFood = () => {
       console.log("0")
        newProduct = {...product, status: 0}
     }
-    updateProduct(product.id,newProduct)
     console.log(newProduct)
   }
 

@@ -3,7 +3,6 @@ import { getDatabase, onValue, ref } from "@firebase/database";
 import { useNavigate, useParams } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import {  getProductDetail, updateProduct } from "../../../services/products";
 
 const EditFood = () => {
   const [state, setState] = useState({
@@ -21,27 +20,7 @@ const EditFood = () => {
   const {id} = useParams();
   const navigate = useNavigate();
   useEffect(() => {
-    const getCategory = async () => {
-      const db = getDatabase();
-      const productRef = ref(db, "categories/");
-      onValue(productRef, (snapshot) => {
-        var newData = [];
-        snapshot.forEach((item) => {
-          newData.push(item.val());
-        });
-        setCategories(newData);
-      });
-    }; const getProduct = async () => {
-      const productData = await getProductDetail(id);
-      if(productData) {
-        setState(productData); // Cập nhật dữ liệu vào state sau khi lấy được sản phẩm
-      }
-     
-    };
-    getProduct();
    
-    
-    getCategory();
    
   }, [id]);
  
@@ -60,7 +39,7 @@ const EditFood = () => {
     e.preventDefault();
    
    try {
-    updateProduct(id,state)
+ 
     toast.success("Cập nhật sản phẩm thành công");
     setTimeout(() => {
       navigate("/admin/list");

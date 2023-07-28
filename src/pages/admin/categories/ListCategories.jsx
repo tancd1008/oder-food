@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ConfirmBox from "../../../components/ConfirmBox";
-import { deleteProduct } from "../../../services/products";
+import { deleteProduct } from "../../../services/food";
 import { Link } from "react-router-dom";
 import { deleteCategory, getAllCategoriesInRestaurant, updateCategory } from "../../../services/category";
 import { getAllRestaurants } from "../../../services/restaurents";
