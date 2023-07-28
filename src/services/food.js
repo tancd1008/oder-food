@@ -24,3 +24,23 @@ export const addFood = async (food, restaurantId) => {
       return null;
     }
   };
+  export const getAllFoodInRestaurant = async (restaurantId) => {
+    try {
+      // Lấy danh sách danh mục từ Firestore
+      
+      const foodSnapshot = await getDocs(
+        collection(database, `${COLLECTION_NAME}/${restaurantId}/food`)
+      );
+  
+      // Biến categorySnapshot chứa một danh sách các tài liệu (documents) trong collection
+      const foods = foodSnapshot.docs.map((doc) => {
+        // Trả về dữ liệu của từng tài liệu (document) trong danh sách
+        return { id: doc.id, ...doc.data() };
+      });
+  
+      return foods;
+    } catch (error) {
+      console.error('Failed to food', error);
+      return []; // Trả về một mảng rỗng nếu có lỗi xảy ra
+    }
+  };

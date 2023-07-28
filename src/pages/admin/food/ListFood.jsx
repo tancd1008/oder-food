@@ -7,8 +7,9 @@ import ConfirmBox from "../../../components/ConfirmBox";
 import { Link } from "react-router-dom";
 import { getAllCategoriesInRestaurant } from "../../../services/category";
 import { getAllRestaurants } from "../../../services/restaurents";
+import { getAllFoodInRestaurant } from "../../../services/food";
 const ListFood = () => {
-  const [products, setProducts] = useState([]);
+  const [foods, setFoods] = useState([]);
   const [restaurants, setRestaurants] = useState([]);
   const [showConfirm, setShowConfirm] = useState(false);
   const user = JSON.parse(sessionStorage.getItem("user"));
@@ -19,7 +20,21 @@ const ListFood = () => {
       const restaurantList = await getAllRestaurants();
       setRestaurants(restaurantList);
     };
+    const getAllFood = async () => {
+      try {
+        if (!user.restaurantId) {
+        } else {
+          const listFoods = await getAllFoodInRestaurant(
+            user.restaurantId
+          );
+          setFoods(listFoods);
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    }
     fetchRestaurants();
+    getAllFood();
   }, []);
   const handleDelete = (id) => {
     console.log("id", id);
@@ -83,7 +98,7 @@ const ListFood = () => {
           </tr>
         </thead>
         <tbody>
-          {products.map((product, index) => (
+          {foods.map((product, index) => (
             <tr key={index}>
               <th>{index + 1}</th>
               <th>{product.name}</th>
