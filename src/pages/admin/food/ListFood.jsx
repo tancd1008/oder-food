@@ -11,11 +11,12 @@ import {
   getAllFoodInRestaurant,
   updateFood,
 } from "../../../services/food";
+import { getUserDataFromSessionStorage } from "../../../services/encode";
 const ListFood = () => {
   const [foods, setFoods] = useState([]);
   const [restaurants, setRestaurants] = useState([]);
   const [showConfirm, setShowConfirm] = useState(false);
-  const user = JSON.parse(sessionStorage.getItem("user"));
+  const user = getUserDataFromSessionStorage();
 
   useEffect(() => {
     const fetchRestaurants = async () => {

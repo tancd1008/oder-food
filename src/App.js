@@ -10,20 +10,14 @@ import {
   publicRoutes,
 } from "./routes/Routers";
 import { createUser } from "./services/users";
+import { getUserDataFromSessionStorage } from "./services/encode";
 
 function App() {
-  const user = JSON.parse(sessionStorage.getItem("user"));
+  const user = getUserDataFromSessionStorage();
 
   useEffect(() => {
-    // createUser({
-    //   email: "oderfood333@gmail.com",
-    //   imageUrl: "",
-    //   is_active: true,
-    //   name: "Admin",
-    //   role: "ADMIN",
-    // });
+   
   }, []);
-  console.log(user);
   return (
     <div className="App " style={{ minHeight: "100vh" }}>
       <Routes>

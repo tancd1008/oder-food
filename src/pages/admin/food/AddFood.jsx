@@ -10,6 +10,7 @@ import {
 } from "../../../helper/optionsSelect";
 import { addFood } from "../../../services/food";
 import { useNavigate } from "react-router-dom";
+import { getUserDataFromSessionStorage } from "../../../services/encode";
 const innititalState = {
   id: "",
   name: "",
@@ -25,7 +26,7 @@ const AddFood = () => {
   const [categories, setCategories] = useState([]);
   const navigate = useNavigate();
   const { name, price, desc, imgSrc } = state;
-  const user = JSON.parse(sessionStorage.getItem("user"));
+  const user = getUserDataFromSessionStorage();
   const valueKeys = ["id", "name"];
   const labelKeys = ["value", "label"];
 

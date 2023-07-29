@@ -15,6 +15,7 @@ import {
 } from "firebase/firestore";
 import { toast } from "react-toastify";
 import { auth, database } from "../firebase-config";
+import { saveUserDataToSessionStorage } from "./encode";
 
 const COLLECTION_NAME = "users";
 export const createUser = async (userInfo) => {
@@ -141,7 +142,7 @@ export const loginAndFetchUserData = async (account) => {
       const userData = docSnapshot.data();
       toast.success("Bạn đăng nhập thành công!");
       const user = { ...userData, token, userId };
-      sessionStorage.setItem(`user`, JSON.stringify(user));
+      saveUserDataToSessionStorage(user)
       setTimeout(() => {
         window.location.href = "/admin";
       }, 3000);
