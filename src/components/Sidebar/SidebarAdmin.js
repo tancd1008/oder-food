@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 const SidebarAdmin = () => {
   // const [open, setOpen] = useState(true);
   const userRole = JSON.parse(sessionStorage.getItem("user")).role;
-  console.log(userRole);
   const Menus = [
     { title: "Dashboard", path: "" },
     { title: "Danh sách nhà hàng", path: "restaurant/list", show: userRole ==="ADMIN" },

@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import Select from "react-select";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import {  convertOptions, createOptionsFromData } from "../../../helper/optionsSelect";
+import { createOptionsFromData } from "../../../helper/optionsSelect";
 import { getAllCategoriesInRestaurant } from "../../../services/category";
 import { getDetailFood, updateFood } from "../../../services/food";
-import Select from "react-select";
 
 const EditFood = () => {
   const [state, setState] = useState({
@@ -18,36 +18,44 @@ const EditFood = () => {
     status: 0,
   });
   const [categories, setCategories] = useState([]);
-  const [selectOld, setSlectOld] = useState();
+  const [selectOld, setSelectOld] = useState([]);
+  const [errors, setErrors] = useState({
+    name: "",
+    price: "",
+    desc: "",
+    imgSrc: "",
+    categoryId: [],
+    is_active: 0,
+  });
   const { restaurantId, foodId } = useParams();
-  const valueKeys = ["id", "name"];
-  const labelKeys = ["value", "label"];
+
   const navigate = useNavigate();
-  useEffect(() => {
-    const getCategory = async () => {
-      const listCategories = await getAllCategoriesInRestaurant(
-        restaurantId
-      );
-      setCategories(
-        createOptionsFromData(listCategories, valueKeys, labelKeys)
-      );
-    };
-    const getFood = async () => {
-      const foodDoc = await getDetailFood(foodId,restaurantId)
-      setState(foodDoc.data())
-      // Convert dữ liệu trong categoryId sang định dạng của Select
-      const convertedOptions = createOptionsFromData(foodDoc.data().categoryId, valueKeys,labelKeys  );
-      setSlectOld(convertedOptions);
-    
+  function areAllValuesFilled(obj) {
+    const invalidFields = [];
+    for (const key in obj) {
+      if (obj.hasOwnProperty(key)) {
+        const value = obj[key];
+        if (
+          (typeof value === "string" && value.trim() === "") ||
+          (Array.isArray(value) && value.length === 0) ||
+          (typeof value === "number" && isNaN(value))
+        ) {
+          invalidFields.push(key);
+        }
+      }
     }
-    getCategory();
-    getFood()
-   
-  }, [restaurantId,foodId]);
- 
- 
-  
+    return { isValid: invalidFields.length === 0, invalidFields };
+  }
+
   const handleInputChange = (e) => {
+    setErrors({
+      name: "",
+      price: "",
+      desc: "",
+      imgSrc: "",
+      categoryId: [],
+      is_active: 0,
+    });
     const { name, value } = e.target;
     if (name === "imgSrc") {
       // Kiểm tra xem có chọn ảnh mới hay không
@@ -61,28 +69,65 @@ const EditFood = () => {
     }
   };
   const handleSelectChange = (selectedOptions) => {
+    var newArray = [];
+    if (selectedOptions.length > 0) {
+      newArray = selectedOptions.map((item) => item.value);
+    }
     setState({
       ...state,
-      categoryId: createOptionsFromData(selectedOptions, labelKeys, valueKeys),
+      categoryId: newArray,
     });
   };
-  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-   
-   try {
-    await updateFood(foodId,restaurantId,state)
-    toast.success("Cập nhật sản phẩm thành công");
-    setTimeout(() => {
-      navigate("/admin/food/list");
-    }, 3000);
-  } catch (error) {
-    toast.error("Lỗi");
-  }
+    const validationObj = state;
+    delete validationObj.id;
+    const validation = areAllValuesFilled(validationObj);
+    if (validation.isValid) {
+      try {
+        await updateFood(foodId, restaurantId, state);
+        toast.success("Cập nhật sản phẩm thành công", {
+          onClose: () => {
+            navigate("/admin/food/list"); // Chuyển trang sau khi toast biến mất
+          },
+        });
+      } catch (error) {
+        toast.error("Lỗi");
+      }
+    } else {
+      var newError = errors;
+      validation.invalidFields.map((item) => {
+        newError[item] = "Must not be left blank";
+        return true;
+      });
+      setErrors({ ...errors, newError });
+    }
   };
+  useEffect(() => {
+    const getFood = async () => {
+      const valueKeys = ["id", "name"];
+      const labelKeys = ["value", "label"];
+      const foodDoc = await getDetailFood(foodId, restaurantId);
+      const listCategories = await getAllCategoriesInRestaurant(restaurantId);
+      setCategories(
+        createOptionsFromData(listCategories, valueKeys, labelKeys)
+      );
+      var convertedOptions = createOptionsFromData(
+        listCategories,
+        valueKeys,
+        labelKeys
+      ).filter((item) =>
+        foodDoc.data().categoryId.some((value) => value === item.value)
+      );
+      setState(foodDoc.data());
+      setSelectOld(convertedOptions);
+    };
+    getFood();
+  }, [restaurantId, foodId]);
   return (
     <div>
-       <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit}>
         <h1 className="text-center">Cập nhật món ăn</h1>
         <div className="mb-3">
           <label htmlFor="email" className="form-label">
@@ -97,20 +142,28 @@ const EditFood = () => {
             value={state.name}
             onChange={handleInputChange}
           />
+          {errors.name.length > 0 && (
+            <p className="text-danger">{errors.name}</p>
+          )}
         </div>
         <div className="mb-3">
           <label htmlFor="password" className="form-label">
             Danh mục
           </label>
-          <Select
-            isMulti
-            name="categories"
-            options={categories}
-            className="basic-multi-select"
-            classNamePrefix="select"
-            onChange={handleSelectChange}
-            value={selectOld}
-          />
+          {selectOld && selectOld?.length > 0 && (
+            <Select
+              isMulti
+              name="categories"
+              options={categories}
+              className="basic-multi-select"
+              classNamePrefix="select"
+              onChange={handleSelectChange}
+              defaultValue={selectOld}
+            />
+          )}
+          {errors.categoryId.length > 0 && (
+            <p className="text-danger">{errors.categoryId}</p>
+          )}
         </div>
         <div className="mb-3">
           <label htmlFor="password" className="form-label">
@@ -125,6 +178,9 @@ const EditFood = () => {
             value={state.price}
             onChange={handleInputChange}
           />
+          {errors.price.length > 0 && (
+            <p className="text-danger">{errors.price}</p>
+          )}
         </div>
         <div className="mb-3">
           <label htmlFor="password" className="form-label">
@@ -139,6 +195,9 @@ const EditFood = () => {
             value={state.desc}
             onChange={handleInputChange}
           />
+          {errors.desc.length > 0 && (
+            <p className="text-danger">{errors.desc}</p>
+          )}
         </div>
         <div className=" mb-3">
           <label htmlFor="dropzone-file" className="form-label">
@@ -150,15 +209,18 @@ const EditFood = () => {
               onChange={handleInputChange}
             />
           </label>
+          {errors.imgSrc.length > 0 && (
+            <p className="text-danger">{errors.imgSrc}</p>
+          )}
         </div>
         <button type="submit" className="btn btn-primary">
           Cập nhật
         </button>
-       
+
         <ToastContainer position="top-center" />
       </form>
     </div>
-  )
-}
+  );
+};
 
-export default EditFood
+export default EditFood;

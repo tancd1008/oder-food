@@ -1,16 +1,12 @@
-import { getDatabase, onValue, ref } from "@firebase/database";
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import Select from "react-select";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Select from "react-select";
+import { createOptionsFromData } from "../../../helper/optionsSelect";
 import { getAllCategoriesInRestaurant } from "../../../services/category";
-import {
-  convertOptions,
-  createOptionsFromData,
-} from "../../../helper/optionsSelect";
 import { addFood } from "../../../services/food";
-import { useNavigate } from "react-router-dom";
-const innititalState = {
+const initialState = {
   id: "",
   name: "",
   price: "",
@@ -21,16 +17,94 @@ const innititalState = {
 };
 
 const AddFood = () => {
-  const [state, setState] = useState(innititalState);
+  const [state, setState] = useState(initialState);
   const [categories, setCategories] = useState([]);
+  const [errors, setErrors] = useState({
+    name: "",
+    price: "",
+    desc: "",
+    imgSrc: "",
+    categoryId: [],
+    is_active: 0,
+  });
   const navigate = useNavigate();
-  const { name, price, desc, imgSrc } = state;
+  const { name, price, desc } = state;
   const user = JSON.parse(sessionStorage.getItem("user"));
-  const valueKeys = ["id", "name"];
-  const labelKeys = ["value", "label"];
 
+  function areAllValuesFilled(obj) {
+    const invalidFields = [];
+    for (const key in obj) {
+      if (obj.hasOwnProperty(key)) {
+        const value = obj[key];
+        if (
+          (typeof value === "string" && value.trim() === "") ||
+          (Array.isArray(value) && value.length === 0) ||
+          (typeof value === "number" && isNaN(value))
+        ) {
+          invalidFields.push(key);
+        }
+      }
+    }
+    return { isValid: invalidFields.length === 0, invalidFields };
+  }
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setErrors({
+      name: "",
+      price: "",
+      desc: "",
+      imgSrc: "",
+      categoryId: [],
+      is_active: 0,
+    });
+    if (!e.target.files) {
+      setState({ ...state, [name]: value });
+    } else {
+      setState({ ...state, imgSrc: e.target.files[0] });
+    }
+  };
+  const handleSelectChange = (selectedOptions) => {
+    var newArray = [];
+    if (selectedOptions.length > 0) {
+      newArray = selectedOptions.map((item) => item.value);
+    }
+    setState({
+      ...state,
+      categoryId: newArray,
+    });
+  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const newFoodData = { ...state };
+    const validationObj = state;
+    delete validationObj.id;
+    const validation = areAllValuesFilled(validationObj);
+
+    if (validation.isValid) {
+      try {
+        await addFood(newFoodData, user.restaurantId);
+        toast.success("Food added successfully!", {
+          onClose: () => {
+            navigate("/admin/food/list"); // Chuyển trang sau khi toast biến mất
+          },
+        });
+      } catch (error) {
+        toast.error("Failed to add food!");
+      }
+    } else {
+      var newError = errors;
+      validation.invalidFields.map((item) => {
+        newError[item] = "Must not be left blank";
+        return true;
+      });
+      setErrors({ ...errors, newError });
+    }
+  };
   useEffect(() => {
     const getCategory = async () => {
+      const valueKeys = ["id", "name"];
+      const labelKeys = ["value", "label"];
       const listCategories = await getAllCategoriesInRestaurant(
         user.restaurantId
       );
@@ -39,36 +113,7 @@ const AddFood = () => {
       );
     };
     getCategory();
-  }, []);
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    if (!e.target.files) {
-      setState({ ...state, [name]: value });
-    } else {
-      setState({ ...state, imgSrc: e.target.files[0] });
-    }
-  };
-  const handleSelectChange = (selectedOptions) => {
-    setState({
-      ...state,
-      categoryId: createOptionsFromData(selectedOptions, labelKeys, valueKeys),
-    });
-  };
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const newFoodData = { ...state };
-    await addFood(newFoodData, user.restaurantId)
-      .then((foodId) => {
-        toast.success("Food added successfully!");
-        setTimeout(() => {
-          navigate("/admin/food/list");
-        }, 2500);
-      })
-      .catch((error) => {
-        toast.error("Failed to add food!");
-      });
-  };
+  }, [user.restaurantId]);
 
   return (
     <div>
@@ -87,12 +132,15 @@ const AddFood = () => {
             value={name}
             onChange={handleInputChange}
           />
+          {errors.name.length > 0 && (
+            <p className="text-danger">{errors.name}</p>
+          )}
         </div>
         <div className="mb-3">
           <label htmlFor="categoryId" className="form-label">
             Danh mục
           </label>
-        
+
           <Select
             isMulti
             name="categories"
@@ -101,6 +149,9 @@ const AddFood = () => {
             classNamePrefix="select"
             onChange={handleSelectChange}
           />
+          {errors.categoryId.length > 0 && (
+            <p className="text-danger">{errors.categoryId}</p>
+          )}
         </div>
         <div className="mb-3">
           <label htmlFor="password" className="form-label">
@@ -115,6 +166,9 @@ const AddFood = () => {
             value={price}
             onChange={handleInputChange}
           />
+          {errors.price.length > 0 && (
+            <p className="text-danger">{errors.price}</p>
+          )}
         </div>
         <div className="mb-3">
           <label htmlFor="password" className="form-label">
@@ -129,6 +183,9 @@ const AddFood = () => {
             value={desc}
             onChange={handleInputChange}
           />
+          {errors.desc.length > 0 && (
+            <p className="text-danger">{errors.desc}</p>
+          )}
         </div>
         <div className=" mb-3">
           <label htmlFor="dropzone-file" className="form-label">
@@ -140,6 +197,9 @@ const AddFood = () => {
               onChange={handleInputChange}
             />
           </label>
+          {errors.imgSrc.length > 0 && (
+            <p className="text-danger">{errors.imgSrc}</p>
+          )}
         </div>
         <button type="submit" className="btn btn-primary">
           Thêm mới

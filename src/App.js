@@ -9,7 +9,6 @@ import {
   privateRoutes,
   publicRoutes,
 } from "./routes/Routers";
-import { createUser } from "./services/users";
 
 function App() {
   const user = JSON.parse(sessionStorage.getItem("user"));
@@ -23,7 +22,6 @@ function App() {
     //   role: "ADMIN",
     // });
   }, []);
-  console.log(user);
   return (
     <div className="App " style={{ minHeight: "100vh" }}>
       <Routes>

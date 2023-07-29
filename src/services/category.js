@@ -1,15 +1,14 @@
 import {
-  addDoc,
   collection,
   deleteDoc,
   doc,
   getDoc,
   getDocs,
   setDoc,
-  updateDoc,
+  updateDoc
 } from "firebase/firestore";
-import { database } from "../firebase-config";
 import { v4 as uuidv4 } from "uuid";
+import { database } from "../firebase-config";
 
 const COLLECTION_NAME = "restaurants";
 

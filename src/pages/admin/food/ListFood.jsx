@@ -1,16 +1,15 @@
-import { getDatabase, onValue, ref } from "firebase/database";
 import React, { useEffect, useState } from "react";
 
+import { Link } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ConfirmBox from "../../../components/ConfirmBox";
-import { Link } from "react-router-dom";
-import { getAllRestaurants } from "../../../services/restaurents";
 import {
   deleteFood,
   getAllFoodInRestaurant,
   updateFood,
 } from "../../../services/food";
+import { getAllRestaurants } from "../../../services/restaurents";
 const ListFood = () => {
   const [foods, setFoods] = useState([]);
   const [restaurants, setRestaurants] = useState([]);
@@ -35,7 +34,7 @@ const ListFood = () => {
     };
     fetchRestaurants();
     getAllFood();
-  }, []);
+  }, [user.restaurantId]);
   const handleDelete = async (foodId, restaurantId) => {
     try {
       deleteFood(foodId, restaurantId);
