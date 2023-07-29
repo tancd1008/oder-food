@@ -1,18 +1,10 @@
 
-export const convertOptions = (options, targetType) => {
-  if (targetType === "id-name") {
-    return options.map((option) => ({
-      id: option.value,
-      name: option.label,
-    }));
-  } else if (targetType === "value-label") {
-    return options.map((option) => ({
-      value: option.id,
-      label: option.name,
-    }));
-  } else {
-    return options;
-  }
+export const convertOptions = (data, valueKey, labelKey, defaultValue) => {
+  if (!Array.isArray(data)) return [];
+  return data.map(item => ({
+    value: item[valueKey] || defaultValue.value,
+    label: item[labelKey] || defaultValue.label,
+  }));
 };
 export const createOptionsFromData = (data, valueKeys, labelKeys) => {
   const options = [];

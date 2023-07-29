@@ -85,7 +85,18 @@ export const updateFood = async (foodId, restaurantId, foodUpdate) => {
       database,
       `${COLLECTION_NAME}/${restaurantId}/food/${foodId}`
     );
-
+   
+    if (foodUpdate.imgSrc && typeof foodUpdate.imgSrc !== "string") {
+      const imageStorageRef = storageRef(storage, `images/${foodUpdate.imgSrc.name}`);
+      const uploadTask = uploadBytesResumable(imageStorageRef, foodUpdate.imgSrc);
+      const snapshot = await uploadTask;
+      // Lấy URL tải xuống từ ảnh đã tải lên
+      const downloadURL = await getDownloadURL(snapshot.ref);
+      foodUpdate.imgSrc = downloadURL;
+    } else {
+      // Nếu không có ảnh mới, giữ nguyên URL ảnh cũ
+      delete foodUpdate.imgSrc; // Xóa trường imgSrc để giữ nguyên URL ảnh cũ
+    }
     // Cập nhật thông tin danh mục bằng foodUpdate
     await updateDoc(foodRef, foodUpdate);
 

@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { createOptionsFromData } from "../../../helper/optionsSelect";
+import {  convertOptions, createOptionsFromData } from "../../../helper/optionsSelect";
 import { getAllCategoriesInRestaurant } from "../../../services/category";
-import { getDetailFood } from "../../../services/food";
+import { getDetailFood, updateFood } from "../../../services/food";
 import Select from "react-select";
 
 const EditFood = () => {
@@ -18,6 +18,7 @@ const EditFood = () => {
     status: 0,
   });
   const [categories, setCategories] = useState([]);
+  const [selectOld, setSlectOld] = useState();
   const { restaurantId, foodId } = useParams();
   const valueKeys = ["id", "name"];
   const labelKeys = ["value", "label"];
@@ -34,6 +35,10 @@ const EditFood = () => {
     const getFood = async () => {
       const foodDoc = await getDetailFood(foodId,restaurantId)
       setState(foodDoc.data())
+      // Convert dữ liệu trong categoryId sang định dạng của Select
+      const convertedOptions = createOptionsFromData(foodDoc.data().categoryId, valueKeys,labelKeys  );
+      setSlectOld(convertedOptions);
+    
     }
     getCategory();
     getFood()
@@ -44,10 +49,15 @@ const EditFood = () => {
   
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    if (!e.target.files) {
-      setState({ ...state, [name]: value });
+    if (name === "imgSrc") {
+      // Kiểm tra xem có chọn ảnh mới hay không
+      if (e.target.files && e.target.files.length > 0) {
+        // Nếu có chọn ảnh mới, lấy ảnh đầu tiên trong danh sách files
+        setState({ ...state, imgSrc: e.target.files[0] });
+      }
     } else {
-      setState({ ...state, imgSrc: e.target.files[0] });
+      // Nếu không phải trường imgSrc, giữ nguyên giá trị
+      setState({ ...state, [name]: value });
     }
   };
   const handleSelectChange = (selectedOptions) => {
@@ -56,25 +66,20 @@ const EditFood = () => {
       categoryId: createOptionsFromData(selectedOptions, labelKeys, valueKeys),
     });
   };
-  const initialSelectedCategories = createOptionsFromData(
-    state.categoryId,
-    labelKeys,
-    valueKeys,
-  );
-  const handleSubmit = (e) => {
+  
+  const handleSubmit = async (e) => {
     e.preventDefault();
    
    try {
- 
+    await updateFood(foodId,restaurantId,state)
     toast.success("Cập nhật sản phẩm thành công");
     setTimeout(() => {
-      navigate("/admin/list");
+      navigate("/admin/food/list");
     }, 3000);
   } catch (error) {
     toast.error("Lỗi");
   }
   };
-  console.log(state);
   return (
     <div>
        <form onSubmit={handleSubmit}>
@@ -104,7 +109,7 @@ const EditFood = () => {
             className="basic-multi-select"
             classNamePrefix="select"
             onChange={handleSelectChange}
-            value={initialSelectedCategories}
+            value={selectOld}
           />
         </div>
         <div className="mb-3">
