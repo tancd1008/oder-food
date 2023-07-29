@@ -18,8 +18,6 @@ const EditCategory = () => {
     const navigate = useNavigate()
     useEffect(() => {
         const getCategory = async () => {
-            console.log(categoryId)
-            console.log(restaurantId)
             const categoryDoc = await getDetailCategory(categoryId, restaurantId)
             setState(categoryDoc.data())
         }

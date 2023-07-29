@@ -38,7 +38,6 @@ const ListFood = () => {
   }, []);
   const handleDelete = async (foodId, restaurantId) => {
     try {
-      console.log(foodId);
       deleteFood(foodId, restaurantId);
       const listFoods = await getAllFoodInRestaurant(restaurantId);
       setFoods(listFoods);

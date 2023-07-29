@@ -58,17 +58,14 @@ const AddFood = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const newFoodData = { ...state };
-    console.log(newFoodData);
     await addFood(newFoodData, user.restaurantId)
       .then((foodId) => {
-        console.log("Food added successfully with ID: ", foodId);
         toast.success("Food added successfully!");
         setTimeout(() => {
           navigate("/admin/food/list");
         }, 2500);
       })
       .catch((error) => {
-        console.error("Failed to add food: ", error);
         toast.error("Failed to add food!");
       });
   };

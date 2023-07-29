@@ -13,7 +13,6 @@ const AddCategory = () => {
   const [state, setState] = useState(innititalState);
   const { name, desc } = state;
   const user = JSON.parse(sessionStorage.getItem('user'));
-  console.log(user)
   const navigate = useNavigate()
   const handleInputChange = (e) => {
     const { name, value } = e.target;

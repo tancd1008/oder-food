@@ -24,7 +24,6 @@ const ListCategories = () => {
           setCategories(listCategories);
         }
       } catch (error) {
-        console.error("Đã xảy ra lỗi khi lấy danh mục:", error);
       }
     };
     const fetchRestaurants = async () => {
@@ -35,7 +34,6 @@ const ListCategories = () => {
     getCategory();
   }, []);
   const handleDelete = async (categoryId,restaurantId) => {
-    console.log("categoryId", categoryId);
     deleteCategory(categoryId,restaurantId);
     const listCategories = await getAllCategoriesInRestaurant(
       user.restaurantId
@@ -50,18 +48,14 @@ const ListCategories = () => {
     var newCategory = { ...category };
     if (category.is_active === 0) {
       newCategory = { ...category, is_active: 1 };
-      console.log("1");
     } else {
-      console.log("0");
       newCategory = { ...category, is_active: 0 };
     }
     await updateCategory(category.id,restaurantId, newCategory);
     const listCategories = await getAllCategoriesInRestaurant(restaurantId);
       setCategories(listCategories);
     
-    console.log(newCategory);
   };
-  console.log(restaurants);
   return (
     <div>
       <div>
