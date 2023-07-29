@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ConfirmBox from "../../../components/ConfirmBox";
+import { getUserDataFromSessionStorage } from "../../../services/encode";
 import {
   deleteFood,
   getAllFoodInRestaurant,
@@ -14,7 +15,7 @@ const ListFood = () => {
   const [foods, setFoods] = useState([]);
   const [restaurants, setRestaurants] = useState([]);
   const [showConfirm, setShowConfirm] = useState(false);
-  const user = JSON.parse(sessionStorage.getItem("user"));
+  const user = getUserDataFromSessionStorage();
 
   useEffect(() => {
     const fetchRestaurants = async () => {

@@ -1,9 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { getUserDataFromSessionStorage } from "../../services/encode";
 
 const SidebarAdmin = () => {
   // const [open, setOpen] = useState(true);
-  const userRole = JSON.parse(sessionStorage.getItem("user")).role;
+  const userRole = getUserDataFromSessionStorage().role;
   const Menus = [
     { title: "Dashboard", path: "" },
     { title: "Danh sách nhà hàng", path: "restaurant/list", show: userRole ==="ADMIN" },

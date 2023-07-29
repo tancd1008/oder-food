@@ -5,6 +5,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { createOptionsFromData } from "../../../helper/optionsSelect";
 import { getAllCategoriesInRestaurant } from "../../../services/category";
+import { getUserDataFromSessionStorage } from "../../../services/encode";
 import { addFood } from "../../../services/food";
 const initialState = {
   id: "",
@@ -28,8 +29,8 @@ const AddFood = () => {
     is_active: 0,
   });
   const navigate = useNavigate();
-  const { name, price, desc } = state;
-  const user = JSON.parse(sessionStorage.getItem("user"));
+  const { name, price, desc, imgSrc } = state;
+  const user = getUserDataFromSessionStorage();
 
   function areAllValuesFilled(obj) {
     const invalidFields = [];

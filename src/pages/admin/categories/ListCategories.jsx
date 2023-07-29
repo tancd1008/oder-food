@@ -7,11 +7,12 @@ import { deleteProduct } from "../../../services/food";
 import { Link } from "react-router-dom";
 import { deleteCategory, getAllCategoriesInRestaurant, updateCategory } from "../../../services/category";
 import { getAllRestaurants } from "../../../services/restaurents";
+import { getUserDataFromSessionStorage } from "../../../services/encode";
 const ListCategories = () => {
   const [categories, setCategories] = useState([]);
   const [restaurants, setRestaurants] = useState([]);
   const [showConfirm, setShowConfirm] = useState(false);
-  const user = JSON.parse(sessionStorage.getItem("user"));
+  const user = getUserDataFromSessionStorage();
   
   useEffect(() => {
     const getCategory = async () => {

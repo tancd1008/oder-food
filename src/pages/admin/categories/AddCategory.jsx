@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { addCategory } from "../../../services/category";
+import { getUserDataFromSessionStorage } from "../../../services/encode";
 const innititalState = {
   name: "",
   desc: "",
@@ -12,7 +13,7 @@ const innititalState = {
 const AddCategory = () => {
   const [state, setState] = useState(innititalState);
   const { name, desc } = state;
-  const user = JSON.parse(sessionStorage.getItem('user'));
+  const user = getUserDataFromSessionStorage();
   const navigate = useNavigate()
   const handleInputChange = (e) => {
     const { name, value } = e.target;
