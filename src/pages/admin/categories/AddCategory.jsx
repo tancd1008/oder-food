@@ -4,14 +4,14 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { addCategory } from "../../../services/category";
 import { getUserDataFromSessionStorage } from "../../../services/encode";
-const innititalState = {
+const initialState = {
   name: "",
   desc: "",
   is_active: 0,
   restaurantId: "",
 };
 const AddCategory = () => {
-  const [state, setState] = useState(innititalState);
+  const [state, setState] = useState(initialState);
   const { name, desc } = state;
   const user = getUserDataFromSessionStorage();
   const navigate = useNavigate()

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { createRestaurant } from "../../../services/restaurents";
+import { createRestaurant } from "../../../services/restaurants";
 
-import "./../../../styles/time-picker.css"
+import "./../../../styles/time-picker.css";
 
 const initialState = {
   nameRestaurant: "",
