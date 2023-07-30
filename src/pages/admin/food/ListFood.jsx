@@ -1,50 +1,43 @@
 import React, { useEffect, useState } from "react";
 
+import { connect, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ConfirmBox from "../../../components/ConfirmBox";
 import { getUserDataFromSessionStorage } from "../../../services/encode";
+import { deleteFood, updateFood } from "../../../services/food";
+import { fetchFoodByRestaurant } from "../../../store/foodsSlice";
 import {
-  deleteFood,
-  getAllFoodInRestaurant,
-  updateFood,
-} from "../../../services/food";
-import { getAllRestaurants } from "../../../services/restaurents";
-const ListFood = () => {
-  const [foods, setFoods] = useState([]);
-  const [restaurants, setRestaurants] = useState([]);
+  fetchRestaurants,
+  setRestaurantId,
+} from "../../../store/restaurantSlice";
+const ListFood = ({ foods, restaurants, restaurantId }) => {
+  // const [foods, setFoods] = useState([]);
+  // const [restaurants, setRestaurants] = useState([]);
   const [showConfirm, setShowConfirm] = useState(false);
-  const user = getUserDataFromSessionStorage();
+  const [shouldRefresh, setShouldRefresh] = useState(false);
 
-  useEffect(() => {
-    const fetchRestaurants = async () => {
-      const restaurantList = await getAllRestaurants();
-      setRestaurants(restaurantList);
-    };
-    const getAllFood = async () => {
-      try {
-        if (!user.restaurantId) {
-        } else {
-          const listFoods = await getAllFoodInRestaurant(user.restaurantId);
-          setFoods(listFoods);
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchRestaurants();
-    getAllFood();
-  }, [user.restaurantId]);
+  const user = getUserDataFromSessionStorage();
+  const dispatch = useDispatch();
+
   const handleDelete = async (foodId, restaurantId) => {
     try {
       deleteFood(foodId, restaurantId);
-      const listFoods = await getAllFoodInRestaurant(restaurantId);
-      setFoods(listFoods);
+      // const listFoods = await getAllFoodInRestaurant(restaurantId);
+      dispatch(fetchFoodByRestaurant({ restaurantId }));
+      // setFoods(listFoods);
       setShowConfirm(false);
     } catch (error) {
       console.log(error);
     }
+  };
+  const handleChangeRestaurant = async (restaurantId) => {
+    // const listFoods = await getAllFoodInRestaurant(restaurantId);
+    dispatch(fetchFoodByRestaurant({ restaurantId }));
+    dispatch(setRestaurantId(restaurantId));
+    // setFoods(listFoods);
+    setShouldRefresh(true);
   };
 
   const handleCancel = () => {
@@ -58,10 +51,35 @@ const ListFood = () => {
       newFood = { ...food, is_active: 0 };
     }
     await updateFood(food.id, food.restaurantId, newFood);
-    const listFoods = await getAllFoodInRestaurant(user.restaurantId);
-    setFoods(listFoods);
+    // const listFoods = await getAllFoodInRestaurant(user.restaurantId);
+    dispatch(
+      fetchFoodByRestaurant({
+        restaurantId: user.role === "ADMIN" ? restaurantId : user.restaurantId,
+      })
+    );
+    // setFoods(listFoods);
   };
-
+  useEffect(() => {
+    if (restaurantId === null) {
+      if (user.role === "ADMIN" && !shouldRefresh) {
+        // fetchRestaurants();
+        if (restaurants?.length > 0) {
+          dispatch(fetchFoodByRestaurant({ restaurantId: restaurants[0].id }));
+        } else {
+          dispatch(fetchRestaurants());
+        }
+      } else {
+        dispatch(fetchFoodByRestaurant({ restaurantId: user.restaurantId }));
+      }
+    }
+  }, [
+    dispatch,
+    restaurantId,
+    restaurants,
+    shouldRefresh,
+    user.restaurantId,
+    user.role,
+  ]);
   return (
     <div>
       <div>
@@ -72,12 +90,18 @@ const ListFood = () => {
           <div className="">
             {user.role === "ADMIN" ? (
               <div className="">
-                <select name="" id="">
-                  {restaurants.map((restaurant, index) => (
-                    <option value={restaurant.id} key={index}>
-                      {restaurant.nameRestaurant}
-                    </option>
-                  ))}
+                <select
+                  onChange={(e) => handleChangeRestaurant(e.target.value)}
+                  name=""
+                  id=""
+                >
+                  {restaurants &&
+                    restaurants?.length > 0 &&
+                    restaurants.map((restaurant, index) => (
+                      <option value={restaurant.id} key={index}>
+                        {restaurant.nameRestaurant}
+                      </option>
+                    ))}
                 </select>
               </div>
             ) : null}
@@ -107,60 +131,68 @@ const ListFood = () => {
           </tr>
         </thead>
         <tbody>
-          {foods.map((food, index) => (
-            <tr key={index}>
-              <th>{index + 1}</th>
-              <th>{food.name}</th>
-              <th>
-                <img
-                  className="rounded mx-auto d-block w-25 h-25"
-                  src={food.imgSrc}
-                  alt=""
-                />
-              </th>
-              <th>{food.price}</th>
-              <th>{food.desc}</th>
-              <th>
-                {food.is_active === 0 ? (
-                  <p className="text-success">Hoạt động</p>
-                ) : (
-                  <p className="text-danger">Ngừng bán</p>
-                )}
-              </th>
-              <th className="">
-                <button
-                  className="btn btn-danger"
-                  onClick={() => setShowConfirm(true)}
-                >
-                  Xóa
-                </button>
-                <ConfirmBox
-                  show={showConfirm}
-                  message="Bạn có chắc chắn muốn xóa bản ghi này không?"
-                  onConfirm={() => handleDelete(food.id, food.restaurantId)}
-                  onCancel={() => handleCancel()}
-                />
-                <Link to={`/admin/food/edit/${user.restaurantId}/${food.id}`}>
-                  <button className="btn btn-warning ms-1">Sửa</button>
-                </Link>
-                <button
-                  className={`${
-                    food.is_active === 0
-                      ? "btn btn-secondary ms-1"
-                      : "btn btn-success ms-1"
-                  }`}
-                  onClick={() => handleUpdateStatus(food)}
-                >
-                  {food.is_active === 0 ? "Dừng" : "Bán"}
-                </button>
-              </th>
-            </tr>
-          ))}
+          {foods &&
+            foods?.length > 0 &&
+            foods.map((food, index) => (
+              <tr key={index}>
+                <th>{index + 1}</th>
+                <th>{food.name}</th>
+                <th>
+                  <img
+                    className="rounded mx-auto d-block w-25 h-25"
+                    src={food.imgSrc}
+                    alt=""
+                  />
+                </th>
+                <th>{food.price}</th>
+                <th>{food.desc}</th>
+                <th>
+                  {food.is_active === 0 ? (
+                    <p className="text-success">Hoạt động</p>
+                  ) : (
+                    <p className="text-danger">Ngừng bán</p>
+                  )}
+                </th>
+                <th className="">
+                  <button
+                    className="btn btn-danger"
+                    onClick={() => setShowConfirm(true)}
+                  >
+                    Xóa
+                  </button>
+                  <ConfirmBox
+                    show={showConfirm}
+                    message="Bạn có chắc chắn muốn xóa bản ghi này không?"
+                    onConfirm={() => handleDelete(food.id, food.restaurantId)}
+                    onCancel={() => handleCancel()}
+                  />
+                  <Link to={`/admin/food/edit/${user.restaurantId}/${food.id}`}>
+                    <button className="btn btn-warning ms-1">Sửa</button>
+                  </Link>
+                  <button
+                    className={`${
+                      food.is_active === 0
+                        ? "btn btn-secondary ms-1"
+                        : "btn btn-success ms-1"
+                    }`}
+                    onClick={() => handleUpdateStatus(food)}
+                  >
+                    {food.is_active === 0 ? "Dừng" : "Bán"}
+                  </button>
+                </th>
+              </tr>
+            ))}
         </tbody>
       </table>
       <ToastContainer position="top-center" />
     </div>
   );
 };
-
-export default ListFood;
+function mapStateToProps(state) {
+  return {
+    foods: state.foods.foods,
+    restaurants: state.restaurants.restaurants,
+    restaurantId: state.restaurants.restaurantId,
+  };
+}
+export default connect(mapStateToProps)(ListFood);

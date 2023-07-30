@@ -4,18 +4,15 @@ import { Link } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ConfirmBox from "../../../components/ConfirmBox";
-import { getAllRestaurants } from "../../../services/restaurents";
+import {
+  getAllRestaurants,
+  updateRestaurant,
+} from "../../../services/restaurants";
 const ListRestaurants = () => {
   const [products, setProducts] = useState([]);
   const [showConfirm, setShowConfirm] = useState(false);
+  const [shouldRefresh, setShouldRefresh] = useState(false)
 
-  useEffect(() => {
-    const fetchRestaurants = async () => {
-      const restaurantList = await getAllRestaurants();
-      setProducts(restaurantList);
-    };
-    fetchRestaurants();
-  }, []);
   const handleDelete = (id) => {
     // console.log("id", id);
     // deleteProduct(id);
@@ -26,24 +23,30 @@ const ListRestaurants = () => {
     setShowConfirm(false);
   };
   const handleUpdateStatus = (product) => {
-    // var newProduct = {...product}
-    // if(product.status === 0) {
-    //    newProduct = {...product, status: 1}
-    //   console.log("1")
-    // }else{
-    //   console.log("0")
-    //    newProduct = {...product, status: 0}
-    // }
-    // updateProduct(product.id,newProduct)
-    // console.log(newProduct)
-  }
-
+    var updateData = product;
+    updateData.status = product?.status === 0 ? 1 : 0;
+    updateRestaurant(updateData);
+    setShouldRefresh(true)
+  };
+  useEffect(() => {
+    const fetchRestaurants = async () => {
+      const restaurantList = await getAllRestaurants();
+      setProducts(restaurantList);
+    };
+    fetchRestaurants();
+    setShouldRefresh(false);
+  }, [shouldRefresh]);
   return (
     <div>
-        <div className="d-sm-flex align-items-center justify-content-between mb-4">
-      <h1 className="text-center">Danh sách nhà hàng</h1>
-      <Link to="/admin/restaurant/add" className="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i className="fas fa-download fa-sm text-white-50" /> Thêm nhà hàng</Link>
-        </div>
+      <div className="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 className="text-center">Danh sách nhà hàng</h1>
+        <Link
+          to="/admin/restaurant/add"
+          className="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"
+        >
+          <i className="fas fa-download fa-sm text-white-50" /> Thêm nhà hàng
+        </Link>
+      </div>
       <table className="table table-hover text-nowrap">
         <thead>
           <tr>
@@ -62,11 +65,21 @@ const ListRestaurants = () => {
               <th>{index + 1}</th>
               <th>{product.email}</th>
               <th>
-                <img className="rounded mx-auto d-block w-25 h-25" src={product.imgSrc} alt=""/>
+                <img
+                  className="rounded mx-auto d-block w-25 h-25"
+                  src={product.imgSrc}
+                  alt=""
+                />
               </th>
               <th>{product.address}</th>
               <th>{product.desc}</th>
-              <th >{product.status === 0 ? <p className="text-success">Hoạt động</p> : <p className="text-danger">Ngừng bán</p>}</th>
+              <th>
+                {product.status === 0 ? (
+                  <p className="text-success">Hoạt động</p>
+                ) : (
+                  <p className="text-danger">Ngừng bán</p>
+                )}
+              </th>
               <th className="">
                 <button
                   className="btn btn-danger"
@@ -78,12 +91,21 @@ const ListRestaurants = () => {
                   show={showConfirm}
                   message="Bạn có chắc chắn muốn xóa bản ghi này không?"
                   onConfirm={() => handleDelete(product.id)}
-                  onCancel={()=>handleCancel()}
+                  onCancel={() => handleCancel()}
                 />
                 <Link to={`/admin/products/edit/${product.id}`}>
-                <button className="btn btn-warning ms-1">Sửa</button>
+                  <button className="btn btn-warning ms-1">Sửa</button>
                 </Link>
-                <button className={`${product.status === 0 ? "btn btn-secondary ms-1" : "btn btn-success ms-1"}`}  onClick={() => handleUpdateStatus(product)}>{product.status === 0 ? "Dừng" : "Bán"}</button>
+                <button
+                  className={`${
+                    product.status === 0
+                      ? "btn btn-secondary ms-1"
+                      : "btn btn-success ms-1"
+                  }`}
+                  onClick={() => handleUpdateStatus(product)}
+                >
+                  {product.status === 0 ? "Dừng" : "Bán"}
+                </button>
               </th>
             </tr>
           ))}

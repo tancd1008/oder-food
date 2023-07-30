@@ -4,9 +4,11 @@ import {
   getDocs,
   query,
   serverTimestamp,
+  updateDoc,
   where,
   writeBatch,
 } from "firebase/firestore";
+import { toast } from "react-toastify";
 import { database } from "../firebase-config";
 import { createUser } from "./users";
 
@@ -96,5 +98,15 @@ export const getAllRestaurants = async () => {
       error
     );
     return [];
+  }
+};
+export const updateRestaurant = async (updatedData) => {
+  try {
+    const restaurantRef = doc(collection(database, COLLECTION_NAME), updatedData.id);
+    await updateDoc(restaurantRef, updatedData);
+    toast.success("Cập nhật thành công");
+  } catch (error) {
+    toast.error("Lỗi khi cập nhật");
+    console.error("Lỗi khi cập nhật nhà hàng:", error);
   }
 };
