@@ -25,7 +25,6 @@ const restaurantsSlice = createSlice({
   initialState,
   reducers: {
     setRestaurantId: (state, action) => {
-      console.log("pay load", action.payload);
       state.restaurantId = action.payload;
     },
   },

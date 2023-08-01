@@ -1,20 +1,21 @@
 import React, { useState } from "react";
+import { connect, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { addCategory } from "../../../services/category";
-import { getUserDataFromSessionStorage } from "../../../services/encode";
+import { createCategory } from "../../../store/categoriesSlide";
 const initialState = {
   name: "",
   desc: "",
   is_active: 0,
   restaurantId: "",
 };
-const AddCategory = () => {
+const AddCategory = ({ restaurantId }) => {
   const [state, setState] = useState(initialState);
   const { name, desc } = state;
-  const user = getUserDataFromSessionStorage();
-  const navigate = useNavigate()
+  // const user = getUserDataFromSessionStorage();
+  const navigate = useNavigate();
+  const dispatch = useDispatch()
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setState({ ...state, [name]: value });
@@ -25,16 +26,15 @@ const AddCategory = () => {
       toast.error("Mời bạn nhập!");
     } else {
       try {
-        addCategory(state,user.restaurantId);
-        toast.success("Bạn thêm danh mục thành công!")
+        dispatch(createCategory({category: state, restaurantId}))
+        // addCategory(state, restaurantId);
+        toast.success("Bạn thêm danh mục thành công!");
         setTimeout(() => {
           navigate("/admin/category/list");
         }, 3000);
       } catch (error) {
-        toast.error("Lỗi")
+        toast.error("Lỗi");
       }
-      
-     
     }
   };
 
@@ -43,10 +43,7 @@ const AddCategory = () => {
       <form onSubmit={handleSubmit}>
         <h1 className="text-center">Thêm mới danh mục</h1>
         <div className="mb-3">
-          <label
-            htmlFor="email"
-            className="form-label"
-          >
+          <label htmlFor="email" className="form-label">
             Tên danh mục
           </label>
           <input
@@ -59,12 +56,9 @@ const AddCategory = () => {
             onChange={handleInputChange}
           />
         </div>
-        
+
         <div className="mb-3">
-          <label
-            htmlFor="password"
-            className="form-label"
-          >
+          <label htmlFor="password" className="form-label">
             Nội dung
           </label>
           <input
@@ -78,10 +72,7 @@ const AddCategory = () => {
           />
         </div>
 
-        <button
-          type="submit"
-          className="btn btn-primary"
-        >
+        <button type="submit" className="btn btn-primary">
           Thêm mới
         </button>
         <ToastContainer position="top-center" />
@@ -89,5 +80,9 @@ const AddCategory = () => {
     </div>
   );
 };
-
-export default AddCategory;
+function mapStateToProps(state) {
+  return {
+    restaurantId: state.restaurants.restaurantId,
+  };
+}
+export default connect(mapStateToProps)(AddCategory);

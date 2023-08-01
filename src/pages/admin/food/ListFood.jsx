@@ -6,8 +6,9 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ConfirmBox from "../../../components/ConfirmBox";
 import { getUserDataFromSessionStorage } from "../../../services/encode";
-import { deleteFood, updateFood } from "../../../services/food";
-import { fetchFoodByRestaurant } from "../../../store/foodsSlice";
+import { updateFood } from "../../../services/food";
+import { setCategories } from "../../../store/categoriesSlide";
+import { fetchFoodByRestaurant, removeFood } from "../../../store/foodsSlice";
 import {
   fetchRestaurants,
   setRestaurantId,
@@ -15,33 +16,23 @@ import {
 const ListFood = ({ foods, restaurants, restaurantId }) => {
   // const [foods, setFoods] = useState([]);
   // const [restaurants, setRestaurants] = useState([]);
-  const [showConfirm, setShowConfirm] = useState(false);
-  const [shouldRefresh, setShouldRefresh] = useState(false);
-
+  const [showConfirmMap, setShowConfirmMap] = useState({});
   const user = getUserDataFromSessionStorage();
   const dispatch = useDispatch();
 
-  const handleDelete = async (foodId, restaurantId) => {
-    try {
-      deleteFood(foodId, restaurantId);
-      // const listFoods = await getAllFoodInRestaurant(restaurantId);
-      dispatch(fetchFoodByRestaurant({ restaurantId }));
-      // setFoods(listFoods);
-      setShowConfirm(false);
-    } catch (error) {
-      console.log(error);
-    }
-  };
   const handleChangeRestaurant = async (restaurantId) => {
-    // const listFoods = await getAllFoodInRestaurant(restaurantId);
     dispatch(fetchFoodByRestaurant({ restaurantId }));
     dispatch(setRestaurantId(restaurantId));
-    // setFoods(listFoods);
-    setShouldRefresh(true);
+    dispatch(setCategories());
   };
 
-  const handleCancel = () => {
-    setShowConfirm(false);
+  const handleDelete = (foodId) => {
+    dispatch(removeFood({ foodId, restaurantId }));
+    setShowConfirmMap((prev) => ({ ...prev, [foodId]: true }));
+  };
+
+  const handleCancel = (foodId) => {
+    setShowConfirmMap((prev) => ({ ...prev, [foodId]: false }));
   };
   const handleUpdateStatus = async (food) => {
     var newFood = { ...food };
@@ -51,32 +42,39 @@ const ListFood = ({ foods, restaurants, restaurantId }) => {
       newFood = { ...food, is_active: 0 };
     }
     await updateFood(food.id, food.restaurantId, newFood);
-    // const listFoods = await getAllFoodInRestaurant(user.restaurantId);
     dispatch(
       fetchFoodByRestaurant({
-        restaurantId: user.role === "ADMIN" ? restaurantId : user.restaurantId,
+        restaurantId,
       })
     );
     // setFoods(listFoods);
   };
   useEffect(() => {
-    if (restaurantId === null) {
-      if (user.role === "ADMIN" && !shouldRefresh) {
+    if (restaurantId === null || (restaurantId !== null && foods === null)) {
+      if (user.role === "ADMIN") {
         // fetchRestaurants();
         if (restaurants?.length > 0) {
-          dispatch(fetchFoodByRestaurant({ restaurantId: restaurants[0].id }));
+          if (restaurantId === null) {
+            dispatch(
+              fetchFoodByRestaurant({ restaurantId: restaurants[0].id })
+            );
+            dispatch(setRestaurantId(restaurants[0].id));
+          } else {
+            dispatch(fetchFoodByRestaurant({ restaurantId }));
+          }
         } else {
           dispatch(fetchRestaurants());
         }
       } else {
         dispatch(fetchFoodByRestaurant({ restaurantId: user.restaurantId }));
+        dispatch(setRestaurantId(user.restaurantId));
       }
     }
   }, [
     dispatch,
+    foods,
     restaurantId,
     restaurants,
-    shouldRefresh,
     user.restaurantId,
     user.role,
   ]);
@@ -93,6 +91,7 @@ const ListFood = ({ foods, restaurants, restaurantId }) => {
                 <select
                   onChange={(e) => handleChangeRestaurant(e.target.value)}
                   name=""
+                  value={restaurantId}
                   id=""
                 >
                   {restaurants &&
@@ -156,17 +155,17 @@ const ListFood = ({ foods, restaurants, restaurantId }) => {
                 <th className="">
                   <button
                     className="btn btn-danger"
-                    onClick={() => setShowConfirm(true)}
+                    onClick={() => handleDelete(food.id)}
                   >
                     Xóa
                   </button>
                   <ConfirmBox
-                    show={showConfirm}
+                    show={showConfirmMap[food.id]}
                     message="Bạn có chắc chắn muốn xóa bản ghi này không?"
-                    onConfirm={() => handleDelete(food.id, food.restaurantId)}
-                    onCancel={() => handleCancel()}
+                    onConfirm={() => handleDelete(food.id, restaurantId)}
+                    onCancel={() => handleCancel(food.id)}
                   />
-                  <Link to={`/admin/food/edit/${user.restaurantId}/${food.id}`}>
+                  <Link to={`/admin/food/edit/${restaurantId}/${food.id}`}>
                     <button className="btn btn-warning ms-1">Sửa</button>
                   </Link>
                   <button
