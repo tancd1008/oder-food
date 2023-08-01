@@ -117,72 +117,78 @@ const ListFood = ({ foods, restaurants, restaurantId }) => {
           <div></div>
         </div>
       </div>
-      <table className="table table-hover text-nowrap">
-        <thead>
-          <tr>
-            <th scope="col">STT</th>
-            <th scope="col">Sản phảm</th>
-            <th scope="col">Ảnh</th>
-            <th scope="col">Giá</th>
-            <th scope="col">Nội dung</th>
-            <th scope="col">Status</th>
-            <th scope="col"></th>
-          </tr>
-        </thead>
-        <tbody>
-          {foods &&
-            foods?.length > 0 &&
-            foods.map((food, index) => (
-              <tr key={index}>
-                <th>{index + 1}</th>
-                <th>{food.name}</th>
-                <th>
-                  <img
-                    className="rounded mx-auto d-block w-25 h-25"
-                    src={food.imgSrc}
-                    alt=""
-                  />
-                </th>
-                <th>{food.price}</th>
-                <th>{food.desc}</th>
-                <th>
-                  {food.is_active === 0 ? (
-                    <p className="text-success">Hoạt động</p>
-                  ) : (
-                    <p className="text-danger">Ngừng bán</p>
-                  )}
-                </th>
-                <th className="">
-                  <button
-                    className="btn btn-danger"
-                    onClick={() => handleDelete(food.id)}
-                  >
-                    Xóa
-                  </button>
-                  <ConfirmBox
-                    show={showConfirmMap[food.id]}
-                    message="Bạn có chắc chắn muốn xóa bản ghi này không?"
-                    onConfirm={() => handleDelete(food.id, restaurantId)}
-                    onCancel={() => handleCancel(food.id)}
-                  />
-                  <Link to={`/admin/food/edit/${restaurantId}/${food.id}`}>
-                    <button className="btn btn-warning ms-1">Sửa</button>
-                  </Link>
-                  <button
-                    className={`${
-                      food.is_active === 0
+      <div className="overflow-auto">
+        <table className="table table-hover text-nowrap">
+          <thead>
+            <tr>
+              <th scope="col">STT</th>
+              <th scope="col">Sản phảm</th>
+              <th scope="col">Ảnh</th>
+              <th scope="col">Giá</th>
+              <th scope="col">Nội dung</th>
+              <th scope="col">Status</th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody>
+            {foods &&
+              foods?.length > 0 &&
+              foods.map((food, index) => (
+                <tr key={index}>
+                  <th>{index + 1}</th>
+                  <th>{food.name}</th>
+                  <th>
+                    <img
+                      className="rounded mx-auto d-block"
+                      style={{
+                        width: '50px',
+                        height: '50px',
+                        'object-fit': 'cover'
+                      }}
+                      src={food.imgSrc}
+                      alt=""
+                    />
+                  </th>
+                  <th>{food.price}</th>
+                  <th>{food.desc}</th>
+                  <th>
+                    {food.is_active === 0 ? (
+                      <p className="text-success">Hoạt động</p>
+                    ) : (
+                      <p className="text-danger">Ngừng bán</p>
+                    )}
+                  </th>
+                  <th className="">
+                    <button
+                      className="btn btn-danger"
+                      onClick={() => handleDelete(food.id)}
+                    >
+                      Xóa
+                    </button>
+                    <ConfirmBox
+                      show={showConfirmMap[food.id]}
+                      message="Bạn có chắc chắn muốn xóa bản ghi này không?"
+                      onConfirm={() => handleDelete(food.id, restaurantId)}
+                      onCancel={() => handleCancel(food.id)}
+                    />
+                    <Link to={`/admin/food/edit/${restaurantId}/${food.id}`}>
+                      <button className="btn btn-warning ms-1">Sửa</button>
+                    </Link>
+                    <button
+                      className={`${food.is_active === 0
                         ? "btn btn-secondary ms-1"
                         : "btn btn-success ms-1"
-                    }`}
-                    onClick={() => handleUpdateStatus(food)}
-                  >
-                    {food.is_active === 0 ? "Dừng" : "Bán"}
-                  </button>
-                </th>
-              </tr>
-            ))}
-        </tbody>
-      </table>
+                        }`}
+                      onClick={() => handleUpdateStatus(food) }
+                    >
+                      {food.is_active === 0 ? "Dừng" : "Bán"}
+                    </button>
+                  </th>
+                </tr>
+              ))}
+          </tbody>
+        </table>
+      </div>
       <ToastContainer position="top-center" />
     </div>
   );

@@ -16,11 +16,11 @@ const SidebarAdmin = () => {
   const currentPath = router.pathname.replace('/admin/', '');
 
   return (
-    <div className="sidebar" style={{ minHeight: "100%", position: "fixed", maxWidth: "100%" }}>
+    <div className="sidebar" style={{ minHeight: "100%", position: "fixed", maxWidth: "100%", 'z-index': "999"}}>
       <ul
-        className="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion"
+        className="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion w-autos"
         id="accordionSidebar"
-        style={{ minHeight: "100vh" }}
+        style={{ width: "max-content" }}
       >
         {/* Sidebar - Brand */}
         <a

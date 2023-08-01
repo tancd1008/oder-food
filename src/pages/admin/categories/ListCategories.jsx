@@ -122,74 +122,80 @@ const ListCategories = ({ categories, restaurants, restaurantId }) => {
           <div></div>
         </div>
       </div>
-      <table className="table table-hover text-nowrap">
-        <thead>
-          <tr>
-            <th scope="col">STT</th>
-            <th scope="col">Sản phảm</th>
-            <th scope="col">Ảnh</th>
-            <th scope="col">Giá</th>
-            <th scope="col">Nội dung</th>
-            <th scope="col">Status</th>
-            <th scope="col"></th>
-          </tr>
-        </thead>
-        <tbody>
-          {categories &&
-            categories?.length > 0 &&
-            categories.map((category, index) => (
-              <tr key={index}>
-                <th>{index + 1}</th>
-                <th>{category.name}</th>
-                <th>
-                  <img
-                    className="rounded mx-auto d-block w-25 h-25"
-                    src={category.imgSrc}
-                    alt=""
-                  />
-                </th>
-                <th>{category.price}</th>
-                <th>{category.desc}</th>
-                <th>
-                  {category.is_active === 0 ? (
-                    <p className="text-success">Hoạt động</p>
-                  ) : (
-                    <p className="text-danger">Ngừng bán</p>
-                  )}
-                </th>
-                <th className="">
-                  <button
-                    className="btn btn-danger"
-                    onClick={() => handleDelete(category.id)}
-                  >
-                    Xóa
-                  </button>
-                  <ConfirmBox
-                    show={showConfirmMap[category.id]}
-                    message="Bạn có chắc chắn muốn xóa bản ghi này không?"
-                    onConfirm={() => handleDelete(category.id, restaurantId)}
-                    onCancel={() => handleCancel(category.id)}
-                  />
-                  <Link
-                    to={`/admin/category/edit/${restaurantId}/${category.id}`}
-                  >
-                    <button className="btn btn-warning ms-1">Sửa</button>
-                  </Link>
-                  <button
-                    className={`${
-                      category.is_active === 0
+      <div className="overflow-auto">
+        <table className="table table-hover text-nowrap">
+          <thead>
+            <tr>
+              <th scope="col">STT</th>
+              <th scope="col">Sản phảm</th>
+              <th scope="col">Ảnh</th>
+              <th scope="col">Giá</th>
+              <th scope="col">Nội dung</th>
+              <th scope="col">Status</th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody>
+            {categories &&
+              categories?.length > 0 &&
+              categories.map((category, index) => (
+                <tr key={index}>
+                  <th>{index + 1}</th>
+                  <th>{category.name}</th>
+                  <th>
+                    <img
+                      style={{
+                        width: '50px',
+                        height: '50px',
+                        'object-fit': 'cover'
+                      }}
+                      className="rounded mx-auto d-block w-25 h-25"
+                      src={category.imgSrc}
+                      alt=""
+                    />
+                  </th>
+                  <th>{category.price}</th>
+                  <th>{category.desc}</th>
+                  <th>
+                    {category.is_active === 0 ? (
+                      <p className="text-success">Hoạt động</p>
+                    ) : (
+                      <p className="text-danger">Ngừng bán</p>
+                    )}
+                  </th>
+                  <th className="">
+                    <button
+                      className="btn btn-danger"
+                      onClick={() => handleDelete(category.id)}
+                    >
+                      Xóa
+                    </button>
+                    <ConfirmBox
+                      show={showConfirmMap[category.id]}
+                      message="Bạn có chắc chắn muốn xóa bản ghi này không?"
+                      onConfirm={() => handleDelete(category.id, restaurantId)}
+                      onCancel={() => handleCancel(category.id)}
+                    />
+                    <Link
+                      to={`/admin/category/edit/${restaurantId}/${category.id}`}
+                    >
+                      <button className="btn btn-warning ms-1">Sửa</button>
+                    </Link>
+                    <button
+                      className={`${category.is_active === 0
                         ? "btn btn-secondary ms-1"
                         : "btn btn-success ms-1"
-                    }`}
-                    onClick={() => handleUpdateStatus(category, restaurantId)}
-                  >
-                    {category.is_active === 0 ? "Dừng" : "Bán"}
-                  </button>
-                </th>
-              </tr>
-            ))}
-        </tbody>
-      </table>
+                        }`}
+                      onClick={() => handleUpdateStatus(category, restaurantId)}
+                    >
+                      {category.is_active === 0 ? "Dừng" : "Bán"}
+                    </button>
+                  </th>
+                </tr>
+              ))}
+          </tbody>
+        </table>
+      </div>
       <ToastContainer position="top-center" />
     </div>
   );
