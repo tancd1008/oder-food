@@ -5,38 +5,34 @@ import { Link } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ConfirmBox from "../../../components/ConfirmBox";
-import { deleteCategory, updateCategory } from "../../../services/category";
+import { updateCategory } from "../../../services/category";
 import { getUserDataFromSessionStorage } from "../../../services/encode";
-import { fetchCategoriesByRestaurant } from "../../../store/categoriesSlide";
+import {
+  fetchCategoriesByRestaurant,
+  removeCategory,
+} from "../../../store/categoriesSlide";
+import { setFoods } from "../../../store/foodsSlice";
 import {
   fetchRestaurants,
   setRestaurantId,
 } from "../../../store/restaurantSlice";
 const ListCategories = ({ categories, restaurants, restaurantId }) => {
-  // const [categories, setCategories] = useState([]);
-  // const [restaurants, setRestaurants] = useState([]);
-  const [showConfirm, setShowConfirm] = useState(false);
-  const [shouldRefresh, setShouldRefresh] = useState(false);
+  const [showConfirmMap, setShowConfirmMap] = useState({});
   const user = getUserDataFromSessionStorage();
   const dispatch = useDispatch();
   const handleChangeRestaurant = async (restaurantId) => {
     dispatch(fetchCategoriesByRestaurant({ restaurantId }));
     dispatch(setRestaurantId(restaurantId));
-    setShouldRefresh(true);
+    dispatch(setFoods());
   };
 
-  const handleDelete = async (categoryId, restaurantId) => {
-    deleteCategory(categoryId, restaurantId);
-
-    dispatch(
-      fetchCategoriesByRestaurant({
-        restaurantId: user.role === "ADMIN" ? restaurantId : user.restaurantId,
-      })
-    );
-    setShowConfirm(false);
+  const handleDelete = (categoryId) => {
+    dispatch(removeCategory({ categoryId, restaurantId }));
+    setShowConfirmMap((prev) => ({ ...prev, [categoryId]: true }));
   };
-  const handleCancel = () => {
-    setShowConfirm(false);
+
+  const handleCancel = (categoryId) => {
+    setShowConfirmMap((prev) => ({ ...prev, [categoryId]: false }));
   };
   const handleUpdateStatus = async (category, restaurantId) => {
     var newCategory = { ...category };
@@ -45,25 +41,28 @@ const ListCategories = ({ categories, restaurants, restaurantId }) => {
     } else {
       newCategory = { ...category, is_active: 0 };
     }
-    await updateCategory(
-      category.id,
-      user.role === "ADMIN" ? restaurantId : user.restaurantId,
-      newCategory
-    );
+    await updateCategory(category.id, restaurantId, newCategory);
     dispatch(
       fetchCategoriesByRestaurant({
-        restaurantId: user.role === "ADMIN" ? restaurantId : user.restaurantId,
+        restaurantId,
       })
     );
   };
   useEffect(() => {
-    if (restaurantId === null) {
-      if (user.role === "ADMIN" && !shouldRefresh) {
-        // fetchRestaurants();
+    if (
+      restaurantId === null ||
+      (restaurantId !== null && categories === null)
+    ) {
+      if (user.role === "ADMIN") {
         if (restaurants?.length > 0) {
-          dispatch(
-            fetchCategoriesByRestaurant({ restaurantId: restaurants[0].id })
-          );
+          if (restaurantId === null) {
+            dispatch(
+              fetchCategoriesByRestaurant({ restaurantId: restaurants[0].id })
+            );
+            dispatch(setRestaurantId(restaurants[0].id));
+          } else {
+            dispatch(fetchCategoriesByRestaurant({ restaurantId }));
+          }
         } else {
           dispatch(fetchRestaurants());
         }
@@ -71,13 +70,14 @@ const ListCategories = ({ categories, restaurants, restaurantId }) => {
         dispatch(
           fetchCategoriesByRestaurant({ restaurantId: user.restaurantId })
         );
+        dispatch(setRestaurantId(user.restaurantId));
       }
     }
   }, [
+    categories,
     dispatch,
     restaurantId,
     restaurants,
-    shouldRefresh,
     user.restaurantId,
     user.role,
   ]);
@@ -95,6 +95,7 @@ const ListCategories = ({ categories, restaurants, restaurantId }) => {
                   onChange={(e) => {
                     handleChangeRestaurant(e.target.value);
                   }}
+                  value={restaurantId}
                   name=""
                   id=""
                 >
@@ -159,20 +160,18 @@ const ListCategories = ({ categories, restaurants, restaurantId }) => {
                 <th className="">
                   <button
                     className="btn btn-danger"
-                    onClick={() => setShowConfirm(true)}
+                    onClick={() => handleDelete(category.id)}
                   >
                     Xóa
                   </button>
                   <ConfirmBox
-                    show={showConfirm}
+                    show={showConfirmMap[category.id]}
                     message="Bạn có chắc chắn muốn xóa bản ghi này không?"
-                    onConfirm={() =>
-                      handleDelete(category.id, user.restaurantId)
-                    }
-                    onCancel={() => handleCancel()}
+                    onConfirm={() => handleDelete(category.id, restaurantId)}
+                    onCancel={() => handleCancel(category.id)}
                   />
                   <Link
-                    to={`/admin/category/edit/${user.restaurantId}/${category.id}`}
+                    to={`/admin/category/edit/${restaurantId}/${category.id}`}
                   >
                     <button className="btn btn-warning ms-1">Sửa</button>
                   </Link>
@@ -182,9 +181,7 @@ const ListCategories = ({ categories, restaurants, restaurantId }) => {
                         ? "btn btn-secondary ms-1"
                         : "btn btn-success ms-1"
                     }`}
-                    onClick={() =>
-                      handleUpdateStatus(category, user.restaurantId)
-                    }
+                    onClick={() => handleUpdateStatus(category, restaurantId)}
                   >
                     {category.is_active === 0 ? "Dừng" : "Bán"}
                   </button>

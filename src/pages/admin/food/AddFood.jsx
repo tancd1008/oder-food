@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
+import { connect, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Select from "react-select";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { createOptionsFromData } from "../../../helper/optionsSelect";
 import { getAllCategoriesInRestaurant } from "../../../services/category";
-import { getUserDataFromSessionStorage } from "../../../services/encode";
-import { addFood } from "../../../services/food";
+import { createFood } from "../../../store/foodsSlice";
 const initialState = {
   id: "",
   name: "",
@@ -17,7 +17,7 @@ const initialState = {
   is_active: 0,
 };
 
-const AddFood = () => {
+const AddFood = ({ restaurantId }) => {
   const [state, setState] = useState(initialState);
   const [categories, setCategories] = useState([]);
   const [errors, setErrors] = useState({
@@ -29,8 +29,8 @@ const AddFood = () => {
     is_active: 0,
   });
   const navigate = useNavigate();
-  const { name, price, desc, imgSrc } = state;
-  const user = getUserDataFromSessionStorage();
+  const dispatch = useDispatch();
+  const { name, price, desc } = state;
 
   function areAllValuesFilled(obj) {
     const invalidFields = [];
@@ -84,7 +84,7 @@ const AddFood = () => {
 
     if (validation.isValid) {
       try {
-        await addFood(newFoodData, user.restaurantId);
+        dispatch(createFood({ food: newFoodData, restaurantId }));
         toast.success("Food added successfully!", {
           onClose: () => {
             navigate("/admin/food/list"); // Chuyển trang sau khi toast biến mất
@@ -106,15 +106,13 @@ const AddFood = () => {
     const getCategory = async () => {
       const valueKeys = ["id", "name"];
       const labelKeys = ["value", "label"];
-      const listCategories = await getAllCategoriesInRestaurant(
-        user.restaurantId
-      );
+      const listCategories = await getAllCategoriesInRestaurant(restaurantId);
       setCategories(
         createOptionsFromData(listCategories, valueKeys, labelKeys)
       );
     };
     getCategory();
-  }, [user.restaurantId]);
+  }, [restaurantId]);
 
   return (
     <div>
@@ -217,5 +215,9 @@ const AddFood = () => {
     </div>
   );
 };
-
-export default AddFood;
+function mapStateToProps(state) {
+  return {
+    restaurantId: state.restaurants.restaurantId,
+  };
+}
+export default connect(mapStateToProps)(AddFood);

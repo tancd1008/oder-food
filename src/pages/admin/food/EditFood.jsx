@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import Select from "react-select";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { createOptionsFromData } from "../../../helper/optionsSelect";
 import { getAllCategoriesInRestaurant } from "../../../services/category";
-import { getDetailFood, updateFood } from "../../../services/food";
+import { getDetailFood } from "../../../services/food";
+import { editFood } from "../../../store/foodsSlice";
 
 const EditFood = () => {
   const [state, setState] = useState({
@@ -28,6 +30,7 @@ const EditFood = () => {
     is_active: 0,
   });
   const { restaurantId, foodId } = useParams();
+  const dispatch = useDispatch();
 
   const navigate = useNavigate();
   function areAllValuesFilled(obj) {
@@ -82,11 +85,11 @@ const EditFood = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const validationObj = state;
-    delete validationObj.id;
     const validation = areAllValuesFilled(validationObj);
     if (validation.isValid) {
       try {
-        await updateFood(foodId, restaurantId, state);
+        dispatch(editFood({ foodId, food: state, restaurantId }));
+        // await updateFood(foodId, restaurantId, state);
         toast.success("Cập nhật sản phẩm thành công", {
           onClose: () => {
             navigate("/admin/food/list"); // Chuyển trang sau khi toast biến mất
@@ -118,9 +121,9 @@ const EditFood = () => {
         valueKeys,
         labelKeys
       ).filter((item) =>
-        foodDoc.data().categoryId.some((value) => value === item.value)
+        foodDoc.categoryId.some((value) => value === item.value)
       );
-      setState(foodDoc.data());
+      setState(foodDoc);
       setSelectOld(convertedOptions);
     };
     getFood();

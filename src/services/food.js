@@ -7,14 +7,13 @@ import {
   setDoc,
   updateDoc,
 } from "firebase/firestore";
-import { database } from "../firebase-config";
-import { storage } from "../firebase-config";
 import {
   getDownloadURL,
   ref as storageRef,
   uploadBytesResumable,
 } from "firebase/storage";
 import { v4 as uuidv4 } from "uuid";
+import { database, storage } from "../firebase-config";
 const COLLECTION_NAME = "restaurants";
 
 export const addFood = async (food, restaurantId) => {
@@ -34,7 +33,15 @@ export const addFood = async (food, restaurantId) => {
     // Cập nhật trường imgSrc trong đối tượng sản phẩm với URL tải xuống
     food.imgSrc = downloadURL;
     await setDoc(foodRef, { ...food, id: foodId, restaurantId: restaurantId });
-    return foodRef.id;
+
+    const addedDoc = await getDoc(foodRef);
+    if (addedDoc.exists()) {
+      const addedFood = addedDoc.data();
+      return addedFood; // Trả về thông tin của bản ghi đã thêm vào
+    } else {
+      console.log("Không tìm thấy bản ghi đã thêm");
+      return null;
+    }
   } catch (error) {
     console.error(error);
     return null;
@@ -78,7 +85,7 @@ export const deleteFood = async (foodId, restaurantId) => {
     throw error; // Ném lỗi để xử lý bên ngoài nếu cần
   }
 };
-export const updateFood = async (foodId, restaurantId, foodUpdate) => {
+export const updateFood = async (foodId,foodUpdate, restaurantId) => {
   try {
     // Lấy reference của document danh mục dựa trên foodId
     const foodRef = doc(
@@ -99,8 +106,14 @@ export const updateFood = async (foodId, restaurantId, foodUpdate) => {
     }
     // Cập nhật thông tin danh mục bằng foodUpdate
     await updateDoc(foodRef, foodUpdate);
-
-    console.log("Edit food successfully!");
+    const updatedDoc = await getDoc(foodRef);
+    if (updatedDoc.exists()) {
+      const updatedFood = updatedDoc.data();
+      return updatedFood; // Trả về thông tin của món ăn đã cập nhật
+    } else {
+      console.log("Không tìm thấy bản ghi đã cập nhật");
+      return null;
+    }
   } catch (error) {
     console.error("edit food failed:", error);
     throw error; // Ném lỗi để xử lý bên ngoài nếu cần
@@ -115,8 +128,7 @@ export const getDetailFood = async (foodId, restaurantId) => {
 
     // Lấy dữ liệu của document danh mục
     const foodDoc = await getDoc(foodRef);
-   
-    return foodDoc;
+    return foodDoc.data();
   } catch (error) {
     return null;
   }

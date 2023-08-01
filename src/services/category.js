@@ -5,7 +5,7 @@ import {
   getDoc,
   getDocs,
   setDoc,
-  updateDoc
+  updateDoc,
 } from "firebase/firestore";
 import { v4 as uuidv4 } from "uuid";
 import { database } from "../firebase-config";
@@ -26,7 +26,15 @@ export const addCategory = async (category, restaurantId) => {
       id: categoryId,
       restaurantId: restaurantId,
     });
-    return categoryRef.id;
+    // Lấy thông tin của bản ghi đã thêm
+    const addedDoc = await getDoc(categoryRef);
+    if (addedDoc.exists()) {
+      const addedCategory = addedDoc.data();
+      return addedCategory;
+    } else {
+      console.log("Không tìm thấy bản ghi đã thêm");
+      return null;
+    }
   } catch (error) {
     console.error(error);
     return null;
@@ -52,11 +60,7 @@ export const getAllCategoriesInRestaurant = async (restaurantId) => {
     return []; // Trả về một mảng rỗng nếu có lỗi xảy ra
   }
 };
-export const updateCategory = async (
-  categoryId,
-  restaurantId,
-  updatedCategory
-) => {
+export const updateCategory = async (categoryId, category, restaurantId) => {
   try {
     // Lấy reference của document danh mục dựa trên categoryId
     const categoryRef = doc(
@@ -65,7 +69,7 @@ export const updateCategory = async (
     );
 
     // Cập nhật thông tin danh mục bằng updatedCategory
-    await updateDoc(categoryRef, updatedCategory);
+    await updateDoc(categoryRef, category);
 
     console.log("Đã cập nhật danh mục thành công!");
   } catch (error) {
@@ -83,7 +87,7 @@ export const getDetailCategory = async (categoryId, restaurantId) => {
     // Lấy dữ liệu của document danh mục
     const categoryDoc = await getDoc(categoryRef);
     console.log("Thành công");
-    return categoryDoc;
+    return categoryDoc.data();
   } catch (error) {
     console.log("Lỗi");
     return null;
@@ -99,8 +103,6 @@ export const deleteCategory = async (categoryId, restaurantId) => {
 
     // Xóa document danh mục
     await deleteDoc(categoryRef);
-
-    console.log("Đã xóa danh mục thành công!");
   } catch (error) {
     console.error("Đã xảy ra lỗi khi xóa danh mục:", error);
     throw error; // Ném lỗi để xử lý bên ngoài nếu cần
