@@ -130,21 +130,23 @@ const ListFood = ({ foods, restaurants, restaurantId }) => {
           </tr>
         </thead>
         <tbody>
-          {foods &&
+          {foods !== null && foods &&
             foods?.length > 0 &&
             foods.map((food, index) => (
               <tr key={index}>
                 <th>{index + 1}</th>
                 <th>{food.name}</th>
-                <th>
+                <th className="text-center">
                   <img
-                    className="rounded mx-auto d-block w-25 h-25"
+                    className="rounded mx-auto d-block" style={{width:"200px", height:"300px"}}
                     src={food.imgSrc}
                     alt=""
                   />
                 </th>
                 <th>{food.price}</th>
-                <th>{food.desc}</th>
+                <th className="h-auto text-wrap" >
+                  <p className=" text-truncate " style={{width:"350px", maxHeight:"300px"}}>{food.desc}</p>
+                </th>
                 <th>
                   {food.is_active === 0 ? (
                     <p className="text-success">Hoạt động</p>
