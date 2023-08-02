@@ -29,6 +29,7 @@ const EditFood = () => {
     categoryId: [],
     is_active: 0,
   });
+  const [imagePreview, setImagePreview] = useState(null);
   const { restaurantId, foodId } = useParams();
   const dispatch = useDispatch();
 
@@ -64,7 +65,13 @@ const EditFood = () => {
       // Kiểm tra xem có chọn ảnh mới hay không
       if (e.target.files && e.target.files.length > 0) {
         // Nếu có chọn ảnh mới, lấy ảnh đầu tiên trong danh sách files
-        setState({ ...state, imgSrc: e.target.files[0] });
+        const reader = new FileReader();
+        const file = e.target.files[0];
+        reader.onload = () => {
+          setImagePreview(reader.result);
+        };
+        reader.readAsDataURL(file);
+        setState({ ...state, imgSrc: file });
       }
     } else {
       // Nếu không phải trường imgSrc, giữ nguyên giá trị
@@ -215,6 +222,9 @@ const EditFood = () => {
           {errors.imgSrc.length > 0 && (
             <p className="text-danger">{errors.imgSrc}</p>
           )}
+        </div>
+        <div className="mb-3">
+          <img src={imagePreview || state.imgSrc} alt="Xem trước" />
         </div>
         <button type="submit" className="btn btn-primary">
           Cập nhật

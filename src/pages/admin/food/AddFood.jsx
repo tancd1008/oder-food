@@ -28,6 +28,7 @@ const AddFood = ({ restaurantId }) => {
     categoryId: [],
     is_active: 0,
   });
+  const [imagePreview, setImagePreview] = useState(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { name, price, desc } = state;
@@ -62,7 +63,13 @@ const AddFood = ({ restaurantId }) => {
     if (!e.target.files) {
       setState({ ...state, [name]: value });
     } else {
-      setState({ ...state, imgSrc: e.target.files[0] });
+      const reader = new FileReader();
+      const file = e.target.files[0]
+      reader.onload = () => {
+        setImagePreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+      setState({ ...state, imgSrc: file });
     }
   };
   const handleSelectChange = (selectedOptions) => {
@@ -199,6 +206,15 @@ const AddFood = ({ restaurantId }) => {
           {errors.imgSrc.length > 0 && (
             <p className="text-danger">{errors.imgSrc}</p>
           )}
+        </div>
+        <div className="mb-3">
+          <img
+            src={
+              imagePreview ||
+              "https://res.cloudinary.com/namddph17471/image/upload/v1661909843/download_jkp74k.png"
+            }
+            alt="Xem trước"
+          />
         </div>
         <button type="submit" className="btn btn-primary">
           Thêm mới
