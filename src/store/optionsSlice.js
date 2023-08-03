@@ -4,13 +4,13 @@ import { convertToTimestamp } from "../helper/convertTimestamp";
 import { addOpitons, deleteOptions, getAllOptionsRestaurant, updateOptions } from "../services/options";
 
 const initialState = {
-  categories: null,
+  options: null,
   status: "idle",
   check: null,
   error: null,
 };
 export const fetchOptionsRestaurant = createAsyncThunk(
-  "categories/fetchOptionsRestaurant",
+  "options/fetchOptionsRestaurant",
   async ({ restaurantId }) => {
     const optionsList = await getAllOptionsRestaurant(restaurantId);
     return optionsList.map((restaurant) => ({
@@ -20,21 +20,21 @@ export const fetchOptionsRestaurant = createAsyncThunk(
   }
 );
 export const removeOptions = createAsyncThunk(
-  "categories/deleteOptions",
+  "options/deleteOptions",
   async ({ optionsId, restaurantId }) => {
     await deleteOptions(optionsId, restaurantId);
     return optionsId;
   }
 );
 export const createOptions = createAsyncThunk(
-  "categories/createOptions",
+  "options/createOptions",
   async ({ options, restaurantId }) => {
     const result = await addOpitons(options, restaurantId);
     return result;
   }
 );
 export const editOptions = createAsyncThunk(
-  "categories/editOptions",
+  "options/editOptions",
   async ({ optionsId, options, restaurantId }) => {
     await updateOptions(optionsId, options, restaurantId);
     return options;
@@ -45,30 +45,30 @@ const optionsSlice = createSlice({
   name: "options",
   initialState,
   reducers: {
-    setCategories: (state) => {
-      state.categories = null;
+    setoptions: (state) => {
+      state.options = null;
     },
   },
   extraReducers: (builder) => {
     builder
       .addCase(fetchOptionsRestaurant.fulfilled, (state, action) => {
-        state.categories = action.payload;
+        state.options = action.payload;
       })
       .addCase(removeOptions.fulfilled, (state, action) => {
-        state.categories = state.categories.filter(
+        state.options = state.options.filter(
           (item) => item.id !== action.payload
         );
       })
       .addCase(createOptions.fulfilled, (state, action) => {
-        state.categories.push(action.payload);
+        state.options.push(action.payload);
       })
       .addCase(editOptions.fulfilled, (state, action) => {
-        state.categories = state.categories.map((category) =>
-          category.id === action.payload.id ? action.payload : category
+        state.options = state.options.map((options) =>
+          options.id === action.payload.id ? action.payload : options
         );
       });
   },
 });
-export const { setCategories } = optionsSlice.actions;
+export const { setOptions } = optionsSlice.actions;
 
 export default optionsSlice.reducer;

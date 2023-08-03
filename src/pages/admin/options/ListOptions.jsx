@@ -5,82 +5,83 @@ import { Link } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ConfirmBox from "../../../components/ConfirmBox";
-import { updateCategory } from "../../../services/category";
 import { getUserDataFromSessionStorage } from "../../../services/encode";
-import {
-  fetchCategoriesByRestaurant,
-  removeCategory,
-} from "../../../store/categoriesSlide";
+
 import { setFoods } from "../../../store/foodsSlice";
 import {
   fetchRestaurants,
   setRestaurantId,
 } from "../../../store/restaurantSlice";
-const ListOptions = ({ categories, restaurants, restaurantId }) => {
+import { fetchOptionsRestaurant } from "../../../store/optionsSlice";
+const ListOptions = ({ options, restaurants, restaurantId }) => {
+    console.log(restaurantId)
   const [showConfirmMap, setShowConfirmMap] = useState({});
   const user = getUserDataFromSessionStorage();
   const dispatch = useDispatch();
   const handleChangeRestaurant = async (restaurantId) => {
-    dispatch(fetchCategoriesByRestaurant({ restaurantId }));
+    dispatch(fetchOptionsRestaurant({ restaurantId }));
     dispatch(setRestaurantId(restaurantId));
     dispatch(setFoods());
   };
 
-  const handleDelete = (categoryId) => {
-    dispatch(removeCategory({ categoryId, restaurantId }));
-    setShowConfirmMap((prev) => ({ ...prev, [categoryId]: true }));
+  const handleDelete = (optionsId) => {
+    // dispatch(removeCategory({ optionsId, restaurantId }));
+    setShowConfirmMap((prev) => ({ ...prev, [optionsId]: true }));
   };
 
-  const handleCancel = (categoryId) => {
-    setShowConfirmMap((prev) => ({ ...prev, [categoryId]: false }));
+  const handleCancel = (optionsId) => {
+    setShowConfirmMap((prev) => ({ ...prev, [optionsId]: false }));
   };
-  const handleUpdateStatus = async (category, restaurantId) => {
-    var newCategory = { ...category };
-    if (category.is_active === 0) {
-      newCategory = { ...category, is_active: 1 };
-    } else {
-      newCategory = { ...category, is_active: 0 };
-    }
-    await updateCategory(category.id, restaurantId, newCategory);
-    dispatch(
-      fetchCategoriesByRestaurant({
-        restaurantId,
-      })
-    );
+  const handleUpdateStatus = async (options, restaurantId) => {
+    // var newOptions = { ...options };
+    // if (options.is_active === 0) {
+    //     newOptions = { ...options, is_active: 1 };
+    // } else {
+    //     newOptions = { ...options, is_active: 0 };
+    // }
+    // await updateCategory(options.id, restaurantId, newOptions);
+    // dispatch(
+    //   fetchOptionsRestaurant({
+    //     restaurantId,
+    //   })
+    // );
   };
   useEffect(() => {
+    console.log(restaurantId)
     if (
       restaurantId === null ||
-      (restaurantId !== null && categories === null)
+      (restaurantId !== null && options === null)
     ) {
       if (user.role === "ADMIN") {
         if (restaurants?.length > 0) {
           if (restaurantId === null) {
             dispatch(
-              fetchCategoriesByRestaurant({ restaurantId: restaurants[0].id })
+              fetchOptionsRestaurant({ restaurantId: restaurants[0].id })
             );
             dispatch(setRestaurantId(restaurants[0].id));
           } else {
-            dispatch(fetchCategoriesByRestaurant({ restaurantId }));
+            dispatch(fetchOptionsRestaurant({ restaurantId }));
           }
         } else {
           dispatch(fetchRestaurants());
         }
       } else {
+        console.log(restaurantId)
         dispatch(
-          fetchCategoriesByRestaurant({ restaurantId: user.restaurantId })
+          fetchOptionsRestaurant({ restaurantId: user.restaurantId })
         );
         dispatch(setRestaurantId(user.restaurantId));
       }
     }
   }, [
-    categories,
+    options,
     dispatch,
     restaurantId,
     restaurants,
     user.restaurantId,
     user.role,
   ]);
+  console.log(options)
   return (
     <div>
       <div>
@@ -134,23 +135,23 @@ const ListOptions = ({ categories, restaurants, restaurantId }) => {
           </tr>
         </thead>
         <tbody>
-          {categories &&
-            categories?.length > 0 &&
-            categories.map((category, index) => (
+          {options &&
+            options?.length > 0 &&
+            options.map((options, index) => (
               <tr key={index}>
                 <th>{index + 1}</th>
-                <th>{category.name}</th>
+                <th>{options.name}</th>
                 <th>
                   <img
                     className="rounded mx-auto d-block w-25 h-25"
-                    src={category.imgSrc}
+                    src={options.imgSrc}
                     alt=""
                   />
                 </th>
-                <th>{category.price}</th>
-                <th>{category.desc}</th>
+                <th>{options.price}</th>
+                <th>{options.desc}</th>
                 <th>
-                  {category.is_active === 0 ? (
+                  {options.is_active === 0 ? (
                     <p className="text-success">Hoạt động</p>
                   ) : (
                     <p className="text-danger">Ngừng bán</p>
@@ -159,30 +160,30 @@ const ListOptions = ({ categories, restaurants, restaurantId }) => {
                 <th className="">
                   <button
                     className="btn btn-danger"
-                    onClick={() => handleDelete(category.id)}
+                    onClick={() => handleDelete(options.id)}
                   >
                     Xóa
                   </button>
                   <ConfirmBox
-                    show={showConfirmMap[category.id]}
+                    show={showConfirmMap[options.id]}
                     message="Bạn có chắc chắn muốn xóa bản ghi này không?"
-                    onConfirm={() => handleDelete(category.id, restaurantId)}
-                    onCancel={() => handleCancel(category.id)}
+                    onConfirm={() => handleDelete(options.id, restaurantId)}
+                    onCancel={() => handleCancel(options.id)}
                   />
                   <Link
-                    to={`/admin/category/edit/${restaurantId}/${category.id}`}
+                    to={`/admin/options/edit/${restaurantId}/${options.id}`}
                   >
                     <button className="btn btn-warning ms-1">Sửa</button>
                   </Link>
                   <button
                     className={`${
-                      category.is_active === 0
+                      options.is_active === 0
                         ? "btn btn-secondary ms-1"
                         : "btn btn-success ms-1"
                     }`}
-                    onClick={() => handleUpdateStatus(category, restaurantId)}
+                    onClick={() => handleUpdateStatus(options, restaurantId)}
                   >
-                    {category.is_active === 0 ? "Dừng" : "Bán"}
+                    {options.is_active === 0 ? "Dừng" : "Bán"}
                   </button>
                 </th>
               </tr>
@@ -194,8 +195,9 @@ const ListOptions = ({ categories, restaurants, restaurantId }) => {
   );
 };
 function mapStateToProps(state) {
+  console.log(state)
   return {
-    categories: state.categories.categories,
+    options: state.options.options,
     restaurants: state.restaurants.restaurants,
     restaurantId: state.restaurants.restaurantId,
   };
