@@ -60,7 +60,7 @@ import {
       return []; // Trả về một mảng rỗng nếu có lỗi xảy ra
     }
   };
-  export const updateOptions = async (optionsId,restaurantId, options ) => {
+  export const updateOptions = async (optionsId, options,restaurantId ) => {
     try {
       // Lấy reference của document danh mục dựa trên optionsId
       const optionsRef = doc(

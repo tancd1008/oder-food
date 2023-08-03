@@ -19,6 +19,7 @@ import AddFood from "../pages/admin/food/AddFood";
 import EditFood from "../pages/admin/food/EditFood";
 import ListOptions from "../pages/admin/options/ListOptions";
 import AddOptions from "../pages/admin/options/AddOptions";
+import EditOptions from "../pages/admin/options/EditOptions";
 
 
 
@@ -85,6 +86,10 @@ const privateRoutes = [
   {
     path: "options/add",
     component: AddOptions,
+  },
+  {
+    path: "options/edit/:restaurantId/:optionsId",
+    component: EditOptions,
   },
 ];
 const authenticationRoutes = [

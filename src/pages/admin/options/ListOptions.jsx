@@ -41,7 +41,7 @@ const ListOptions = ({ options, restaurants, restaurantId }) => {
     } else {
         newOptions = { ...options, is_active: 0 };
     }
-    await updateOptions(options.id, restaurantId, newOptions);
+    await updateOptions(options.id, newOptions, restaurantId);
     dispatch(
       fetchOptionsRestaurant({
         restaurantId,
