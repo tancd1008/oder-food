@@ -13,6 +13,7 @@ import {
   setRestaurantId,
 } from "../../../store/restaurantSlice";
 import { fetchOptionsRestaurant } from "../../../store/optionsSlice";
+import { updateOptions } from "../../../services/options";
 const ListOptions = ({ options, restaurants, restaurantId }) => {
     console.log(restaurantId)
   const [showConfirmMap, setShowConfirmMap] = useState({});
@@ -33,18 +34,19 @@ const ListOptions = ({ options, restaurants, restaurantId }) => {
     setShowConfirmMap((prev) => ({ ...prev, [optionsId]: false }));
   };
   const handleUpdateStatus = async (options, restaurantId) => {
-    // var newOptions = { ...options };
-    // if (options.is_active === 0) {
-    //     newOptions = { ...options, is_active: 1 };
-    // } else {
-    //     newOptions = { ...options, is_active: 0 };
-    // }
-    // await updateCategory(options.id, restaurantId, newOptions);
-    // dispatch(
-    //   fetchOptionsRestaurant({
-    //     restaurantId,
-    //   })
-    // );
+    var newOptions = { ...options };
+    console.log(newOptions)
+    if (options.is_active === 0) {
+        newOptions = { ...options, is_active: 1 };
+    } else {
+        newOptions = { ...options, is_active: 0 };
+    }
+    await updateOptions(options.id, restaurantId, newOptions);
+    dispatch(
+      fetchOptionsRestaurant({
+        restaurantId,
+      })
+    );
   };
   useEffect(() => {
     console.log(restaurantId)
