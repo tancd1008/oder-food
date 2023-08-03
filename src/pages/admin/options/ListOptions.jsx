@@ -12,7 +12,7 @@ import {
   fetchRestaurants,
   setRestaurantId,
 } from "../../../store/restaurantSlice";
-import { fetchOptionsRestaurant } from "../../../store/optionsSlice";
+import { fetchOptionsRestaurant, removeOptions } from "../../../store/optionsSlice";
 import { updateOptions } from "../../../services/options";
 const ListOptions = ({ options, restaurants, restaurantId }) => {
     console.log(restaurantId)
@@ -26,7 +26,7 @@ const ListOptions = ({ options, restaurants, restaurantId }) => {
   };
 
   const handleDelete = (optionsId) => {
-    // dispatch(removeCategory({ optionsId, restaurantId }));
+    dispatch(removeOptions({ optionsId, restaurantId }));
     setShowConfirmMap((prev) => ({ ...prev, [optionsId]: true }));
   };
 
