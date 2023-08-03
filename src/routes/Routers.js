@@ -17,6 +17,8 @@ import EditCategory from "../pages/admin/categories/EditCategory";
 import ListFood from "../pages/admin/food/ListFood";
 import AddFood from "../pages/admin/food/AddFood";
 import EditFood from "../pages/admin/food/EditFood";
+import ListOptions from "../pages/admin/options/ListOptions";
+import AddOptions from "../pages/admin/options/AddOptions";
 
 
 
@@ -53,7 +55,7 @@ const privateRoutes = [
     component: AddFood,
   },
   {
-    path: "Food/edit/:restaurantId/:foodId",
+    path: "food/edit/:restaurantId/:foodId",
     component: EditFood,
   },
   {
@@ -75,6 +77,14 @@ const privateRoutes = [
   {
     path: "restaurant/list",
     component: ListRestaurants,
+  },
+  {
+    path: "options/list",
+    component: ListOptions,
+  },
+  {
+    path: "options/add",
+    component: AddOptions,
   },
 ];
 const authenticationRoutes = [
