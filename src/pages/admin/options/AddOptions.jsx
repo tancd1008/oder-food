@@ -10,7 +10,7 @@ const initialState = {
   is_active: 0,
   restaurantId: "",
 };
-const AddCategory = ({ restaurantId }) => {
+const AddOptions = ({ restaurantId }) => {
   const [state, setState] = useState(initialState);
   const { name, price } = state;
   // const user = getUserDataFromSessionStorage();
@@ -84,4 +84,4 @@ function mapStateToProps(state) {
     restaurantId: state.restaurants.restaurantId,
   };
 }
-export default connect(mapStateToProps)(AddCategory);
+export default connect(mapStateToProps)(AddOptions);
