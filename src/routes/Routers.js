@@ -21,7 +21,6 @@ import ListOptions from "../pages/admin/options/ListOptions";
 import AddOptions from "../pages/admin/options/AddOptions";
 import EditOptions from "../pages/admin/options/EditOptions";
 import ListVoucher from "../pages/admin/voucher/ListVoucher";
-import { addVoucher } from "../services/voucher";
 import AddVoucher from "../pages/admin/voucher/AddVoucher";
 
 
@@ -86,10 +85,10 @@ const privateRoutes = [
     path: "options/list",
     component: ListOptions,
   },
-  // {
-  //   path: "options/add",
-  //   component: AddOptions,
-  // },
+  {
+    path: "options/add",
+    component: AddOptions,
+  },
   {
     path: "options/edit/:restaurantId/:optionsId",
     component: EditOptions,

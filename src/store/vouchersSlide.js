@@ -20,13 +20,13 @@ export const fetchVoucherRestaurant = createAsyncThunk(
   }
 );
 
-// export const createVoucher = createAsyncThunk(
-//   "voucher/createVoucher",
-//   async ({ voucher, restaurantId }) => {
-//     const result = await addVoucher(voucher, restaurantId);
-//     return result;
-//   }
-// );
+export const createVoucher = createAsyncThunk(
+  "voucher/createVoucher",
+  async ({ voucher, restaurantId }) => {
+    const result = await addVoucher(voucher, restaurantId);
+    return result;
+  }
+);
 
 
 const voucherSlice = createSlice({
