@@ -5,6 +5,7 @@ import restaurantsReducer from "./restaurantSlice";
 import cartSlice from "./shopping-cart/cartSlice";
 import cartUiSlice from "./shopping-cart/cartUiSlice";
 import optionsReducer from "./optionsSlice";
+import voucherReducer from "./vouchersSlide";
 const store = configureStore({
   reducer: {
     cart: cartSlice.reducer,
@@ -13,6 +14,7 @@ const store = configureStore({
     categories: categoriesReducer,
     options: optionsReducer,
     foods: foodsReducer,
+    voucher: voucherReducer
   },
 });
 

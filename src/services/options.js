@@ -29,8 +29,8 @@ import {
       // Lấy thông tin của bản ghi đã thêm
       const addedDoc = await getDoc(optionsRef);
       if (addedDoc.exists()) {
-        const addedCategory = addedDoc.data();
-        return addedCategory;
+        const addedOptions = addedDoc.data();
+        return addedOptions;
       } else {
         console.log("Không tìm thấy bản ghi đã thêm");
         return null;
@@ -85,9 +85,9 @@ import {
       );
   
       // Lấy dữ liệu của document options
-      const optiopnsDoc = await getDoc(optionsRef);
+      const optionsDoc = await getDoc(optionsRef);
       console.log("Thành công");
-      return optiopnsDoc.data();
+      return optionsDoc.data();
     } catch (error) {
       console.log("Lỗi");
       return null;

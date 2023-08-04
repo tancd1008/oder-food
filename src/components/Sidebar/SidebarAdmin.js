@@ -11,6 +11,7 @@ const SidebarAdmin = () => {
     { title: "Danh sách danh mục", path: "category/list",show: userRole ==="USER" || userRole ==="ADMIN" },
     { title: "Danh sách sản phẩm", path: "food/list",show: userRole ==="USER" || userRole ==="ADMIN" },
     { title: "Danh sách Options", path: "options/list",show: userRole ==="USER" || userRole ==="ADMIN" },
+    { title: "Danh sách Voucher", path: "voucher/list",show: userRole ==="USER" || userRole ==="ADMIN" },
   ];
 
   return (
