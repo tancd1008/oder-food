@@ -1,5 +1,6 @@
 import {
     collection,
+    deleteDoc,
     doc,
     getDoc,
     getDocs,
@@ -53,6 +54,21 @@ import {
       console.log("Đã cập nhật voucher thành công!");
     } catch (error) {
       console.error("Đã xảy ra lỗi khi cập nhật voucher:", error);
+      throw error; // Ném lỗi để xử lý bên ngoài nếu cần
+    }
+  };
+  export const deleteVoucher = async (voucherId, restaurantId) => {
+    try {
+      // Tạo reference tới document voucher cần xóa
+      const voucherRef = doc(
+        database,
+        `${COLLECTION_NAME}/${restaurantId}/voucher/${voucherId}`
+      );
+  
+      // Xóa document voucher
+      await deleteDoc(voucherRef);
+    } catch (error) {
+      console.error("Đã xảy ra lỗi khi xóa voucher:", error);
       throw error; // Ném lỗi để xử lý bên ngoài nếu cần
     }
   };

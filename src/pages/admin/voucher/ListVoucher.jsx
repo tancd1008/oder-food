@@ -12,7 +12,7 @@ import {
   fetchRestaurants,
   setRestaurantId,
 } from "../../../store/restaurantSlice";
-import { fetchVoucherRestaurant } from "../../../store/vouchersSlide";
+import { fetchVoucherRestaurant, removeVoucher } from "../../../store/vouchersSlide";
 import { updateVoucher } from "../../../services/voucher";
 const ListVoucher = ({ voucher, restaurants, restaurantId }) => {
   console.log(restaurantId)
@@ -26,7 +26,8 @@ const ListVoucher = ({ voucher, restaurants, restaurantId }) => {
   };
 
   const handleDelete = (voucherId) => {
-   
+    dispatch(removeVoucher({ voucherId, restaurantId }));
+    setShowConfirmMap((prev) => ({ ...prev, [voucherId]: true }));
   };
 
   const handleCancel = (voucherId) => {

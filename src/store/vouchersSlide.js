@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { convertToTimestamp } from "../helper/convertTimestamp";
 
-import {  addVoucher, getAllVoucherRestaurant, updateVoucher } from "../services/voucher";
+import {  addVoucher, deleteVoucher, getAllVoucherRestaurant, updateVoucher } from "../services/voucher";
 
 const initialState = {
   voucher: null,
@@ -34,6 +34,13 @@ export const editVoucher = createAsyncThunk(
     return voucher;
   }
 );
+export const removeVoucher = createAsyncThunk(
+  "voucher/deleteVoucher",
+  async ({ voucherId, restaurantId }) => {
+    await deleteVoucher(voucherId, restaurantId);
+    return voucherId;
+  }
+);
 
 
 const voucherSlice = createSlice({
@@ -54,6 +61,16 @@ const voucherSlice = createSlice({
         console.log(action.payload);
         state.voucher.push(action.payload);
       })
+      .addCase(removeVoucher.fulfilled, (state, action) => {
+        state.voucher = state.voucher.filter(
+          (item) => item.id !== action.payload
+        );
+      })
+      // .addCase(editVoucher.fulfilled, (state, action) => {
+      //   state.voucher = state.voucher.map((voucher) =>
+      //     voucher.id === action.payload.id ? action.payload : voucher
+      //   );
+      // });
       
   },
 });
