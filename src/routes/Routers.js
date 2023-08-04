@@ -21,6 +21,7 @@ import AddOptions from "../pages/admin/options/AddOptions";
 import EditOptions from "../pages/admin/options/EditOptions";
 import ListVoucher from "../pages/admin/voucher/ListVoucher";
 import AddVoucher from "../pages/admin/voucher/AddVoucher";
+import EditVoucher from "../pages/admin/voucher/EditVoucher";
 
 const publicRoutes = [
   {
@@ -97,6 +98,10 @@ const privateRoutes = [
   {
     path: "voucher/add",
     component: AddVoucher,
+  },
+  {
+    path: "voucher/edit/:restaurantId/:voucherId",
+    component: EditVoucher,
   },
 ];
 const authenticationRoutes = [

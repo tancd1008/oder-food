@@ -22,7 +22,7 @@ export const fetchVoucherRestaurant = createAsyncThunk(
       ...restaurant,
       createdAt: convertToTimestamp(restaurant.createdAt), // Convert to UNIX timestamp in milliseconds
     }));
-  },
+  }
 );
 
 export const createVoucher = createAsyncThunk(
@@ -30,21 +30,21 @@ export const createVoucher = createAsyncThunk(
   async ({ voucher, restaurantId }) => {
     const result = await addVoucher(voucher, restaurantId);
     return result;
-  },
+  }
 );
 export const editVoucher = createAsyncThunk(
   "voucher/editVoucher",
   async ({ voucherId, voucher, restaurantId }) => {
     await updateVoucher(voucherId, voucher, restaurantId);
     return voucher;
-  },
+  }
 );
 export const removeVoucher = createAsyncThunk(
   "voucher/deleteVoucher",
   async ({ voucherId, restaurantId }) => {
     await deleteVoucher(voucherId, restaurantId);
     return voucherId;
-  },
+  }
 );
 
 const voucherSlice = createSlice({
@@ -67,14 +67,14 @@ const voucherSlice = createSlice({
       })
       .addCase(removeVoucher.fulfilled, (state, action) => {
         state.voucher = state.voucher.filter(
-          (item) => item.id !== action.payload,
+          (item) => item.id !== action.payload
+        );
+      })
+      .addCase(editVoucher.fulfilled, (state, action) => {
+        state.voucher = state.voucher.map((voucher) =>
+          voucher.id === action.payload.id ? action.payload : voucher
         );
       });
-    // .addCase(editVoucher.fulfilled, (state, action) => {
-    //   state.voucher = state.voucher.map((voucher) =>
-    //     voucher.id === action.payload.id ? action.payload : voucher
-    //   );
-    // });
   },
 });
 export const { setVoucher } = voucherSlice.actions;

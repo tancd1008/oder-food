@@ -48,7 +48,7 @@ const EditOptions = () => {
   return (
     <div>
       <form onSubmit={handleSubmit}>
-        <h1 className="text-center">Cập nhật danh mục</h1>
+        <h1 className="text-center">Cập nhật Options</h1>
         <div className="mb-3">
           <label htmlFor="name" className="form-label">
             Tên options

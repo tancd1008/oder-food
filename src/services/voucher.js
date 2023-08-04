@@ -17,7 +17,7 @@ export const addVoucher = async (voucher, restaurantId) => {
     const voucherId = uuidv4();
     const voucherRef = doc(
       database,
-      `${COLLECTION_NAME}/${restaurantId}/voucher/${voucherId}`,
+      `${COLLECTION_NAME}/${restaurantId}/voucher/${voucherId}`
     );
 
     // Thêm dữ liệu của voucher vào tài liệu
@@ -45,7 +45,7 @@ export const updateVoucher = async (voucherId, voucher, restaurantId) => {
     // Lấy reference của document voucher dựa trên voucherId
     const voucherRef = doc(
       database,
-      `${COLLECTION_NAME}/${restaurantId}/voucher/${voucherId}`,
+      `${COLLECTION_NAME}/${restaurantId}/voucher/${voucherId}`
     );
 
     // Cập nhật thông tin voucher bằng updatedoptions
@@ -62,7 +62,7 @@ export const deleteVoucher = async (voucherId, restaurantId) => {
     // Tạo reference tới document voucher cần xóa
     const voucherRef = doc(
       database,
-      `${COLLECTION_NAME}/${restaurantId}/voucher/${voucherId}`,
+      `${COLLECTION_NAME}/${restaurantId}/voucher/${voucherId}`
     );
 
     // Xóa document voucher
@@ -77,7 +77,7 @@ export const getAllVoucherRestaurant = async (restaurantId) => {
     // Lấy danh sách voucher từ Firestore
 
     const voucherSnapshot = await getDocs(
-      collection(database, `${COLLECTION_NAME}/${restaurantId}/voucher`),
+      collection(database, `${COLLECTION_NAME}/${restaurantId}/voucher`)
     );
 
     // Biến voucherSnapshot chứa một danh sách các tài liệu (documents) trong collection
@@ -90,5 +90,22 @@ export const getAllVoucherRestaurant = async (restaurantId) => {
   } catch (error) {
     console.error("Đã xảy ra lỗi khi lấy voucher:", error);
     return []; // Trả về một mảng rỗng nếu có lỗi xảy ra
+  }
+};
+export const getDetailVoucher = async (voucherId, restaurantId) => {
+  try {
+    const voucherRef = doc(
+      database,
+      `${COLLECTION_NAME}/${restaurantId}/voucher/${voucherId}`
+    );
+
+    // Lấy dữ liệu của document voucher
+    const voucherDoc = await getDoc(voucherRef);
+    console.log("Thành công");
+    console.log(voucherDoc.data());
+    return voucherDoc.data();
+  } catch (error) {
+    console.log("Lỗi");
+    return null;
   }
 };
