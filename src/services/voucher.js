@@ -4,6 +4,7 @@ import {
     getDoc,
     getDocs,
     setDoc,
+    updateDoc,
   } from "firebase/firestore";
   import { v4 as uuidv4 } from "uuid";
   import { database } from "../firebase-config";
@@ -18,7 +19,7 @@ import {
         `${COLLECTION_NAME}/${restaurantId}/voucher/${voucherId}`
       );
   
-      // Thêm dữ liệu của danh mục vào tài liệu
+      // Thêm dữ liệu của voucher vào tài liệu
       await setDoc(voucherRef, {
         ...voucher,
         id: voucherId,
@@ -38,9 +39,26 @@ import {
       return null;
     }
   };
+  export const updateVoucher = async (voucherId, voucher,restaurantId ) => {
+    try {
+      // Lấy reference của document voucher dựa trên voucherId
+      const voucherRef = doc(
+        database,
+        `${COLLECTION_NAME}/${restaurantId}/voucher/${voucherId}`
+      );
+  
+      // Cập nhật thông tin voucher bằng updatedoptions
+      await updateDoc(voucherRef, voucher);
+  
+      console.log("Đã cập nhật voucher thành công!");
+    } catch (error) {
+      console.error("Đã xảy ra lỗi khi cập nhật voucher:", error);
+      throw error; // Ném lỗi để xử lý bên ngoài nếu cần
+    }
+  };
   export const getAllVoucherRestaurant = async (restaurantId) => {
     try {
-      // Lấy danh sách danh mục từ Firestore
+      // Lấy danh sách voucher từ Firestore
   
       const voucherSnapshot = await getDocs(
         collection(database, `${COLLECTION_NAME}/${restaurantId}/voucher`)
@@ -54,7 +72,7 @@ import {
   
       return voucher;
     } catch (error) {
-      console.error("Đã xảy ra lỗi khi lấy danh mục:", error);
+      console.error("Đã xảy ra lỗi khi lấy voucher:", error);
       return []; // Trả về một mảng rỗng nếu có lỗi xảy ra
     }
   };

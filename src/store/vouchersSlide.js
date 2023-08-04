@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { convertToTimestamp } from "../helper/convertTimestamp";
 
-import {  addVoucher, getAllVoucherRestaurant } from "../services/voucher";
+import {  addVoucher, getAllVoucherRestaurant, updateVoucher } from "../services/voucher";
 
 const initialState = {
   voucher: null,
@@ -25,6 +25,13 @@ export const createVoucher = createAsyncThunk(
   async ({ voucher, restaurantId }) => {
     const result = await addVoucher(voucher, restaurantId);
     return result;
+  }
+);
+export const editVoucher = createAsyncThunk(
+  "voucher/editVoucher",
+  async ({ voucherId, voucher, restaurantId }) => {
+    await updateVoucher(voucherId, voucher, restaurantId);
+    return voucher;
   }
 );
 

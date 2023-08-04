@@ -13,6 +13,7 @@ import {
   setRestaurantId,
 } from "../../../store/restaurantSlice";
 import { fetchVoucherRestaurant } from "../../../store/vouchersSlide";
+import { updateVoucher } from "../../../services/voucher";
 const ListVoucher = ({ voucher, restaurants, restaurantId }) => {
   console.log(restaurantId)
   const [showConfirmMap, setShowConfirmMap] = useState({});
@@ -32,7 +33,19 @@ const ListVoucher = ({ voucher, restaurants, restaurantId }) => {
     setShowConfirmMap((prev) => ({ ...prev, [voucherId]: false }));
   };
   const handleUpdateStatus = async (voucher, restaurantId) => {
-   
+    var newVoucher = { ...voucher };
+    console.log(newVoucher)
+    if (voucher.is_active === 0) {
+        newVoucher = { ...voucher, is_active: 1 };
+    } else {
+        newVoucher = { ...voucher, is_active: 0 };
+    }
+    await updateVoucher(voucher.id, newVoucher, restaurantId);
+    dispatch(
+      fetchVoucherRestaurant({
+        restaurantId,
+      })
+    );
   };
   useEffect(() => {
     console.log(restaurantId)
@@ -115,9 +128,9 @@ const ListVoucher = ({ voucher, restaurants, restaurantId }) => {
           <tr>
             <th scope="col">STT</th>
             <th scope="col">Sản phảm</th>
-            <th scope="col">Ảnh</th>
             <th scope="col">Giá</th>
-            <th scope="col">Nội dung</th>
+            <th scope="col">Ngày bắt đầu</th>
+            <th scope="col">Ngày kết thúc</th>
             <th scope="col">Status</th>
             <th scope="col"></th>
           </tr>
@@ -129,20 +142,15 @@ const ListVoucher = ({ voucher, restaurants, restaurantId }) => {
               <tr key={index}>
                 <th>{index + 1}</th>
                 <th>{voucher.name}</th>
-                <th>
-                  <img
-                    className="rounded mx-auto d-block w-25 h-25"
-                    src={voucher.imgSrc}
-                    alt=""
-                  />
-                </th>
-                <th>{voucher.price}</th>
-                <th>{voucher.desc}</th>
+                
+                <th>{voucher.discount}</th>
+                <th>{voucher.time_start}</th>
+                <th>{voucher.time_end}</th>
                 <th>
                   {voucher.is_active === 0 ? (
                     <p className="text-success">Hoạt động</p>
                   ) : (
-                    <p className="text-danger">Ngừng bán</p>
+                    <p className="text-danger">Ngừng</p>
                   )}
                 </th>
                 <th className="">
@@ -171,7 +179,7 @@ const ListVoucher = ({ voucher, restaurants, restaurantId }) => {
                     }`}
                     onClick={() => handleUpdateStatus(voucher, restaurantId)}
                   >
-                    {voucher.is_active === 0 ? "Dừng" : "Bán"}
+                    {voucher.is_active === 0 ? "Đóng" : "Mở"}
                   </button>
                 </th>
               </tr>
