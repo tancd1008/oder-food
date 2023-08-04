@@ -17,7 +17,7 @@ export const fetchRestaurants = createAsyncThunk(
       ...restaurant,
       createdAt: convertToTimestamp(restaurant.createdAt), // Convert to UNIX timestamp in milliseconds
     }));
-  }
+  },
 );
 
 const restaurantsSlice = createSlice({

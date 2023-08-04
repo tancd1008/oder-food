@@ -1,7 +1,12 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { convertToTimestamp } from "../helper/convertTimestamp";
 
-import { addOpitons, deleteOptions, getAllOptionsRestaurant, updateOptions } from "../services/options";
+import {
+  addOpitons,
+  deleteOptions,
+  getAllOptionsRestaurant,
+  updateOptions,
+} from "../services/options";
 
 const initialState = {
   options: null,
@@ -17,28 +22,28 @@ export const fetchOptionsRestaurant = createAsyncThunk(
       ...restaurant,
       createdAt: convertToTimestamp(restaurant.createdAt), // Convert to UNIX timestamp in milliseconds
     }));
-  }
+  },
 );
 export const removeOptions = createAsyncThunk(
   "options/deleteOptions",
   async ({ optionsId, restaurantId }) => {
     await deleteOptions(optionsId, restaurantId);
     return optionsId;
-  }
+  },
 );
 export const createOptions = createAsyncThunk(
   "options/createOptions",
   async ({ options, restaurantId }) => {
     const result = await addOpitons(options, restaurantId);
     return result;
-  }
+  },
 );
 export const editOptions = createAsyncThunk(
   "options/editOptions",
   async ({ optionsId, options, restaurantId }) => {
     await updateOptions(optionsId, options, restaurantId);
     return options;
-  }
+  },
 );
 
 const optionsSlice = createSlice({
@@ -56,7 +61,7 @@ const optionsSlice = createSlice({
       })
       .addCase(removeOptions.fulfilled, (state, action) => {
         state.options = state.options.filter(
-          (item) => item.id !== action.payload
+          (item) => item.id !== action.payload,
         );
       })
       .addCase(createOptions.fulfilled, (state, action) => {
@@ -64,7 +69,7 @@ const optionsSlice = createSlice({
       })
       .addCase(editOptions.fulfilled, (state, action) => {
         state.options = state.options.map((options) =>
-          options.id === action.payload.id ? action.payload : options
+          options.id === action.payload.id ? action.payload : options,
         );
       });
   },

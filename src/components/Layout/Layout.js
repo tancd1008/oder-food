@@ -16,7 +16,7 @@ const Layout = () => {
       {showCart && <Carts />}
 
       <div>
-        <Outlet/>
+        <Outlet />
       </div>
       <Footer />
     </div>

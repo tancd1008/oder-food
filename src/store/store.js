@@ -14,7 +14,7 @@ const store = configureStore({
     categories: categoriesReducer,
     options: optionsReducer,
     foods: foodsReducer,
-    voucher: voucherReducer
+    voucher: voucherReducer,
   },
 });
 

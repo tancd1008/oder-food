@@ -31,7 +31,7 @@ const UploadImage = () => {
         toast.error(`File upload phải có đuôi là : ${imgTail.join(", ")} `);
       } else {
         try {
-          console.log(image)
+          console.log(image);
           uploadImage(image, setUrlImage);
           // setTimeout(() => {
           //   getImageUrl(image,setUrlImage);
@@ -93,14 +93,14 @@ const UploadImage = () => {
         >
           Save
         </button>
-        
-          <div className="aspect-h-4 aspect-w-3 hidden overflow-hidden rounded-lg lg:block">
-            <img
-              src={urlImage}
-              alt="Two each of gray, white, and black shirts laying flat."
-              className="rounded-[1rem] object-cover object-center"
-            />
-          </div>
+
+        <div className="aspect-h-4 aspect-w-3 hidden overflow-hidden rounded-lg lg:block">
+          <img
+            src={urlImage}
+            alt="Two each of gray, white, and black shirts laying flat."
+            className="rounded-[1rem] object-cover object-center"
+          />
+        </div>
 
         <ToastContainer position="top-center" />
       </div>

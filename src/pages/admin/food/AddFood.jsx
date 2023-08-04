@@ -64,7 +64,7 @@ const AddFood = ({ restaurantId }) => {
       setState({ ...state, [name]: value });
     } else {
       const reader = new FileReader();
-      const file = e.target.files[0]
+      const file = e.target.files[0];
       reader.onload = () => {
         setImagePreview(reader.result);
       };
@@ -115,7 +115,7 @@ const AddFood = ({ restaurantId }) => {
       const labelKeys = ["value", "label"];
       const listCategories = await getAllCategoriesInRestaurant(restaurantId);
       setCategories(
-        createOptionsFromData(listCategories, valueKeys, labelKeys)
+        createOptionsFromData(listCategories, valueKeys, labelKeys),
       );
     };
     getCategory();

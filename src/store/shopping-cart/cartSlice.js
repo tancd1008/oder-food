@@ -36,7 +36,7 @@ const cartSlice = createSlice({
     addItem(state, action) {
       const newItem = action.payload;
       const existingItem = state.cartItems.find(
-        (item) => item.id === newItem.id
+        (item) => item.id === newItem.id,
       );
       state.totalQuantity++;
 
@@ -60,13 +60,13 @@ const cartSlice = createSlice({
       state.totalAmount = state.cartItems.reduce(
         (total, item) => total + Number(item.price) * Number(item.quantity),
 
-        0
+        0,
       );
 
       setItemFunc(
         state.cartItems.map((item) => item),
         state.totalAmount,
-        state.totalQuantity
+        state.totalQuantity,
       );
     },
 
@@ -87,13 +87,13 @@ const cartSlice = createSlice({
 
       state.totalAmount = state.cartItems.reduce(
         (total, item) => total + Number(item.price) * Number(item.quantity),
-        0
+        0,
       );
 
       setItemFunc(
         state.cartItems.map((item) => item),
         state.totalAmount,
-        state.totalQuantity
+        state.totalQuantity,
       );
     },
 
@@ -110,12 +110,12 @@ const cartSlice = createSlice({
 
       state.totalAmount = state.cartItems.reduce(
         (total, item) => total + Number(item.price) * Number(item.quantity),
-        0
+        0,
       );
       setItemFunc(
         state.cartItems.map((item) => item),
         state.totalAmount,
-        state.totalQuantity
+        state.totalQuantity,
       );
     },
   },

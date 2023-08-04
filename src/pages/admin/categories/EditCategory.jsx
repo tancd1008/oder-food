@@ -27,7 +27,7 @@ const EditCategory = () => {
       toast.error("Mời bạn nhập!");
     } else {
       try {
-        dispatch(editCategory({categoryId, category:state, restaurantId}))
+        dispatch(editCategory({ categoryId, category: state, restaurantId }));
         toast.success("Successfully");
         setTimeout(() => {
           navigate("/admin/category/list");

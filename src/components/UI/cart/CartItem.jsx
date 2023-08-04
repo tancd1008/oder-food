@@ -18,7 +18,7 @@ const CartItem = ({ item }) => {
         title,
         price,
         image01,
-      })
+      }),
     );
   };
 

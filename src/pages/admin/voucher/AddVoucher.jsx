@@ -7,8 +7,8 @@ import { createVoucher } from "../../../store/vouchersSlide";
 const initialState = {
   name: "",
   discount: "",
-  time_start:"",
-  time_end:"",
+  time_start: "",
+  time_end: "",
   is_active: 0,
   restaurantId: "",
 };
@@ -16,7 +16,7 @@ const AddVoucher = ({ restaurantId }) => {
   const [state, setState] = useState(initialState);
   const { name, discount, time_start, time_end } = state;
   const navigate = useNavigate();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setState({ ...state, [name]: value });
@@ -29,9 +29,9 @@ const AddVoucher = ({ restaurantId }) => {
       toast.error("Mời bạn nhập!");
     } else {
       try {
-  console.log(restaurantId);
+        console.log(restaurantId);
 
-        dispatch(createVoucher({voucher: state, restaurantId}))
+        dispatch(createVoucher({ voucher: state, restaurantId }));
         toast.success("Bạn thêm voucher thành công!");
         setTimeout(() => {
           navigate("/admin/voucher/list");
@@ -113,7 +113,7 @@ const AddVoucher = ({ restaurantId }) => {
   );
 };
 function mapStateToProps(state) {
-  console.log(state)
+  console.log(state);
   return {
     restaurantId: state.restaurants.restaurantId,
   };

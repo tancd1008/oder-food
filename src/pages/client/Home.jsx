@@ -66,7 +66,7 @@ const Home = () => {
 
     if (category === "BURGER") {
       const filteredProducts = products.filter(
-        (item) => item.category === "Burger"
+        (item) => item.category === "Burger",
       );
 
       setAllProducts(filteredProducts);
@@ -74,7 +74,7 @@ const Home = () => {
 
     if (category === "PIZZA") {
       const filteredProducts = products.filter(
-        (item) => item.category === "Pizza"
+        (item) => item.category === "Pizza",
       );
 
       setAllProducts(filteredProducts);
@@ -82,7 +82,7 @@ const Home = () => {
 
     if (category === "BREAD") {
       const filteredProducts = products.filter(
-        (item) => item.category === "Bread"
+        (item) => item.category === "Bread",
       );
 
       setAllProducts(filteredProducts);

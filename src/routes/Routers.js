@@ -1,4 +1,3 @@
-
 import UploadImage from "../components/UploadImage";
 import AllFoods from "../pages/client/AllFoods";
 import Cart from "../pages/client/Cart";
@@ -23,8 +22,6 @@ import EditOptions from "../pages/admin/options/EditOptions";
 import ListVoucher from "../pages/admin/voucher/ListVoucher";
 import AddVoucher from "../pages/admin/voucher/AddVoucher";
 
-
-
 const publicRoutes = [
   {
     path: "",
@@ -34,8 +31,8 @@ const publicRoutes = [
     path: "*",
     component: NotFoundPage,
   },
-  { path: "foods", component: AllFoods, },
-  { path: "foods/:id", component: FoodDetails, },
+  { path: "foods", component: AllFoods },
+  { path: "foods/:id", component: FoodDetails },
   { path: "cart", component: Cart },
   { path: "checkout", component: Checkout },
   { path: "upload-image", component: UploadImage },
@@ -113,4 +110,3 @@ const authenticationRoutes = [
   },
 ];
 export { authenticationRoutes, privateRoutes, publicRoutes };
-

@@ -11,7 +11,7 @@ import {
 const ListRestaurants = () => {
   const [products, setProducts] = useState([]);
   const [showConfirm, setShowConfirm] = useState(false);
-  const [shouldRefresh, setShouldRefresh] = useState(false)
+  const [shouldRefresh, setShouldRefresh] = useState(false);
 
   const handleDelete = (id) => {
     // console.log("id", id);
@@ -26,7 +26,7 @@ const ListRestaurants = () => {
     var updateData = product;
     updateData.status = product?.status === 0 ? 1 : 0;
     updateRestaurant(updateData);
-    setShouldRefresh(true)
+    setShouldRefresh(true);
   };
   useEffect(() => {
     const fetchRestaurants = async () => {

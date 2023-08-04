@@ -12,10 +12,13 @@ import {
   fetchRestaurants,
   setRestaurantId,
 } from "../../../store/restaurantSlice";
-import { fetchVoucherRestaurant, removeVoucher } from "../../../store/vouchersSlide";
+import {
+  fetchVoucherRestaurant,
+  removeVoucher,
+} from "../../../store/vouchersSlide";
 import { updateVoucher } from "../../../services/voucher";
 const ListVoucher = ({ voucher, restaurants, restaurantId }) => {
-  console.log(restaurantId)
+  console.log(restaurantId);
   const [showConfirmMap, setShowConfirmMap] = useState({});
   const user = getUserDataFromSessionStorage();
   const dispatch = useDispatch();
@@ -35,30 +38,27 @@ const ListVoucher = ({ voucher, restaurants, restaurantId }) => {
   };
   const handleUpdateStatus = async (voucher, restaurantId) => {
     var newVoucher = { ...voucher };
-    console.log(newVoucher)
+    console.log(newVoucher);
     if (voucher.is_active === 0) {
-        newVoucher = { ...voucher, is_active: 1 };
+      newVoucher = { ...voucher, is_active: 1 };
     } else {
-        newVoucher = { ...voucher, is_active: 0 };
+      newVoucher = { ...voucher, is_active: 0 };
     }
     await updateVoucher(voucher.id, newVoucher, restaurantId);
     dispatch(
       fetchVoucherRestaurant({
         restaurantId,
-      })
+      }),
     );
   };
   useEffect(() => {
-    console.log(restaurantId)
-    if (
-      restaurantId === null ||
-      (restaurantId !== null && voucher === null)
-    ) {
+    console.log(restaurantId);
+    if (restaurantId === null || (restaurantId !== null && voucher === null)) {
       if (user.role === "ADMIN") {
         if (restaurants?.length > 0) {
           if (restaurantId === null) {
             dispatch(
-              fetchVoucherRestaurant({ restaurantId: restaurants[0].id })
+              fetchVoucherRestaurant({ restaurantId: restaurants[0].id }),
             );
             dispatch(setRestaurantId(restaurants[0].id));
           } else {
@@ -68,10 +68,8 @@ const ListVoucher = ({ voucher, restaurants, restaurantId }) => {
           dispatch(fetchRestaurants());
         }
       } else {
-        console.log(restaurantId)
-        dispatch(
-          fetchVoucherRestaurant({ restaurantId: user.restaurantId })
-        );
+        console.log(restaurantId);
+        dispatch(fetchVoucherRestaurant({ restaurantId: user.restaurantId }));
         dispatch(setRestaurantId(user.restaurantId));
       }
     }
@@ -83,7 +81,7 @@ const ListVoucher = ({ voucher, restaurants, restaurantId }) => {
     user.restaurantId,
     user.role,
   ]);
- 
+
   return (
     <div>
       <div>
@@ -143,7 +141,7 @@ const ListVoucher = ({ voucher, restaurants, restaurantId }) => {
               <tr key={index}>
                 <th>{index + 1}</th>
                 <th>{voucher.name}</th>
-                
+
                 <th>{voucher.discount}</th>
                 <th>{voucher.time_start}</th>
                 <th>{voucher.time_end}</th>
@@ -192,7 +190,7 @@ const ListVoucher = ({ voucher, restaurants, restaurantId }) => {
   );
 };
 function mapStateToProps(state) {
-  console.log(state)
+  console.log(state);
   return {
     voucher: state.voucher.voucher,
     restaurants: state.restaurants.restaurants,

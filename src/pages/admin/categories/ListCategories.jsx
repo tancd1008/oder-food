@@ -45,7 +45,7 @@ const ListCategories = ({ categories, restaurants, restaurantId }) => {
     dispatch(
       fetchCategoriesByRestaurant({
         restaurantId,
-      })
+      }),
     );
   };
   useEffect(() => {
@@ -57,7 +57,7 @@ const ListCategories = ({ categories, restaurants, restaurantId }) => {
         if (restaurants?.length > 0) {
           if (restaurantId === null) {
             dispatch(
-              fetchCategoriesByRestaurant({ restaurantId: restaurants[0].id })
+              fetchCategoriesByRestaurant({ restaurantId: restaurants[0].id }),
             );
             dispatch(setRestaurantId(restaurants[0].id));
           } else {
@@ -68,7 +68,7 @@ const ListCategories = ({ categories, restaurants, restaurantId }) => {
         }
       } else {
         dispatch(
-          fetchCategoriesByRestaurant({ restaurantId: user.restaurantId })
+          fetchCategoriesByRestaurant({ restaurantId: user.restaurantId }),
         );
         dispatch(setRestaurantId(user.restaurantId));
       }

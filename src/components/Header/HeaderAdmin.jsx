@@ -2,7 +2,10 @@ import React from "react";
 
 const HeaderAdmin = () => {
   return (
-    <nav className="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow" style={{maxWidth:"100%"}}>
+    <nav
+      className="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow"
+      style={{ maxWidth: "100%" }}
+    >
       {/* Sidebar Toggle (Topbar) */}
       <button
         id="sidebarToggleTop"

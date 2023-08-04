@@ -121,14 +121,14 @@ const EditFood = () => {
       const foodDoc = await getDetailFood(foodId, restaurantId);
       const listCategories = await getAllCategoriesInRestaurant(restaurantId);
       setCategories(
-        createOptionsFromData(listCategories, valueKeys, labelKeys)
+        createOptionsFromData(listCategories, valueKeys, labelKeys),
       );
       var convertedOptions = createOptionsFromData(
         listCategories,
         valueKeys,
-        labelKeys
+        labelKeys,
       ).filter((item) =>
-        foodDoc.categoryId.some((value) => value === item.value)
+        foodDoc.categoryId.some((value) => value === item.value),
       );
       setState(foodDoc);
       setSelectOld(convertedOptions);

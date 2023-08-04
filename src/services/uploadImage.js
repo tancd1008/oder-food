@@ -1,4 +1,9 @@
-import { deleteObject, getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+import {
+  deleteObject,
+  getDownloadURL,
+  ref,
+  uploadBytesResumable,
+} from "firebase/storage";
 import { storage } from "../firebase-config";
 
 export const uploadImage = (file, setUrl) => {
@@ -27,13 +32,15 @@ export const getImageUrl = (file) => {
     });
   return src;
 };
-export const deleteImage = (imageUrl)=>{
+export const deleteImage = (imageUrl) => {
   const storageRf = ref(storage, `images/${imageUrl}`);
-  deleteObject(storageRf).then(() => {
-    // File deleted successfully
-    console.log("delete success")
-  }).catch((error) => {
-    console.log("failed", error)
-    // Uh-oh, an error occurred!
-  });
-}
+  deleteObject(storageRf)
+    .then(() => {
+      // File deleted successfully
+      console.log("delete success");
+    })
+    .catch((error) => {
+      console.log("failed", error);
+      // Uh-oh, an error occurred!
+    });
+};
