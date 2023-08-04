@@ -5,21 +5,20 @@ import "./../../../styles/time-picker.css";
 
 const initialState = {
   nameRestaurant: "",
-  address:"",
-  status: 0
+  address: "",
+  status: 0,
 };
 
 const AddRestaurant = () => {
   const [state, setState] = useState(initialState);
-  const [selectedTime, setSelectedTime] = useState('12:00')
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setState({ ...state, [name]: value });
   };
-  
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    createRestaurant(state)
+    createRestaurant(state);
     console.log(state);
   };
 
@@ -77,49 +76,40 @@ const AddRestaurant = () => {
             className="form-control"
             placeholder="Số điện thoại"
             onChange={handleInputChange}
-
           />
         </div>{" "}
         <div className="mb-3 row">
-        <div className="col row">
+          <div className="col row">
             <div className="col col-md-auto p-2">
-
-            <label>Giờ mở cửa</label>
+              <label>Giờ mở cửa</label>
             </div>
             <div className="col">
-            <input
-            type="time"
-            id="time_start"
-            name="time_start"
-            className="form-control"
-            placeholder="Số điện thoại"
-            onChange={handleInputChange}
-
-          />
-         
+              <input
+                type="time"
+                id="time_start"
+                name="time_start"
+                className="form-control"
+                placeholder="Số điện thoại"
+                onChange={handleInputChange}
+              />
             </div>
           </div>
           <div className="col row">
             <div className="col col-md-auto p-2">
-
-            <label>Giờ đóng cửa</label>
+              <label>Giờ đóng cửa</label>
             </div>
             <div className="col">
-            <input
-            type="time"
-            id="time_end"
-            name="time_end"
-            className="form-control"
-            placeholder="Số điện thoại"
-            onChange={handleInputChange}
-
-          />
-          
+              <input
+                type="time"
+                id="time_end"
+                name="time_end"
+                className="form-control"
+                placeholder="Số điện thoại"
+                onChange={handleInputChange}
+              />
             </div>
           </div>
         </div>
-       
-        
         <button type="submit" className="btn btn-primary">
           Thêm mới
         </button>

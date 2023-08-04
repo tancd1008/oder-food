@@ -15,7 +15,7 @@ const AddOptions = ({ restaurantId }) => {
   const { name, price } = state;
   // const user = getUserDataFromSessionStorage();
   const navigate = useNavigate();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setState({ ...state, [name]: value });
@@ -26,7 +26,7 @@ const AddOptions = ({ restaurantId }) => {
       toast.error("Mời bạn nhập!");
     } else {
       try {
-        dispatch(createOptions({options: state, restaurantId}))
+        dispatch(createOptions({ options: state, restaurantId }));
         toast.success("Bạn thêm options thành công!");
         setTimeout(() => {
           navigate("/admin/options/list");

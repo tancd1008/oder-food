@@ -31,7 +31,7 @@ const AllFoods = () => {
   const visitedPage = pageNumber * productPerPage;
   const displayPage = searchedProduct.slice(
     visitedPage,
-    visitedPage + productPerPage
+    visitedPage + productPerPage,
   );
 
   const pageCount = Math.ceil(searchedProduct.length / productPerPage);

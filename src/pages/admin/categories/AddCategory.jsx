@@ -15,7 +15,7 @@ const AddCategory = ({ restaurantId }) => {
   const { name, desc } = state;
   // const user = getUserDataFromSessionStorage();
   const navigate = useNavigate();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setState({ ...state, [name]: value });
@@ -26,7 +26,7 @@ const AddCategory = ({ restaurantId }) => {
       toast.error("Mời bạn nhập!");
     } else {
       try {
-        dispatch(createCategory({category: state, restaurantId}))
+        dispatch(createCategory({ category: state, restaurantId }));
         // addCategory(state, restaurantId);
         toast.success("Bạn thêm danh mục thành công!");
         setTimeout(() => {

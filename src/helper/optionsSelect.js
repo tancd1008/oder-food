@@ -1,7 +1,6 @@
-
 export const convertOptions = (data, valueKey, labelKey, defaultValue) => {
   if (!Array.isArray(data)) return [];
-  return data.map(item => ({
+  return data.map((item) => ({
     value: item[valueKey] || defaultValue.value,
     label: item[labelKey] || defaultValue.label,
   }));

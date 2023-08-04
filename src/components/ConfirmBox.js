@@ -1,9 +1,9 @@
-import 'bootstrap/dist/css/bootstrap.min.css';
-import React, { useRef } from 'react';
-import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+import "bootstrap/dist/css/bootstrap.min.css";
+import React, { useRef } from "react";
+import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
 
 const ConfirmBox = ({ show, message, onConfirm, onCancel }) => {
-  const modalRef = useRef(null)
+  const modalRef = useRef(null);
   return (
     <Modal ref={modalRef} isOpen={show} toggle={onCancel}>
       <ModalHeader toggle={onCancel}>Xác nhận xóa</ModalHeader>
@@ -20,4 +20,4 @@ const ConfirmBox = ({ show, message, onConfirm, onCancel }) => {
   );
 };
 
-export default ConfirmBox
+export default ConfirmBox;

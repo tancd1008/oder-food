@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from "react";
 
 import logo from "../../assets/images/res-logo.png";
-import {  Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
 import { cartUiActions } from "../../store/shopping-cart/cartUiSlice";
@@ -56,14 +56,14 @@ const Header = () => {
 
   return (
     <header className="header" ref={headerRef}>
-        <div className="nav__wrapper d-flex align-items-center justify-content-between">
-          <div className="logo">
-            <img src={logo} alt="logo" />
-            <h5>Tasty Treat</h5>
-          </div>
+      <div className="nav__wrapper d-flex align-items-center justify-content-between">
+        <div className="logo">
+          <img src={logo} alt="logo" />
+          <h5>Tasty Treat</h5>
+        </div>
 
-          {/* ======= menu ======= */}
-          {/* <div className="navigation" ref={menuRef} onClick={toggleMenu}>
+        {/* ======= menu ======= */}
+        {/* <div className="navigation" ref={menuRef} onClick={toggleMenu}>
             <div className="menu d-flex align-items-center gap-5">
               {nav__links.map((item, index) => (
                 <NavLink
@@ -79,24 +79,24 @@ const Header = () => {
             </div>
           </div> */}
 
-          {/* ======== nav right icons ========= */}
-          <div className="nav__right d-flex align-items-center gap-4">
-            <span className="cart__icon" onClick={toggleCart}>
-              <i className="ri-shopping-basket-line"></i>
-              <span className="cart__badge">{totalQuantity}</span>
-            </span>
+        {/* ======== nav right icons ========= */}
+        <div className="nav__right d-flex align-items-center gap-4">
+          <span className="cart__icon" onClick={toggleCart}>
+            <i className="ri-shopping-basket-line"></i>
+            <span className="cart__badge">{totalQuantity}</span>
+          </span>
 
-            <span className="user">
-              <Link to="/login">
-                <i className="ri-user-line"></i>
-              </Link>
-            </span>
+          <span className="user">
+            <Link to="/login">
+              <i className="ri-user-line"></i>
+            </Link>
+          </span>
 
-            <span className="mobile__menu" onClick={toggleMenu}>
-              <i className="ri-menu-line"></i>
-            </span>
-          </div>
+          <span className="mobile__menu" onClick={toggleMenu}>
+            <i className="ri-menu-line"></i>
+          </span>
         </div>
+      </div>
     </header>
   );
 };

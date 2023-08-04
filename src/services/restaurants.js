@@ -38,8 +38,8 @@ async function createCollections(restaurantRefId, restaurantRef, batch) {
       const subCollectionRef = doc(
         collection(
           database,
-          `${COLLECTION_NAME}/${restaurantRefId}/${collectionName}`
-        )
+          `${COLLECTION_NAME}/${restaurantRefId}/${collectionName}`,
+        ),
       );
       batch.set(subCollectionRef, { name: "Other category" });
     }
@@ -74,7 +74,7 @@ export const createRestaurant = async (restaurant) => {
       });
     } else {
       console.log(
-        `A restaurant with email ${restaurant.email} already exists.`
+        `A restaurant with email ${restaurant.email} already exists.`,
       );
     }
   } catch (error) {
@@ -95,14 +95,17 @@ export const getAllRestaurants = async () => {
   } catch (error) {
     console.error(
       "Error getting documents from 'restaurants' collection: ",
-      error
+      error,
     );
     return [];
   }
 };
 export const updateRestaurant = async (updatedData) => {
   try {
-    const restaurantRef = doc(collection(database, COLLECTION_NAME), updatedData.id);
+    const restaurantRef = doc(
+      collection(database, COLLECTION_NAME),
+      updatedData.id,
+    );
     await updateDoc(restaurantRef, updatedData);
     toast.success("Cập nhật thành công");
   } catch (error) {

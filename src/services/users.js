@@ -23,13 +23,13 @@ export const createUser = async (userInfo) => {
     const userCredential = await createUserWithEmailAndPassword(
       auth,
       userInfo.email,
-      "Aa@12345"
+      "Aa@12345",
     );
     const user = userCredential.user;
     const uid = user.uid;
     const q = query(
       collection(database, "users"),
-      where("email", "==", userInfo.email)
+      where("email", "==", userInfo.email),
     );
     const querySnapshot = await getDocs(q);
 
@@ -40,7 +40,6 @@ export const createUser = async (userInfo) => {
       // Nếu không có email trùng lặp, thêm tài liệu mới vào "users"
       const userRef = doc(collection(database, COLLECTION_NAME), uid);
       await setDoc(userRef, userInfo);
-
     } else {
       console.log("Email is already in use.");
       const { restaurantId } = userInfo;
@@ -62,7 +61,7 @@ export const updateUserByEmail = async (email, updatedUserInfo) => {
     // Tạo truy vấn để tìm người dùng dựa trên địa chỉ email
     const q = query(
       collection(database, COLLECTION_NAME),
-      where("email", "==", email)
+      where("email", "==", email),
     );
     const querySnapshot = await getDocs(q);
 
@@ -89,7 +88,7 @@ export const getUserIdByEmail = async (email) => {
   try {
     const q = query(
       collection(database, COLLECTION_NAME),
-      where("email", "==", email)
+      where("email", "==", email),
     );
     const querySnapshot = await getDocs(q);
     if (!querySnapshot.empty) {
@@ -127,7 +126,7 @@ export const loginAndFetchUserData = async (account) => {
     const userCredential = await signInWithEmailAndPassword(
       auth,
       account.email,
-      account.password
+      account.password,
     );
     const user = userCredential.user;
     const userId = user.uid;
@@ -142,7 +141,7 @@ export const loginAndFetchUserData = async (account) => {
       const userData = docSnapshot.data();
       toast.success("Bạn đăng nhập thành công!");
       const user = { ...userData, token, userId };
-      saveUserDataToSessionStorage(user)
+      saveUserDataToSessionStorage(user);
       setTimeout(() => {
         window.location.href = "/admin";
       }, 3000);

@@ -21,7 +21,7 @@ export const addFood = async (food, restaurantId) => {
     const foodId = uuidv4();
     const foodRef = doc(
       database,
-      `${COLLECTION_NAME}/${restaurantId}/food/${foodId}`
+      `${COLLECTION_NAME}/${restaurantId}/food/${foodId}`,
     );
 
     const imageStorageRef = storageRef(storage, `images/${food.imgSrc.name}`);
@@ -52,7 +52,7 @@ export const getAllFoodInRestaurant = async (restaurantId) => {
     // Lấy danh sách danh mục từ Firestore
 
     const foodSnapshot = await getDocs(
-      collection(database, `${COLLECTION_NAME}/${restaurantId}/food`)
+      collection(database, `${COLLECTION_NAME}/${restaurantId}/food`),
     );
 
     // Biến categorySnapshot chứa một danh sách các tài liệu (documents) trong collection
@@ -73,7 +73,7 @@ export const deleteFood = async (foodId, restaurantId) => {
     // Tạo reference tới document danh mục cần xóa
     const foodRef = doc(
       database,
-      `${COLLECTION_NAME}/${restaurantId}/food/${foodId}`
+      `${COLLECTION_NAME}/${restaurantId}/food/${foodId}`,
     );
 
     // Xóa document danh mục
@@ -85,17 +85,23 @@ export const deleteFood = async (foodId, restaurantId) => {
     throw error; // Ném lỗi để xử lý bên ngoài nếu cần
   }
 };
-export const updateFood = async (foodId,foodUpdate, restaurantId) => {
+export const updateFood = async (foodId, foodUpdate, restaurantId) => {
   try {
     // Lấy reference của document danh mục dựa trên foodId
     const foodRef = doc(
       database,
-      `${COLLECTION_NAME}/${restaurantId}/food/${foodId}`
+      `${COLLECTION_NAME}/${restaurantId}/food/${foodId}`,
     );
-   
+
     if (foodUpdate.imgSrc && typeof foodUpdate.imgSrc !== "string") {
-      const imageStorageRef = storageRef(storage, `images/${foodUpdate.imgSrc.name}`);
-      const uploadTask = uploadBytesResumable(imageStorageRef, foodUpdate.imgSrc);
+      const imageStorageRef = storageRef(
+        storage,
+        `images/${foodUpdate.imgSrc.name}`,
+      );
+      const uploadTask = uploadBytesResumable(
+        imageStorageRef,
+        foodUpdate.imgSrc,
+      );
       const snapshot = await uploadTask;
       // Lấy URL tải xuống từ ảnh đã tải lên
       const downloadURL = await getDownloadURL(snapshot.ref);
@@ -123,7 +129,7 @@ export const getDetailFood = async (foodId, restaurantId) => {
   try {
     const foodRef = doc(
       database,
-      `${COLLECTION_NAME}/${restaurantId}/food/${foodId}`
+      `${COLLECTION_NAME}/${restaurantId}/food/${foodId}`,
     );
 
     // Lấy dữ liệu của document danh mục

@@ -45,7 +45,7 @@ const ListFood = ({ foods, restaurants, restaurantId }) => {
     dispatch(
       fetchFoodByRestaurant({
         restaurantId,
-      })
+      }),
     );
     // setFoods(listFoods);
   };
@@ -56,7 +56,7 @@ const ListFood = ({ foods, restaurants, restaurantId }) => {
         if (restaurants?.length > 0) {
           if (restaurantId === null) {
             dispatch(
-              fetchFoodByRestaurant({ restaurantId: restaurants[0].id })
+              fetchFoodByRestaurant({ restaurantId: restaurants[0].id }),
             );
             dispatch(setRestaurantId(restaurants[0].id));
           } else {
@@ -130,7 +130,8 @@ const ListFood = ({ foods, restaurants, restaurantId }) => {
           </tr>
         </thead>
         <tbody>
-          {foods !== null && foods &&
+          {foods !== null &&
+            foods &&
             foods?.length > 0 &&
             foods.map((food, index) => (
               <tr key={index}>
@@ -138,14 +139,20 @@ const ListFood = ({ foods, restaurants, restaurantId }) => {
                 <th>{food.name}</th>
                 <th className="text-center">
                   <img
-                    className="rounded mx-auto d-block" style={{width:"200px", height:"300px"}}
+                    className="rounded mx-auto d-block"
+                    style={{ width: "200px", height: "300px" }}
                     src={food.imgSrc}
                     alt=""
                   />
                 </th>
                 <th>{food.price}</th>
-                <th className="h-auto text-wrap" >
-                  <p className=" text-truncate " style={{width:"350px", maxHeight:"300px"}}>{food.desc}</p>
+                <th className="h-auto text-wrap">
+                  <p
+                    className=" text-truncate "
+                    style={{ width: "350px", maxHeight: "300px" }}
+                  >
+                    {food.desc}
+                  </p>
                 </th>
                 <th>
                   {food.is_active === 0 ? (

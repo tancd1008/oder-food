@@ -15,7 +15,6 @@ const Footer = () => {
         <Row>
           <Col lg="3" md="4" sm="6">
             <div className=" footer__logo text-start">
-             
               <h5>Tasty Treat</h5>
               <p>
                 Lorem ipsum dolor sit amet consectetur adipisicing elit.

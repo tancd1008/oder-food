@@ -12,10 +12,13 @@ import {
   fetchRestaurants,
   setRestaurantId,
 } from "../../../store/restaurantSlice";
-import { fetchOptionsRestaurant, removeOptions } from "../../../store/optionsSlice";
+import {
+  fetchOptionsRestaurant,
+  removeOptions,
+} from "../../../store/optionsSlice";
 import { updateOptions } from "../../../services/options";
 const ListOptions = ({ options, restaurants, restaurantId }) => {
-    console.log(restaurantId)
+  console.log(restaurantId);
   const [showConfirmMap, setShowConfirmMap] = useState({});
   const user = getUserDataFromSessionStorage();
   const dispatch = useDispatch();
@@ -35,30 +38,27 @@ const ListOptions = ({ options, restaurants, restaurantId }) => {
   };
   const handleUpdateStatus = async (options, restaurantId) => {
     var newOptions = { ...options };
-    console.log(newOptions)
+    console.log(newOptions);
     if (options.is_active === 0) {
-        newOptions = { ...options, is_active: 1 };
+      newOptions = { ...options, is_active: 1 };
     } else {
-        newOptions = { ...options, is_active: 0 };
+      newOptions = { ...options, is_active: 0 };
     }
     await updateOptions(options.id, newOptions, restaurantId);
     dispatch(
       fetchOptionsRestaurant({
         restaurantId,
-      })
+      }),
     );
   };
   useEffect(() => {
-    console.log(restaurantId)
-    if (
-      restaurantId === null ||
-      (restaurantId !== null && options === null)
-    ) {
+    console.log(restaurantId);
+    if (restaurantId === null || (restaurantId !== null && options === null)) {
       if (user.role === "ADMIN") {
         if (restaurants?.length > 0) {
           if (restaurantId === null) {
             dispatch(
-              fetchOptionsRestaurant({ restaurantId: restaurants[0].id })
+              fetchOptionsRestaurant({ restaurantId: restaurants[0].id }),
             );
             dispatch(setRestaurantId(restaurants[0].id));
           } else {
@@ -68,10 +68,8 @@ const ListOptions = ({ options, restaurants, restaurantId }) => {
           dispatch(fetchRestaurants());
         }
       } else {
-        console.log(restaurantId)
-        dispatch(
-          fetchOptionsRestaurant({ restaurantId: user.restaurantId })
-        );
+        console.log(restaurantId);
+        dispatch(fetchOptionsRestaurant({ restaurantId: user.restaurantId }));
         dispatch(setRestaurantId(user.restaurantId));
       }
     }
@@ -83,7 +81,7 @@ const ListOptions = ({ options, restaurants, restaurantId }) => {
     user.restaurantId,
     user.role,
   ]);
-  console.log(options)
+  console.log(options);
   return (
     <div>
       <div>
@@ -197,7 +195,7 @@ const ListOptions = ({ options, restaurants, restaurantId }) => {
   );
 };
 function mapStateToProps(state) {
-  console.log(state)
+  console.log(state);
   return {
     options: state.options.options,
     restaurants: state.restaurants.restaurants,

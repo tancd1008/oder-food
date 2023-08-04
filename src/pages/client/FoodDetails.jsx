@@ -34,7 +34,7 @@ const FoodDetails = () => {
         title,
         price,
         image01,
-      })
+      }),
     );
   };
 

@@ -3,8 +3,6 @@ import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { getDetailCategory } from "../../../services/category";
-import { editCategory } from "../../../store/categoriesSlide";
 import { editOptions } from "../../../store/optionsSlice";
 import { getDetailOptions } from "../../../services/options";
 const initialState = {
@@ -29,7 +27,7 @@ const EditOptions = () => {
       toast.error("Mời bạn nhập!");
     } else {
       try {
-        dispatch(editOptions({optionsId, options:state, restaurantId}))
+        dispatch(editOptions({ optionsId, options: state, restaurantId }));
         toast.success("Successfully");
         setTimeout(() => {
           navigate("/admin/options/list");
@@ -50,7 +48,7 @@ const EditOptions = () => {
   return (
     <div>
       <form onSubmit={handleSubmit}>
-        <h1 className="text-center">Cập nhật danh mục</h1>
+        <h1 className="text-center">Cập nhật Options</h1>
         <div className="mb-3">
           <label htmlFor="name" className="form-label">
             Tên options

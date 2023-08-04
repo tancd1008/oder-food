@@ -14,9 +14,7 @@ import { getUserDataFromSessionStorage } from "./services/encode";
 function App() {
   const user = getUserDataFromSessionStorage();
 
-  useEffect(() => {
-   
-  }, []);
+  useEffect(() => {}, []);
   return (
     <div className="App " style={{ minHeight: "100vh" }}>
       <Routes>

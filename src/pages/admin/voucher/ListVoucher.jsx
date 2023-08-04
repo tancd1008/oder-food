@@ -5,87 +5,88 @@ import { Link } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ConfirmBox from "../../../components/ConfirmBox";
-import { updateCategory } from "../../../services/category";
 import { getUserDataFromSessionStorage } from "../../../services/encode";
-import {
-  fetchCategoriesByRestaurant,
-  removeCategory,
-} from "../../../store/categoriesSlide";
+
 import { setFoods } from "../../../store/foodsSlice";
 import {
   fetchRestaurants,
   setRestaurantId,
 } from "../../../store/restaurantSlice";
-const ListCategories = ({ categories, restaurants, restaurantId }) => {
+import {
+  fetchVoucherRestaurant,
+  removeVoucher,
+} from "../../../store/vouchersSlide";
+import { updateVoucher } from "../../../services/voucher";
+const ListVoucher = ({ voucher, restaurants, restaurantId }) => {
+  console.log(restaurantId);
   const [showConfirmMap, setShowConfirmMap] = useState({});
   const user = getUserDataFromSessionStorage();
   const dispatch = useDispatch();
   const handleChangeRestaurant = async (restaurantId) => {
-    dispatch(fetchCategoriesByRestaurant({ restaurantId }));
+    dispatch(fetchVoucherRestaurant({ restaurantId }));
     dispatch(setRestaurantId(restaurantId));
     dispatch(setFoods());
   };
 
-  const handleDelete = (categoryId) => {
-    dispatch(removeCategory({ categoryId, restaurantId }));
-    setShowConfirmMap((prev) => ({ ...prev, [categoryId]: true }));
+  const handleDelete = (voucherId) => {
+    dispatch(removeVoucher({ voucherId, restaurantId }));
+    setShowConfirmMap((prev) => ({ ...prev, [voucherId]: true }));
   };
 
-  const handleCancel = (categoryId) => {
-    setShowConfirmMap((prev) => ({ ...prev, [categoryId]: false }));
+  const handleCancel = (voucherId) => {
+    setShowConfirmMap((prev) => ({ ...prev, [voucherId]: false }));
   };
-  const handleUpdateStatus = async (category, restaurantId) => {
-    var newCategory = { ...category };
-    if (category.is_active === 0) {
-      newCategory = { ...category, is_active: 1 };
+  const handleUpdateStatus = async (voucher, restaurantId) => {
+    var newVoucher = { ...voucher };
+    console.log(newVoucher);
+    if (voucher.is_active === 0) {
+      newVoucher = { ...voucher, is_active: 1 };
     } else {
-      newCategory = { ...category, is_active: 0 };
+      newVoucher = { ...voucher, is_active: 0 };
     }
-    await updateCategory(category.id, restaurantId, newCategory);
+    await updateVoucher(voucher.id, newVoucher, restaurantId);
     dispatch(
-      fetchCategoriesByRestaurant({
+      fetchVoucherRestaurant({
         restaurantId,
       }),
     );
   };
   useEffect(() => {
-    if (
-      restaurantId === null ||
-      (restaurantId !== null && categories === null)
-    ) {
+    console.log(restaurantId);
+    if (restaurantId === null || (restaurantId !== null && voucher === null)) {
       if (user.role === "ADMIN") {
         if (restaurants?.length > 0) {
           if (restaurantId === null) {
             dispatch(
-              fetchCategoriesByRestaurant({ restaurantId: restaurants[0].id }),
+              fetchVoucherRestaurant({ restaurantId: restaurants[0].id }),
             );
             dispatch(setRestaurantId(restaurants[0].id));
           } else {
-            dispatch(fetchCategoriesByRestaurant({ restaurantId }));
+            dispatch(fetchVoucherRestaurant({ restaurantId }));
           }
         } else {
           dispatch(fetchRestaurants());
         }
       } else {
-        dispatch(
-          fetchCategoriesByRestaurant({ restaurantId: user.restaurantId }),
-        );
+        console.log(restaurantId);
+        dispatch(fetchVoucherRestaurant({ restaurantId: user.restaurantId }));
         dispatch(setRestaurantId(user.restaurantId));
       }
     }
   }, [
-    categories,
+    voucher,
     dispatch,
     restaurantId,
     restaurants,
     user.restaurantId,
     user.role,
   ]);
+
   return (
     <div>
       <div>
         <div className="row">
-          <h1 className="text-center">Danh sách danh mục</h1>
+          <h1 className="text-center">Danh sách Voucher</h1>
         </div>
         <div className="d-sm-flex align-items-center justify-content-between mb-4">
           <div className="">
@@ -112,11 +113,10 @@ const ListCategories = ({ categories, restaurants, restaurantId }) => {
           </div>
           <div className="">
             <Link
-              to="/admin/category/add"
+              to="/admin/voucher/add"
               className="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"
             >
-              <i className="fas fa-download fa-sm text-white-50" /> Thêm danh
-              mục
+              <i className="fas fa-download fa-sm text-white-50" /> Thêm Voucher
             </Link>
           </div>
           <div></div>
@@ -127,63 +127,58 @@ const ListCategories = ({ categories, restaurants, restaurantId }) => {
           <tr>
             <th scope="col">STT</th>
             <th scope="col">Sản phảm</th>
-            <th scope="col">Ảnh</th>
             <th scope="col">Giá</th>
-            <th scope="col">Nội dung</th>
+            <th scope="col">Ngày bắt đầu</th>
+            <th scope="col">Ngày kết thúc</th>
             <th scope="col">Status</th>
             <th scope="col"></th>
           </tr>
         </thead>
         <tbody>
-          {categories &&
-            categories?.length > 0 &&
-            categories.map((category, index) => (
+          {voucher &&
+            voucher?.length > 0 &&
+            voucher.map((voucher, index) => (
               <tr key={index}>
                 <th>{index + 1}</th>
-                <th>{category.name}</th>
+                <th>{voucher.name}</th>
+
+                <th>{voucher.discount}</th>
+                <th>{voucher.time_start}</th>
+                <th>{voucher.time_end}</th>
                 <th>
-                  <img
-                    className="rounded mx-auto d-block w-25 h-25"
-                    src={category.imgSrc}
-                    alt=""
-                  />
-                </th>
-                <th>{category.price}</th>
-                <th>{category.desc}</th>
-                <th>
-                  {category.is_active === 0 ? (
+                  {voucher.is_active === 0 ? (
                     <p className="text-success">Hoạt động</p>
                   ) : (
-                    <p className="text-danger">Ngừng bán</p>
+                    <p className="text-danger">Ngừng</p>
                   )}
                 </th>
                 <th className="">
                   <button
                     className="btn btn-danger"
-                    onClick={() => handleDelete(category.id)}
+                    onClick={() => handleDelete(voucher.id)}
                   >
                     Xóa
                   </button>
                   <ConfirmBox
-                    show={showConfirmMap[category.id]}
+                    show={showConfirmMap[voucher.id]}
                     message="Bạn có chắc chắn muốn xóa bản ghi này không?"
-                    onConfirm={() => handleDelete(category.id, restaurantId)}
-                    onCancel={() => handleCancel(category.id)}
+                    onConfirm={() => handleDelete(voucher.id, restaurantId)}
+                    onCancel={() => handleCancel(voucher.id)}
                   />
                   <Link
-                    to={`/admin/category/edit/${restaurantId}/${category.id}`}
+                    to={`/admin/voucher/edit/${restaurantId}/${voucher.id}`}
                   >
                     <button className="btn btn-warning ms-1">Sửa</button>
                   </Link>
                   <button
                     className={`${
-                      category.is_active === 0
+                      voucher.is_active === 0
                         ? "btn btn-secondary ms-1"
                         : "btn btn-success ms-1"
                     }`}
-                    onClick={() => handleUpdateStatus(category, restaurantId)}
+                    onClick={() => handleUpdateStatus(voucher, restaurantId)}
                   >
-                    {category.is_active === 0 ? "Dừng" : "Bán"}
+                    {voucher.is_active === 0 ? "Đóng" : "Mở"}
                   </button>
                 </th>
               </tr>
@@ -195,11 +190,12 @@ const ListCategories = ({ categories, restaurants, restaurantId }) => {
   );
 };
 function mapStateToProps(state) {
+  console.log(state);
   return {
-    categories: state.categories.categories,
+    voucher: state.voucher.voucher,
     restaurants: state.restaurants.restaurants,
     restaurantId: state.restaurants.restaurantId,
   };
 }
 
-export default connect(mapStateToProps)(ListCategories);
+export default connect(mapStateToProps)(ListVoucher);
