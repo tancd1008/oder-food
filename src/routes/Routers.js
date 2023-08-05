@@ -22,11 +22,12 @@ import EditOptions from "../pages/admin/options/EditOptions";
 import ListVoucher from "../pages/admin/voucher/ListVoucher";
 import AddVoucher from "../pages/admin/voucher/AddVoucher";
 import EditVoucher from "../pages/admin/voucher/EditVoucher";
+import ChooseRestaurant from "../pages/client/ChooseRestaurant";
 
 const publicRoutes = [
   {
     path: "",
-    component: Home,
+    component: ChooseRestaurant,
   },
   {
     path: "*",
