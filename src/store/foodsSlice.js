@@ -17,6 +17,7 @@ export const fetchFoodByRestaurant = createAsyncThunk(
   "foods/fetchFoodByRestaurant",
   async ({ restaurantId }) => {
     const foodsList = await getAllFoodInRestaurant(restaurantId);
+    console.log(foodsList);
     return foodsList.map((restaurant) => ({
       ...restaurant,
       createdAt: convertToTimestamp(restaurant.createdAt), // Convert to UNIX timestamp in milliseconds

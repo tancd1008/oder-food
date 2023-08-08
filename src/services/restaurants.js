@@ -1,6 +1,7 @@
 import {
   collection,
   doc,
+  getDoc,
   getDocs,
   query,
   serverTimestamp,
@@ -112,4 +113,26 @@ export const updateRestaurant = async (updatedData) => {
     toast.error("Lỗi khi cập nhật");
     console.error("Lỗi khi cập nhật nhà hàng:", error);
   }
+};
+export const getDetailRestaurantById = async (restaurantId) => {
+  try {
+    const restaurantRef = doc(database, `${COLLECTION_NAME}/${restaurantId}`);
+
+    // Lấy dữ liệu của document restaurant
+    const restaurantDoc = await getDoc(restaurantRef);
+    console.log("Thành công");
+    console.log(restaurantDoc.data());
+    return restaurantDoc.data();
+  } catch (error) {
+    console.log("Lỗi");
+    return null;
+  }
+};
+export const saveRestaurantDataToSessionStorage = (restaurant) => {
+  sessionStorage.setItem("restaurant", JSON.stringify(restaurant));
+};
+export const getRestaurantDataFromSessionStorage = () => {
+  const storedRestaurantDetail = sessionStorage.getItem("restaurant");
+  const parsedRestaurantDetail = JSON.parse(storedRestaurantDetail);
+  return parsedRestaurantDetail;
 };

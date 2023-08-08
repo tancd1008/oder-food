@@ -16,7 +16,9 @@ const initialState = {
 export const fetchCategoriesByRestaurant = createAsyncThunk(
   "categories/fetchCategoriesByRestaurant",
   async ({ restaurantId }) => {
+    console.log(restaurantId);
     const categoriesList = await getAllCategoriesInRestaurant(restaurantId);
+    console.log(categoriesList);
     return categoriesList.map((restaurant) => ({
       ...restaurant,
       createdAt: convertToTimestamp(restaurant.createdAt), // Convert to UNIX timestamp in milliseconds
@@ -56,6 +58,7 @@ const categoriesSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchCategoriesByRestaurant.fulfilled, (state, action) => {
+        console.log(action.payload);
         state.categories = action.payload;
       })
       .addCase(removeCategory.fulfilled, (state, action) => {

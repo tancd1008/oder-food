@@ -43,7 +43,7 @@ export const addCategory = async (category, restaurantId) => {
 export const getAllCategoriesInRestaurant = async (restaurantId) => {
   try {
     // Lấy danh sách danh mục từ Firestore
-
+    console.log(restaurantId);
     const categorySnapshot = await getDocs(
       collection(database, `${COLLECTION_NAME}/${restaurantId}/category`),
     );
@@ -53,7 +53,7 @@ export const getAllCategoriesInRestaurant = async (restaurantId) => {
       // Trả về dữ liệu của từng tài liệu (document) trong danh sách
       return { id: doc.id, ...doc.data() };
     });
-
+    console.log(categories);
     return categories;
   } catch (error) {
     console.error("Đã xảy ra lỗi khi lấy danh mục:", error);
