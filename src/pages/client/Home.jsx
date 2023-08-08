@@ -36,7 +36,7 @@ const Home = ({ categories, foods }) => {
         setFilteredFoods(foods);
       } else {
         const filteredByCategory = foods.filter(
-          (item) => item.categoryId && item.categoryId.includes(categoryId)
+          (item) => item.categoryId && item.categoryId.includes(categoryId),
         );
         setFilteredFoods(filteredByCategory);
       }
