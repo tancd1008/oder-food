@@ -30,6 +30,10 @@ const publicRoutes = [
     component: ChooseRestaurant,
   },
   {
+    path: "/:nameRestaurant",
+    component: Home,
+  },
+  {
     path: "*",
     component: NotFoundPage,
   },

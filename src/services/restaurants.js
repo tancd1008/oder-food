@@ -1,6 +1,7 @@
 import {
   collection,
   doc,
+  getDoc,
   getDocs,
   query,
   serverTimestamp,
@@ -38,8 +39,8 @@ async function createCollections(restaurantRefId, restaurantRef, batch) {
       const subCollectionRef = doc(
         collection(
           database,
-          `${COLLECTION_NAME}/${restaurantRefId}/${collectionName}`,
-        ),
+          `${COLLECTION_NAME}/${restaurantRefId}/${collectionName}`
+        )
       );
       batch.set(subCollectionRef, { name: "Other category" });
     }
@@ -74,7 +75,7 @@ export const createRestaurant = async (restaurant) => {
       });
     } else {
       console.log(
-        `A restaurant with email ${restaurant.email} already exists.`,
+        `A restaurant with email ${restaurant.email} already exists.`
       );
     }
   } catch (error) {
@@ -95,7 +96,7 @@ export const getAllRestaurants = async () => {
   } catch (error) {
     console.error(
       "Error getting documents from 'restaurants' collection: ",
-      error,
+      error
     );
     return [];
   }
@@ -104,7 +105,7 @@ export const updateRestaurant = async (updatedData) => {
   try {
     const restaurantRef = doc(
       collection(database, COLLECTION_NAME),
-      updatedData.id,
+      updatedData.id
     );
     await updateDoc(restaurantRef, updatedData);
     toast.success("Cập nhật thành công");
@@ -112,4 +113,27 @@ export const updateRestaurant = async (updatedData) => {
     toast.error("Lỗi khi cập nhật");
     console.error("Lỗi khi cập nhật nhà hàng:", error);
   }
+};
+export const getDetailRestaurantById = async (restaurantId) => {
+  try {
+    const restaurantRef = doc(database, `${COLLECTION_NAME}/${restaurantId}`);
+
+    // Lấy dữ liệu của document restaurant
+    const restaurantDoc = await getDoc(restaurantRef);
+    console.log("Thành công");
+    console.log(restaurantDoc.data());
+    return restaurantDoc.data();
+  } catch (error) {
+    console.log("Lỗi");
+    return null;
+  }
+};
+export const saveRestaurantDataToSessionStorage = (restaurant) => {
+  sessionStorage.setItem("restaurant", JSON.stringify(restaurant));
+};
+export const getRestaurantDataFromSessionStorage = () => {
+  const storedRestaurantDetail = sessionStorage.getItem("restaurant");
+  const parsedRestaurantDetail = JSON.parse(storedRestaurantDetail);
+  console.log(parsedRestaurantDetail);
+  return parsedRestaurantDetail;
 };

@@ -1,7 +1,11 @@
 import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
-import { getAllRestaurants } from "../../services/restaurants";
+import {
+  getAllRestaurants,
+  saveRestaurantDataToSessionStorage,
+} from "../../services/restaurants";
+import { Link } from "react-router-dom";
 
 const ChooseRestaurant = () => {
   const [restaurants, setRestaurants] = useState([]);
@@ -12,11 +16,19 @@ const ChooseRestaurant = () => {
     };
     fetchRestaurants();
   }, []);
+  const handleChooseRestaurant = (restaurant) => () => {
+    saveRestaurantDataToSessionStorage(restaurant);
+  };
   return (
     <div className="container">
       <div className="row">
         {restaurants.map((restaurant, index) => (
-          <div className="col-lg-4" key={index}>
+          <Link
+            to={`/${restaurant.nameRestaurant}`}
+            className="col-lg-4"
+            key={index}
+            onClick={handleChooseRestaurant(restaurant)}
+          >
             <div className="card card-margin">
               <div className="card-header no-border">
                 <h5 className="card-title">{restaurant.nameRestaurant}</h5>
@@ -56,7 +68,7 @@ const ChooseRestaurant = () => {
                 </div>
               </div>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
     </div>

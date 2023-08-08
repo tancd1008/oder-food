@@ -18,40 +18,22 @@ import "../../styles/home.css";
 
 import products from "../../assets/fake-data/products.js";
 
-import foodCategoryImg03 from "../../assets/images/bread.png";
-import foodCategoryImg01 from "../../assets/images/hamburger.png";
-import foodCategoryImg02 from "../../assets/images/pizza.png";
 
 import ProductCard from "../../components/UI/product-card/ProductCard.jsx";
+import {
+  getRestaurantDataFromSessionStorage,
+} from "../../services/restaurants.js";
+import { fetchCategoriesByRestaurant } from "../../store/categoriesSlide.js";
+import { connect, useDispatch } from "react-redux";
 
-// import whyImg from "../assets/images/location.png";
-
-// import networkImg from "../assets/images/network.png";
-
-// const featureData = [
-//   {
-//     title: "Quick Delivery",
-//     imgUrl: featureImg01,
-//     desc: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Minus, doloremque.",
-//   },
-
-//   {
-//     title: "Super Dine In",
-//     imgUrl: featureImg02,
-//     desc: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Minus, doloremque.",
-//   },
-//   {
-//     title: "Easy Pick Up",
-//     imgUrl: featureImg03,
-//     desc: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Minus, doloremque.",
-//   },
-// ];
-
-const Home = () => {
-  const [category, setCategory] = useState("ALL");
+const Home = ({ categories, restaurants, restaurantId }) => {
+  console.log(categories);
+  // const [categories, setCategories] = useState([]);
   const [allProducts, setAllProducts] = useState(products);
 
   const [hotPizza, setHotPizza] = useState([]);
+  const restaurantData = getRestaurantDataFromSessionStorage();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const filteredPizza = products.filter((item) => item.category === "Pizza");
@@ -60,34 +42,9 @@ const Home = () => {
   }, []);
 
   useEffect(() => {
-    if (category === "ALL") {
-      setAllProducts(products);
-    }
-
-    if (category === "BURGER") {
-      const filteredProducts = products.filter(
-        (item) => item.category === "Burger"
-      );
-
-      setAllProducts(filteredProducts);
-    }
-
-    if (category === "PIZZA") {
-      const filteredProducts = products.filter(
-        (item) => item.category === "Pizza"
-      );
-
-      setAllProducts(filteredProducts);
-    }
-
-    if (category === "BREAD") {
-      const filteredProducts = products.filter(
-        (item) => item.category === "Bread"
-      );
-
-      setAllProducts(filteredProducts);
-    }
-  }, [category]);
+    console.log(restaurantData.id);
+    dispatch(fetchCategoriesByRestaurant({ restaurantId: restaurantData.id }));
+  }, [restaurantData.id]);
 
   return (
     <Helmet title="Home">
@@ -100,43 +57,10 @@ const Home = () => {
 
             <Col lg="12">
               <div className="food__category d-flex align-items-center justify-content-center gap-4 text-danger">
-                <button
-                  className={`all__btn  ${
-                    category === "ALL" ? "foodBtnActive" : ""
-                  } `}
-                  onClick={() => setCategory("ALL")}
-                >
-                  All
-                </button>
-                <button
-                  className={`d-flex align-items-center gap-2 ${
-                    category === "BURGER" ? "foodBtnActive" : ""
-                  } `}
-                  onClick={() => setCategory("BURGER")}
-                >
-                  <img src={foodCategoryImg01} alt="" />
-                  Burger
-                </button>
-
-                <button
-                  className={`d-flex align-items-center gap-2 ${
-                    category === "PIZZA" ? "foodBtnActive" : ""
-                  } `}
-                  onClick={() => setCategory("PIZZA")}
-                >
-                  <img src={foodCategoryImg02} alt="" />
-                  Pizza
-                </button>
-
-                <button
-                  className={`d-flex align-items-center gap-2 ${
-                    category === "BREAD" ? "foodBtnActive" : ""
-                  } `}
-                  onClick={() => setCategory("BREAD")}
-                >
-                  <img src={foodCategoryImg03} alt="" />
-                  Bread
-                </button>
+                {categories &&
+                  categories.map((item, index) => (
+                    <button key={index}>{item.name}</button>
+                  ))}
               </div>
             </Col>
 
@@ -250,5 +174,13 @@ const Home = () => {
     </Helmet>
   );
 };
+function mapStateToProps(state) {
+  console.log(state);
+  return {
+    categories: state.categories.categories,
+    restaurants: state.restaurants.restaurants,
+    restaurantId: state.restaurants.restaurantId,
+  };
+}
 
-export default Home;
+export default connect(mapStateToProps)(Home);
