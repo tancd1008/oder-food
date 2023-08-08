@@ -37,29 +37,18 @@ const ChooseRestaurant = () => {
                 <div className="widget-49">
                   <div className="widget-49-title-wrapper">
                     <div className="widget-49-date-primary">
-                      <span className="widget-49-date-day">09</span>
-                      <span className="widget-49-date-month">apr</span>
+                      <span className="widget-49-date-day">Address: </span>
+                      <span className="widget-49-date-month">
+                        {restaurant.address}
+                      </span>
                     </div>
                     <div className="widget-49-meeting-info">
-                      <span className="widget-49-pro-title">
-                        PRO-08235 DeskOpe. Website
-                      </span>
                       <span className="widget-49-meeting-time">
-                        12:00 to 13.30 Hrs
+                        {restaurant.time_start} to {restaurant.time_end}
                       </span>
                     </div>
                   </div>
-                  <ol className="widget-49-meeting-points">
-                    <li className="widget-49-meeting-item">
-                      <span>Expand module is removed</span>
-                    </li>
-                    <li className="widget-49-meeting-item">
-                      <span>Data migration is in scope</span>
-                    </li>
-                    <li className="widget-49-meeting-item">
-                      <span>Session timeout increase to 30 minutes</span>
-                    </li>
-                  </ol>
+
                   <div className="widget-49-meeting-action">
                     <a href="/" className="btn btn-sm btn-flash-border-primary">
                       View All
