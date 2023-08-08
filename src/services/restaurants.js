@@ -134,6 +134,5 @@ export const saveRestaurantDataToSessionStorage = (restaurant) => {
 export const getRestaurantDataFromSessionStorage = () => {
   const storedRestaurantDetail = sessionStorage.getItem("restaurant");
   const parsedRestaurantDetail = JSON.parse(storedRestaurantDetail);
-  console.log(parsedRestaurantDetail);
   return parsedRestaurantDetail;
 };
